@@ -1,3 +1,53 @@
-/_pptx
-/Prova
-/Projetos
+# ================================================================
+# POO — o repositório publica APENAS o site (GitHub Pages).
+# Material de aula (originais), provas, gabaritos e notas ficam locais.
+# ================================================================
+
+# --- Provas, gabaritos e notas (NUNCA publicar) ---
+/Prova/
+/provas/
+/notas/
+/Entregas/
+/Exercícios/
+GABARITO*
+gabarito*
+*Gabarito*
+*gabarito*
+
+# --- Originais de aula (PPTX exportadas em imagem, mantidas localmente) ---
+/_pptx/
+*.pptx
+*.ppt
+*.ppsx
+*.pdf
+*.docx
+*.doc
+*.xlsx
+*.xls
+*.odt
+*.ods
+*.rar
+*.zip
+
+# --- Notebooks (exceto se explicitamente adicionados com git add -f) ---
+*.ipynb
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
+
+# --- Código-fonte: fica local até ser reorganizado em /exemplos/ (Fase 6) ---
+/Projetos/
+
+# --- Trabalho interno (rascunhos, handoff, conteúdo extraído) ---
+/_trabalho/
+.tmp*
+*~
+
+# --- Ferramentas / sistema ---
+.claude/
+.vscode/
+.DS_Store
+Thumbs.db
+HISTORICO_REMOVIDO.md
+MATRIZ*
+Plano*de*ensino*

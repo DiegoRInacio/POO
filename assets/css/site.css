@@ -1,0 +1,186 @@
+/* ================================================================
+   POO — portal da disciplina
+   "Quadro" com tom técnico (console escuro) · paleta Univassouras
+   Os decks das aulas usam deck.css (vidro sobre vinho).
+   ================================================================ */
+:root{
+  --bg:#0e0c0b;
+  --bg-2:#151110;
+  --surface:#1c1613;
+  --surface-2:#241c17;
+  --line:#332a23;
+  --line-soft:#26201b;
+  --gold:#d4a94e;
+  --gold-soft:#b08430;
+  --wine:#9c3a3a;
+  --wine-deep:#7a1f1f;
+  --ink:#ece4d6;
+  --muted:#9a8a78;
+  --muted-dim:#6f6357;
+  --mono:"SF Mono","Consolas","JetBrains Mono",Menlo,monospace;
+  --sans:"Segoe UI",Tahoma,Geneva,Verdana,sans-serif;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  font-family:var(--sans);
+  color:var(--ink);
+  background:var(--bg);
+  background-image:
+    radial-gradient(rgba(212,169,78,.045) 1px,transparent 1px);
+  background-size:22px 22px;
+  min-height:100vh;
+  padding:2.5rem 1.5rem 4rem;
+  line-height:1.6;
+}
+
+.container{max-width:1160px;margin:0 auto}
+
+/* ---------- cabeçalho ---------- */
+.header{
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:linear-gradient(180deg,var(--bg-2),var(--surface));
+  padding:2.4rem 2.2rem;
+  position:relative;
+  overflow:hidden;
+}
+.header::before{
+  content:"";position:absolute;inset:0 auto 0 0;width:3px;
+  background:linear-gradient(180deg,var(--gold),var(--wine));
+}
+.header .brasao{
+  height:56px;width:56px;object-fit:contain;
+  background:#fff;border-radius:50%;border:2px solid var(--gold);
+  padding:4px;margin-bottom:1.1rem;
+}
+.header .eyebrow{
+  font-family:var(--mono);font-size:.74rem;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--gold-soft);margin-bottom:.7rem;
+}
+.header h1{
+  font-family:var(--mono);
+  font-size:clamp(1.9rem,5vw,2.9rem);
+  font-weight:700;line-height:1.1;color:var(--ink);
+  letter-spacing:-.01em;margin-bottom:.6rem;
+}
+.header h1 .prompt{color:var(--gold);margin-right:.5rem}
+.header h1 .cursor{
+  display:inline-block;width:.6ch;height:1em;translate:0 .12em;
+  background:var(--gold);margin-left:.15rem;animation:blink 1.15s step-end infinite;
+}
+@keyframes blink{50%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.header h1 .cursor{animation:none}}
+.header p{color:var(--muted);max-width:60ch;font-size:1.02rem}
+.header .inst{
+  display:block;margin-top:1rem;font-family:var(--mono);font-size:.76rem;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--muted-dim);
+}
+
+/* ---------- faixa de números ---------- */
+.stats{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:1px;background:var(--line-soft);
+  border:1px solid var(--line);border-radius:12px;overflow:hidden;
+  margin:1.5rem 0 2.5rem;
+}
+.stat-item{background:var(--surface);padding:1.3rem 1rem;text-align:center}
+.stat-number{
+  font-family:var(--mono);font-size:1.6rem;font-weight:700;
+  color:var(--gold);display:block;
+}
+.stat-label{color:var(--muted);font-size:.82rem;margin-top:.35rem}
+
+/* ---------- grupos / grade ---------- */
+.grupo-titulo{
+  font-family:var(--mono);font-size:.95rem;font-weight:600;
+  letter-spacing:.04em;color:var(--gold);
+  margin:2.6rem 0 1.2rem;padding-bottom:.5rem;
+  border-bottom:1px solid var(--line);
+  display:flex;align-items:center;gap:.55rem;
+}
+.grupo-titulo::before{content:"//";color:var(--muted-dim)}
+
+.courses-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+  gap:1.2rem;
+}
+.course-card{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:12px;padding:1.5rem 1.5rem 1.4rem;
+  display:flex;flex-direction:column;
+  position:relative;overflow:hidden;
+  transition:border-color .2s ease,transform .2s ease,background .2s ease;
+}
+.course-card::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--gold),var(--wine));
+  transform:scaleX(0);transform-origin:left;transition:transform .25s ease;
+}
+.course-card:hover{
+  transform:translateY(-3px);
+  border-color:var(--gold-soft);
+  background:var(--surface-2);
+}
+.course-card:hover::before{transform:scaleX(1)}
+.course-num{
+  font-family:var(--mono);font-size:.75rem;color:var(--muted-dim);
+  letter-spacing:.1em;margin-bottom:.5rem;
+}
+.course-icon{font-size:1.7rem;margin-bottom:.6rem;line-height:1}
+.course-title{
+  font-size:1.12rem;color:var(--ink);margin-bottom:.5rem;
+  font-weight:600;line-height:1.3;
+}
+.course-description{color:var(--muted);font-size:.92rem;line-height:1.55;flex:1;margin-bottom:1.1rem}
+.course-description code{
+  font-family:var(--mono);background:rgba(212,169,78,.12);
+  color:var(--gold);padding:.05rem .35rem;border-radius:4px;font-size:.85em;
+}
+.course-meta{
+  display:flex;gap:1.1rem;margin-bottom:1.1rem;
+  font-family:var(--mono);font-size:.76rem;color:var(--muted-dim);
+}
+.btn-primary,.btn-ghost{
+  align-self:flex-start;text-decoration:none;font-weight:600;
+  font-size:.86rem;padding:.55rem 1.3rem;border-radius:7px;
+  transition:all .18s ease;font-family:var(--mono);letter-spacing:.02em;
+}
+.btn-primary{background:var(--gold);color:#241c10;border:1px solid var(--gold)}
+.btn-primary:hover{background:#e6bd63;box-shadow:0 4px 16px rgba(212,169,78,.25)}
+.btn-ghost{background:transparent;color:var(--gold);border:1px solid var(--gold-soft)}
+.btn-ghost:hover{background:rgba(212,169,78,.12)}
+
+/* ---------- faixa do simulado ---------- */
+.banner{
+  margin-top:2.6rem;border-radius:12px;padding:2rem;
+  background:linear-gradient(135deg,var(--wine-deep),#3c1414);
+  border:1px solid var(--gold-soft);
+  position:relative;overflow:hidden;
+}
+.banner .ico{font-size:1.7rem;margin-bottom:.5rem}
+.banner h3{font-size:1.25rem;margin-bottom:.5rem;color:var(--ink)}
+.banner p{color:rgba(236,228,214,.82);margin-bottom:1.2rem;font-size:.92rem;max-width:62ch}
+.banner a{
+  background:var(--gold);color:#241c10;padding:.6rem 1.5rem;border-radius:7px;
+  font-weight:700;text-decoration:none;font-size:.9rem;display:inline-block;
+  font-family:var(--mono);transition:all .18s;
+}
+.banner a:hover{background:#fff}
+
+/* ---------- rodapé ---------- */
+.footer{
+  text-align:center;margin-top:3.5rem;padding-top:2rem;
+  border-top:1px solid var(--line);color:var(--muted-dim);
+}
+.footer p{margin-bottom:.45rem;font-size:.85rem}
+.footer .prof{color:var(--muted);font-weight:600}
+.footer code{font-family:var(--mono);color:var(--gold-soft)}
+
+@media(max-width:640px){
+  body{padding:1.5rem 1rem 3rem}
+  .header{padding:1.8rem 1.4rem}
+  .courses-grid{grid-template-columns:1fr}
+}

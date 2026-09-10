@@ -1,0 +1,170 @@
+/* ================================================================
+   deck.css — slides das aulas (estrutura BD_NoSQL, paleta Univassouras)
+   ================================================================ */
+:root{
+  --vinho:#7a1f1f;--vinho-escuro:#4a1010;--vinho-claro:#9c3a3a;
+  --dourado:#d4a94e;--dourado-forte:#b08430;--creme:#f3e6c8;
+  --mono:"Consolas","SF Mono",Menlo,monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
+  background:linear-gradient(135deg,var(--vinho) 0%,var(--vinho-escuro) 100%);
+  color:#fff;overflow:hidden;
+}
+
+/* barra superior */
+.deck-top{
+  position:fixed;top:0;left:0;right:0;height:44px;z-index:30;
+  background:rgba(0,0,0,.28);backdrop-filter:blur(8px);
+  border-bottom:2px solid var(--dourado);
+  display:flex;align-items:center;justify-content:space-between;padding:0 1.2rem;
+}
+.deck-top .t{font-size:.85rem;letter-spacing:.04em;opacity:.9}
+.deck-top a{color:#fff;text-decoration:none;font-size:.8rem;opacity:.8}
+.deck-top a:hover{opacity:1}
+
+.deck-prog{position:fixed;top:44px;left:0;height:3px;background:var(--dourado);z-index:30;transition:width .35s ease}
+
+/* trilho */
+.deck{width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;position:relative}
+.slide{
+  display:none;width:94%;max-width:1200px;height:88vh;margin-top:22px;
+  padding:clamp(1.6rem,4vw,3rem) clamp(1.6rem,5vw,4rem);
+  background:rgba(255,255,255,.06);backdrop-filter:blur(18px);
+  border:1px solid rgba(255,255,255,.12);border-radius:20px;overflow-y:auto;
+}
+.slide.active{display:flex;flex-direction:column;justify-content:safe center;animation:slideIn .45s ease-out}
+@keyframes slideIn{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){
+  .slide.active{animation:none}
+  .deck-prog,.deck-nav button{transition:none}
+}
+
+/* capa */
+.slide.cover{text-align:center}
+.slide.cover.active{align-items:center}
+.slide.cover .crest{height:130px;width:130px;object-fit:contain;background:#fff;border-radius:50%;border:3px solid var(--dourado);padding:6px;margin-bottom:1.8rem}
+.slide.cover h1{
+  font-size:clamp(2rem,5vw,3.2rem);line-height:1.16;
+  background:linear-gradient(45deg,#fff,var(--creme));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.slide.cover .meta{margin-top:1.6rem;opacity:.85;font-size:1.05rem;line-height:1.8}
+
+/* conteúdo */
+.slide h2{
+  font-size:clamp(1.7rem,3.6vw,2.5rem);margin-bottom:1.3rem;color:var(--dourado);
+  display:flex;align-items:center;gap:.6rem;flex:0 0 auto;
+}
+.slide h3{font-size:clamp(1.2rem,2.6vw,1.6rem);margin:1.1rem 0 .5rem;color:var(--creme);flex:0 0 auto}
+.slide p{font-size:clamp(1.05rem,2.1vw,1.3rem);margin-bottom:.85rem;line-height:1.65;max-width:74ch;flex:0 0 auto}
+.slide ul,.slide ol{margin:.5rem 0 1rem 1.6rem;flex:0 0 auto}
+.slide li{font-size:clamp(1.05rem,2.1vw,1.28rem);margin-bottom:.65rem;line-height:1.6;max-width:76ch}
+.slide li ul{margin-top:.5rem}
+.slide b{color:var(--creme)}
+
+.slide .tag{
+  display:inline-block;background:var(--dourado);color:var(--vinho-escuro);
+  font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;
+  padding:.28rem .8rem;border-radius:999px;margin-bottom:1rem;align-self:flex-start;flex:0 0 auto;
+}
+
+/* layout de 2 colunas: texto + figura, ocupando o slide */
+.slide .split{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center;flex:1 1 auto}
+.slide .split.wide-fig{grid-template-columns:0.85fr 1.15fr}
+.slide .split > div > *:first-child{margin-top:0}
+@media(max-width:820px){.slide .split{grid-template-columns:1fr}}
+
+.slide .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.2rem;margin-top:.8rem;flex:0 0 auto}
+.slide .box{
+  background:rgba(255,255,255,.09);border-radius:12px;padding:1.2rem 1.3rem;
+  border-left:4px solid var(--dourado);font-size:1.05rem;line-height:1.55;
+}
+.slide .box b{color:var(--creme)}
+.slide .callout{
+  background:rgba(212,169,78,.14);border:1px solid rgba(212,169,78,.4);border-radius:12px;
+  padding:1.1rem 1.3rem;margin-top:1rem;font-size:1.08rem;line-height:1.6;flex:0 0 auto;
+}
+
+.slide code{font-family:var(--mono);background:rgba(0,0,0,.28);padding:.12rem .4rem;border-radius:5px;font-size:.9em;color:var(--creme)}
+.slide pre{
+  background:rgba(0,0,0,.36);border-radius:12px;border-left:4px solid var(--dourado);
+  padding:1.2rem 1.4rem;overflow-x:auto;margin:.8rem 0;font-size:clamp(.9rem,1.7vw,1.08rem);line-height:1.6;flex:0 0 auto;
+}
+.slide pre code{background:none;padding:0;color:#f6f0e4;font-size:1em}
+
+.slide table{border-collapse:collapse;margin:.9rem 0;font-size:clamp(.95rem,1.9vw,1.15rem);width:100%;max-width:760px;align-self:center;flex:0 0 auto}
+.slide th,.slide td{border:1px solid rgba(255,255,255,.2);padding:.6rem 1rem;text-align:left}
+.slide th{background:rgba(212,169,78,.24);color:var(--creme)}
+
+/* figuras / diagramas (SVG inline) — devem OCUPAR o espaço do slide */
+.slide .fig{margin:1rem 0;display:flex;justify-content:center;align-items:center;flex:1 1 auto;min-height:0}
+.slide .fig svg{width:100%;max-width:1000px;height:100%;max-height:62vh}
+.slide .split .fig{margin:0}
+.slide .split .fig svg{max-height:70vh}
+
+/* --- campos interativos (exercícios que dão feedback) --- */
+.slide .quiz{width:100%;border-collapse:collapse;margin:.6rem 0;font-size:clamp(.9rem,1.7vw,1.05rem)}
+.slide .quiz th,.slide .quiz td{border:1px solid rgba(255,255,255,.2);padding:.4rem .5rem;text-align:left}
+.slide .quiz th{background:rgba(212,169,78,.24);color:var(--creme)}
+.slide .quiz td.op{color:var(--creme);white-space:nowrap}
+.slide input.qz,.slide select.qz{
+  width:100%;background:rgba(0,0,0,.32);color:#f6f0e4;
+  border:1.5px solid rgba(255,255,255,.28);border-radius:5px;
+  padding:.32rem .5rem;font:inherit;font-size:clamp(.85rem,1.6vw,1rem);
+}
+.slide input.qz::placeholder{color:rgba(246,240,228,.4)}
+.slide input.qz:focus,.slide select.qz:focus{outline:2px solid var(--dourado);border-color:var(--dourado)}
+.slide .qz.ok{border-color:#6bbf7a;box-shadow:0 0 0 1px #6bbf7a inset}
+.slide .qz.bad{border-color:#e06a54;box-shadow:0 0 0 1px #e06a54 inset}
+.slide button.check{
+  background:var(--dourado);color:var(--vinho-escuro);border:none;border-radius:6px;
+  padding:.45rem 1.4rem;font-weight:700;font-size:.95rem;cursor:pointer;margin-top:.5rem;
+  align-self:flex-start;
+}
+.slide button.check:hover{background:#e6bd63}
+.slide .quiz-msg{margin-top:.5rem;font-size:.95rem;min-height:1.3em}
+.slide .quiz-msg .ok{color:#8fd79b}
+.slide .quiz-msg .bad{color:#f0917c}
+
+/* diagramas Mermaid (ER, fluxos) — cartão claro sobre o slide vinho */
+.slide .mermaid{
+  display:flex;justify-content:center;align-items:center;flex:1 1 auto;min-height:0;
+  margin:.5rem auto;background:#fbf7f0;border:2px solid var(--dourado);
+  border-radius:14px;padding:1.1rem;width:100%;
+}
+.slide .mermaid svg{width:100% !important;max-width:100% !important;max-height:50vh;height:auto;overflow:visible}
+.fig text{font-family:'Segoe UI',Tahoma,sans-serif;fill:#f3e6c8}
+.fig .cap{font-size:13px;fill:#e6d3a8}
+.fig .box{fill:rgba(255,255,255,.10);stroke:#d4a94e;stroke-width:1.6}
+.fig .box-soft{fill:rgba(255,255,255,.05);stroke:rgba(255,255,255,.4);stroke-width:1.2}
+.fig .ln{stroke:#d4a94e;stroke-width:2.2;fill:none}
+.fig .ln-soft{stroke:rgba(255,255,255,.45);stroke-width:1.6;fill:none}
+.fig .warn{fill:#e7a33e}
+.fig .bad{stroke:#e06a54;stroke-width:2.4;fill:none}
+.fig .hl{fill:#d4a94e;font-weight:bold}
+.fig .cell{fill:none;stroke:rgba(255,255,255,.28);stroke-width:1}
+.fig .head{fill:rgba(212,169,78,.22)}
+.fig .db{fill:rgba(212,169,78,.16);stroke:#d4a94e;stroke-width:2}
+.fig .dbl{fill:none;stroke:#d4a94e;stroke-width:1.6;opacity:.6}
+
+/* navegação */
+.deck-nav{position:fixed;bottom:1rem;right:1rem;z-index:30;display:flex;gap:.5rem}
+.deck-nav button{
+  background:var(--dourado);color:var(--vinho-escuro);border:none;width:46px;height:46px;border-radius:50%;
+  font-size:1.25rem;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.35);transition:transform .15s,background .15s;
+}
+.deck-nav button:hover{transform:scale(1.08)}
+.deck-nav button:disabled{opacity:.35;cursor:default;transform:none}
+.deck-count{position:fixed;bottom:1.5rem;left:1.1rem;z-index:30;font-size:.9rem;opacity:.8;font-family:var(--mono)}
+
+@media print{
+  body{background:#fff;color:#000;overflow:visible}
+  .deck-top,.deck-nav,.deck-count,.deck-prog{display:none}
+  .deck{display:block;height:auto}
+  .slide,.slide.cover{display:flex !important;height:100vh;page-break-after:always;background:#fff;border:none;margin:0}
+  .slide h2,.slide h3{color:#7a1f1f}
+  .slide p,.slide li,.slide b{color:#000}
+  .fig text{fill:#222}.fig .cap{fill:#555}
+}

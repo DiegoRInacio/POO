@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>POO — Portal da Disciplina</title>
+  <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+  <div class="container">
+
+    <!-- ===================== CABEÇALHO ===================== -->
+    <header class="header">
+      <img class="brasao" src="assets/img/logo_univassouras.png" alt="Universidade de Vassouras">
+      <div class="eyebrow">univassouras // engenharia de software</div>
+      <h1><span class="prompt">$</span>poo<span class="cursor"></span></h1>
+      <p>
+        Portal da disciplina de <b>Programação Orientada a Objetos</b>. Aqui ficam os
+        slides de cada aula, o material de apoio e o simulado interativo. Tudo em
+        <b>Python</b> e <b>JavaScript</b>, lado a lado.
+      </p>
+      <span class="inst">Laboratório de POO · Prof. Me. Diego Ramos Inácio</span>
+    </header>
+
+    <!-- ===================== NÚMEROS ===================== -->
+    <div class="stats">
+      <div class="stat-item"><span class="stat-number">9</span><div class="stat-label">Aulas</div></div>
+      <div class="stat-item"><span class="stat-number">Py · JS</span><div class="stat-label">Duas linguagens</div></div>
+      <div class="stat-item"><span class="stat-number">1</span><div class="stat-label">Simulado interativo</div></div>
+      <div class="stat-item"><span class="stat-number">4º</span><div class="stat-label">Período</div></div>
+    </div>
+
+    <!-- ===================== FUNDAMENTOS ===================== -->
+    <h2 class="grupo-titulo">Fundamentos</h2>
+    <div class="courses-grid">
+
+      <div class="course-card">
+        <div class="course-num">aula_01</div>
+        <div class="course-icon">🧭</div>
+        <h3 class="course-title">Introdução à POO</h3>
+        <p class="course-description">Do procedural ao orientado a objetos: por que modelar o problema como objetos que têm estado e comportamento.</p>
+        <div class="course-meta"><span>~45 min</span><span>slides —</span></div>
+        <a href="Aula_01.html" class="btn-primary">abrir aula</a>
+      </div>
+
+      <div class="course-card">
+        <div class="course-num">aula_02</div>
+        <div class="course-icon">🧱</div>
+        <h3 class="course-title">Classes e Objetos</h3>
+        <p class="course-description">Atributos e métodos, o construtor (<code>__init__</code> / <code>constructor</code>), instância vs. classe, <code>self</code> e <code>this</code>.</p>
+        <div class="course-meta"><span>~60 min</span><span>slides —</span></div>
+        <a href="Aula_02.html" class="btn-primary">abrir aula</a>
+      </div>
+
+      <div class="course-card">
+        <div class="course-num">aula_03</div>
+        <div class="course-icon">🔒</div>
+        <h3 class="course-title">Encapsulamento</h3>
+        <p class="course-description">Esconder o estado interno: visibilidade, <code>property</code> / getters e setters, e por que expor menos é melhor.</p>
+        <div class="course-meta"><span>~60 min</span><span>slides —</span></div>
+        <a href="Aula_03.html" class="btn-primary">abrir aula</a>
+      </div>
+
+    </div>
+
+    <!-- ===================== RELAÇÕES ENTRE CLASSES ===================== -->
+    <h2 class="grupo-titulo">Relações entre classes</h2>
+    <div class="courses-grid">
+
+      <div class="course-card">
+        <div class="course-num">aula_04</div>
+        <div class="course-icon">🧬</div>
+        <h3 class="course-title">Herança</h3>
+        <p class="course-description">Reaproveitar e especializar: <code>super()</code>, hierarquias, sobrescrita de métodos e os limites da herança.</p>
+        <div class="course-meta"><span>~60 min</span><span>slides —</span></div>
+        <a href="Aula_04.html" class="btn-primary">abrir aula</a>
+      </div>
+
+      <div class="course-card">
+        <div class="course-num">aula_05</div>
+        <div class="course-icon">🎭</div>
+        <h3 class="course-title">Polimorfismo</h3>
+        <p class="course-description">Um método, várias formas: sobrescrita, <em>duck typing</em> e código que trabalha com a interface, não com o tipo concreto.</p>
+        <div class="course-meta"><span>~60 min</span><span>slides —</span></div>
+        <a href="Aula_05.html" class="btn-primary">abrir aula</a>
+      </div>
+
+      <div class="course-card">
+        <div class="course-num">aula_06</div>
+        <div class="course-icon">📐</div>
+        <h3 class="course-title">Abstração e Interfaces</h3>
+        <p class="course-description">Classes abstratas, métodos abstratos e contratos: descrever o <em>o quê</em> sem amarrar o <em>como</em>.</p>
+        <div class="course-meta"><span>~60 min</span><span>slides —</span></div>
+        <a href="Aula_06.html" class="btn-primary">abrir aula</a>
+      </div>
+
+      <div class="course-card">
+        <div class="course-num">aula_07</div>
+        <div class="course-icon">🧩</div>
+        <h3 class="course-title">Agregação e Composição</h3>
+        <p class="course-description">Objetos que contêm objetos: quando a parte vive sem o todo (agregação) e quando não (composição). Diagrama de classes em UML.</p>
+        <div class="course-meta"><span>~60 min</span><span>slides —</span></div>
+        <a href="Aula_07.html" class="btn-primary">abrir aula</a>
+      </div>
+
+    </div>
+
+    <!-- ===================== ROBUSTEZ ===================== -->
+    <h2 class="grupo-titulo">Robustez e qualidade</h2>
+    <div class="courses-grid">
+
+      <div class="course-card">
+        <div class="course-num">aula_08</div>
+        <div class="course-icon">⚠️</div>
+        <h3 class="course-title">Tratamento de Exceções</h3>
+        <p class="course-description"><code>try</code> / <code>except</code> / <code>finally</code>, <code>raise</code>, hierarquia de erros e exceções personalizadas.</p>
+        <div class="course-meta"><span>~60 min</span><span>slides —</span></div>
+        <a href="Aula_08.html" class="btn-primary">abrir aula</a>
+      </div>
+
+      <div class="course-card">
+        <div class="course-num">aula_09</div>
+        <div class="course-icon">🧪</div>
+        <h3 class="course-title">Testes de Software</h3>
+        <p class="course-description">Testar objetos: <code>unittest</code> / <code>assert</code>, o padrão <em>Arrange-Act-Assert</em> e por que teste é parte do projeto.</p>
+        <div class="course-meta"><span>~60 min</span><span>slides —</span></div>
+        <a href="Aula_09.html" class="btn-primary">abrir aula</a>
+      </div>
+
+    </div>
+
+    <!-- ===================== APOIO ===================== -->
+    <h2 class="grupo-titulo">Material de apoio</h2>
+    <div class="courses-grid">
+
+      <div class="course-card">
+        <div class="course-num">ref</div>
+        <div class="course-icon">📖</div>
+        <h3 class="course-title">Sintaxe: Python × JavaScript</h3>
+        <p class="course-description">Cola lado a lado: classe, herança, <code>super</code>, atributos privados, métodos estáticos e propriedades nas duas linguagens.</p>
+        <div class="course-meta"><span>consulta rápida</span></div>
+        <a href="apoio/sintaxe_py_js.html" class="btn-ghost">consultar</a>
+      </div>
+
+      <div class="course-card">
+        <div class="course-num">ref</div>
+        <div class="course-icon">🗺️</div>
+        <h3 class="course-title">Diagrama de classes (UML)</h3>
+        <p class="course-description">Ler e desenhar: associação, agregação e composição, multiplicidade e como isso vira código.</p>
+        <div class="course-meta"><span>consulta rápida</span></div>
+        <a href="apoio/uml_classes.html" class="btn-ghost">consultar</a>
+      </div>
+
+      <div class="course-card">
+        <div class="course-num">ref</div>
+        <div class="course-icon">⚠️</div>
+        <h3 class="course-title">Exceções na prática</h3>
+        <p class="course-description">Modelos prontos de <code>try/except</code>, propagação, <code>finally</code> e criação de exceções próprias.</p>
+        <div class="course-meta"><span>consulta rápida</span></div>
+        <a href="apoio/excecoes.html" class="btn-ghost">consultar</a>
+      </div>
+
+      <div class="course-card">
+        <div class="course-num">ref</div>
+        <div class="course-icon">🧪</div>
+        <h3 class="course-title">Guia de testes</h3>
+        <p class="course-description">Escrever um caso de teste do zero, nomear testes, cobrir caminhos felizes e de erro.</p>
+        <div class="course-meta"><span>consulta rápida</span></div>
+        <a href="apoio/testes.html" class="btn-ghost">consultar</a>
+      </div>
+
+    </div>
+
+    <!-- ===================== SIMULADO ===================== -->
+    <div class="banner">
+      <div class="ico">📝</div>
+      <h3>Simulado P1 — interativo</h3>
+      <p>
+        Você escreve a classe em Python ou JavaScript, a página executa o código de
+        verdade no navegador e compara a saída com o gabarito — ✓ / ✗ na hora.
+      </p>
+      <a href="simulados/Simulado_P1_POO.html">iniciar simulado</a>
+    </div>
+
+    <!-- ===================== RODAPÉ ===================== -->
+    <div class="footer">
+      <p>Dentro dos slides: navegue com <code>←</code> <code>→</code> do teclado. Tudo responsivo.</p>
+      <p>Feito em HTML, CSS e JavaScript puro.</p>
+      <p class="prof">Prof. Me. Diego Ramos Inácio</p>
+      <p>Saquarema — RJ</p>
+    </div>
+
+  </div>
+</body>
+</html>
