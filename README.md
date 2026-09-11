@@ -30,9 +30,4 @@ Todo o conteúdo é apresentado em **Python** e **JavaScript** lado a lado.
 8. Tratamento de Exceções
 9. Testes de Software
 
-> A lista acima é provisória — será confirmada a partir do conteúdo das aulas.
-
-## Observações
-
-- Provas oficiais, gabaritos e notas **não** fazem parte deste repositório (ver `.gitignore`).
-- Os arquivos `.pptx` originais são mantidos apenas localmente.
+> A lista acima é provisória — pode sofrer mudanças caso seja necessário a atualização com base em novos método diagnosticados.
