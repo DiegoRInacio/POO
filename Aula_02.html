@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aula 02 — Classes e Objetos — em construcao</title>
+<link rel="stylesheet" href="assets/css/site.css">
+<style>
+  body{display:flex;align-items:center;justify-content:center;min-height:100vh}
+  .box{
+    max-width:620px;margin:2rem auto;padding:2.4rem 2.2rem;
+    border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:14px;
+    background:linear-gradient(180deg,var(--bg-2),var(--surface));
+  }
+  .eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-soft)}
+  h1{font-family:var(--mono);font-size:1.5rem;color:var(--ink);margin:.5rem 0 .2rem}
+  .badge{
+    display:inline-block;font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;
+    text-transform:uppercase;color:#241c10;background:var(--gold);
+    padding:.2rem .6rem;border-radius:999px;margin:.6rem 0 1.2rem;
+  }
+  p{color:var(--muted);line-height:1.65;margin:.7rem 0}
+  .ava{
+    margin-top:1.4rem;padding:1rem 1.2rem;border-radius:10px;
+    background:rgba(212,169,78,.10);border:1px solid rgba(212,169,78,.3);
+    color:var(--ink);font-size:.92rem;
+  }
+  .ava b{color:var(--gold)}
+  a.voltar{
+    display:inline-block;margin-top:1.6rem;font-family:var(--mono);font-size:.8rem;
+    color:var(--gold);text-decoration:none;border:1px solid var(--gold-soft);
+    padding:.45rem 1.1rem;border-radius:7px;
+  }
+  a.voltar:hover{background:rgba(212,169,78,.12)}
+</style>
+</head>
+<body>
+  <div class="box">
+    <div class="eyebrow">poo // aula 02</div>
+    <h1>Aula 02 — Classes e Objetos</h1>
+    <span class="badge">em construcao</span>
+    <p>Desculpe pelo transtorno — estou <b style="color:var(--ink)">construindo esta
+      página</b> para você. Volte em breve.</p>
+    <div class="ava">
+      Enquanto isso, consulte o material no <b>AVA</b>. Esta página vai <b>substituir</b>
+      aquele conteúdo, mas ele <b>ainda está valendo</b>.
+    </div>
+    <a class="voltar" href="index.html">&larr; voltar ao portal</a>
+  </div>
+</body>
+</html>
