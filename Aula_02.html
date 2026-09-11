@@ -1,51 +1,386 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aula 02 — Classes e Objetos — em construcao</title>
-<link rel="stylesheet" href="assets/css/site.css">
-<style>
-  body{display:flex;align-items:center;justify-content:center;min-height:100vh}
-  .box{
-    max-width:620px;margin:2rem auto;padding:2.4rem 2.2rem;
-    border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:14px;
-    background:linear-gradient(180deg,var(--bg-2),var(--surface));
-  }
-  .eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-soft)}
-  h1{font-family:var(--mono);font-size:1.5rem;color:var(--ink);margin:.5rem 0 .2rem}
-  .badge{
-    display:inline-block;font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;
-    text-transform:uppercase;color:#241c10;background:var(--gold);
-    padding:.2rem .6rem;border-radius:999px;margin:.6rem 0 1.2rem;
-  }
-  p{color:var(--muted);line-height:1.65;margin:.7rem 0}
-  .ava{
-    margin-top:1.4rem;padding:1rem 1.2rem;border-radius:10px;
-    background:rgba(212,169,78,.10);border:1px solid rgba(212,169,78,.3);
-    color:var(--ink);font-size:.92rem;
-  }
-  .ava b{color:var(--gold)}
-  a.voltar{
-    display:inline-block;margin-top:1.6rem;font-family:var(--mono);font-size:.8rem;
-    color:var(--gold);text-decoration:none;border:1px solid var(--gold-soft);
-    padding:.45rem 1.1rem;border-radius:7px;
-  }
-  a.voltar:hover{background:rgba(212,169,78,.12)}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 02 — Classes e Objetos</title>
+  <link rel="stylesheet" href="assets/css/deck.css">
 </head>
 <body>
-  <div class="box">
-    <div class="eyebrow">poo // aula 02</div>
-    <h1>Aula 02 — Classes e Objetos</h1>
-    <span class="badge">em construcao</span>
-    <p>Desculpe pelo transtorno — estou <b style="color:var(--ink)">construindo esta
-      página</b> para você. Volte em breve.</p>
-    <div class="ava">
-      Enquanto isso, consulte o material no <b>AVA</b>. Esta página vai <b>substituir</b>
-      aquele conteúdo, mas ele <b>ainda está valendo</b>.
-    </div>
-    <a class="voltar" href="index.html">&larr; voltar ao portal</a>
+
+  <div class="deck-top">
+    <span class="t">Programação Orientada a Objetos · Aula 02</span>
+    <a href="index.html">← Portal</a>
   </div>
+  <div class="deck-prog"></div>
+
+  <div class="deck">
+
+    <!-- 1 · CAPA -->
+    <section class="slide cover active">
+      <img class="crest" src="assets/img/logo_univassouras.png" alt="Universidade de Vassouras">
+      <h1>Classes e Objetos</h1>
+      <div class="meta">
+        Aula 02 · Estrutura e Instanciação<br>
+        Curso de Engenharia de Software — Universidade de Vassouras<br>
+        Prof. Diego Ramos Inácio
+      </div>
+    </section>
+
+    <!-- 2 · RECAP -->
+    <section class="slide">
+      <span class="tag">Recap</span>
+      <h2>Onde Paramos</h2>
+      <p>Na <b>Aula 01</b> vimos os paradigmas de programação e um primeiro mapa dos 4
+        pilares da POO. Hoje aprofundamos o pilar da <b>Abstração</b> e damos o primeiro
+        passo prático: as <b>Classes</b> e os <b>Objetos</b>.</p>
+      <div class="callout">
+        Roteiro da disciplina: Conceitos e Paradigmas ✓ → <b>Classes e Objetos (hoje)</b>
+        → Agregação e Composição → Os 4 Pilares → Tratamento de Exceções → Testes de
+        Software → Projeto Final de POO.
+      </div>
+      <div class="callout">Como toda aula a partir daqui, tudo aparece em
+        <b>Python</b> e <b>JavaScript</b> — e termina com um exercício pra você praticar
+        na linguagem que preferir.</div>
+    </section>
+
+    <!-- 3 · ABSTRAÇÃO APLICADA -->
+    <section class="slide">
+      <span class="tag">Abstração, na prática</span>
+      <h2>O Pilar da Abstração</h2>
+      <div class="split">
+        <div>
+          <p><b>Definição:</b> o processo de focar nas características essenciais de uma
+            entidade, ignorando detalhes irrelevantes para o contexto do sistema.</p>
+          <div class="callout"><b>Na prática:</b> modelando um <code>Usuario</code> para
+            login, precisamos abstrair <code>email</code> e <code>senha</code> — mas
+            podemos ignorar características físicas ou hobbies, que não importam para a
+            autenticação.</div>
+        </div>
+        <div class="fig">
+          <svg viewBox="0 0 560 360" role="img" aria-label="Lista de características de um usuário reduzida a um objeto Usuario com apenas email e senha">
+            <defs>
+              <marker id="a2s3m" markerWidth="11" markerHeight="11" refX="8" refY="3.2" orient="auto"><path d="M0,0 L10,3.2 L0,6.4 Z" fill="#d4a94e"/></marker>
+            </defs>
+            <circle cx="90" cy="55" r="20" class="box-soft"/>
+            <line class="ln-soft" x1="90" y1="75" x2="90" y2="110"/>
+            <line class="ln-soft" x1="90" y1="88" x2="65" y2="108"/>
+            <line class="ln-soft" x1="90" y1="88" x2="115" y2="108"/>
+            <text x="90" y="130" text-anchor="middle" class="cap">usuário real</text>
+
+            <rect x="15" y="150" width="150" height="34" rx="7" class="box-soft"/>
+            <text x="90" y="172" text-anchor="middle" font-size="13" style="fill:#c98a7a;text-decoration:line-through">características físicas</text>
+            <rect x="15" y="192" width="150" height="34" rx="7" class="box-soft"/>
+            <text x="90" y="214" text-anchor="middle" font-size="13" style="fill:#c98a7a;text-decoration:line-through">hobbies</text>
+            <rect x="15" y="234" width="150" height="34" rx="7" class="box"/>
+            <text x="90" y="256" text-anchor="middle" font-size="13" class="hl">email</text>
+            <rect x="15" y="276" width="150" height="34" rx="7" class="box"/>
+            <text x="90" y="298" text-anchor="middle" font-size="13" class="hl">senha</text>
+
+            <line class="ln" x1="175" y1="234" x2="330" y2="180" marker-end="url(#a2s3m)"/>
+            <rect class="box" x="345" y="120" width="190" height="120" rx="12"/>
+            <text x="440" y="155" text-anchor="middle" font-size="16" class="hl">Usuario</text>
+            <text x="440" y="185" text-anchor="middle" font-size="14">- email</text>
+            <text x="440" y="210" text-anchor="middle" font-size="14">- senha</text>
+            <text x="280" y="340" text-anchor="middle" class="cap">só entra na classe o que o problema precisa</text>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 · ESTRUTURA: CLASSE -->
+    <section class="slide">
+      <span class="tag">Estrutura</span>
+      <h2>O Que É uma Classe?</h2>
+      <div class="split">
+        <div>
+          <ul>
+            <li>Uma classe é um <b>molde estrutural</b>, ou um tipo de dado criado pelo
+              programador</li>
+            <li>Define a estrutura fundamental que suas futuras instâncias possuirão</li>
+            <li><b>Atributos</b> (estado) — as variáveis internas (ex: <code>nome</code>,
+              <code>email</code>)</li>
+            <li><b>Métodos</b> (comportamento) — as funções que operam sobre esses dados
+              (ex: <code>exibir_perfil()</code>)</li>
+          </ul>
+        </div>
+        <div class="fig">
+          <svg viewBox="0 0 640 320" role="img" aria-label="Caixa da classe Usuario dividida em uma zona de atributos e uma zona de métodos">
+            <defs>
+              <marker id="a2s4m" markerWidth="11" markerHeight="11" refX="8" refY="3.2" orient="auto"><path d="M0,0 L10,3.2 L0,6.4 Z" fill="#d4a94e"/></marker>
+            </defs>
+            <rect class="box" x="140" y="30" width="280" height="230" rx="12"/>
+            <text x="280" y="62" text-anchor="middle" font-size="16" class="hl">Usuario</text>
+            <line class="ln-soft" x1="160" y1="78" x2="400" y2="78"/>
+
+            <rect class="box-soft" x="160" y="94" width="240" height="32" rx="6"/>
+            <text x="280" y="115" text-anchor="middle" font-size="13">- nome</text>
+            <rect class="box-soft" x="160" y="132" width="240" height="32" rx="6"/>
+            <text x="280" y="153" text-anchor="middle" font-size="13">- email</text>
+
+            <line class="ln-soft" x1="160" y1="176" x2="400" y2="176"/>
+            <rect class="box-soft" x="160" y="192" width="240" height="32" rx="6"/>
+            <text x="280" y="213" text-anchor="middle" font-size="13">+ exibir_perfil()</text>
+
+            <line class="ln" x1="400" y1="110" x2="500" y2="110" marker-end="url(#a2s4m)"/>
+            <text x="560" y="105" text-anchor="middle" font-size="13">atributos</text>
+            <text x="560" y="120" text-anchor="middle" font-size="13">(estado)</text>
+
+            <line class="ln" x1="400" y1="208" x2="500" y2="240" marker-end="url(#a2s4m)"/>
+            <text x="560" y="235" text-anchor="middle" font-size="13">métodos</text>
+            <text x="560" y="250" text-anchor="middle" font-size="13">(ações)</text>
+
+            <text x="320" y="292" text-anchor="middle" class="cap">a classe define — não guarda dados de ninguém ainda</text>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5 · INSTANCIAÇÃO: OBJETO -->
+    <section class="slide">
+      <span class="tag">Instanciação</span>
+      <h2>O Que É um Objeto?</h2>
+      <div class="split">
+        <div>
+          <ul>
+            <li>Um objeto é a <b>instância ativa</b> de uma classe</li>
+            <li>Quando instanciado, passa a ocupar espaço na <b>memória</b> do sistema
+              durante a execução</li>
+            <li>Carrega <b>dados concretos</b>, baseados nas regras estipuladas pela sua
+              classe de origem</li>
+            <li><b>Uma definição, infinitas instâncias</b> — cada objeto tem seus próprios
+              valores</li>
+          </ul>
+        </div>
+        <div class="fig">
+          <svg viewBox="0 0 560 320" role="img" aria-label="Uma classe Usuario gerando três objetos independentes na memória">
+            <defs>
+              <marker id="a2s5m" markerWidth="11" markerHeight="11" refX="8" refY="3.2" orient="auto"><path d="M0,0 L10,3.2 L0,6.4 Z" fill="#d4a94e"/></marker>
+            </defs>
+            <rect class="box" x="200" y="20" width="160" height="56" rx="10"/>
+            <text x="280" y="54" text-anchor="middle" font-size="15" class="hl">Usuario</text>
+            <line class="ln" x1="280" y1="76" x2="110" y2="170" marker-end="url(#a2s5m)"/>
+            <line class="ln" x1="280" y1="76" x2="280" y2="170" marker-end="url(#a2s5m)"/>
+            <line class="ln" x1="280" y1="76" x2="450" y2="170" marker-end="url(#a2s5m)"/>
+            <rect class="box-soft" x="30" y="170" width="160" height="60" rx="10"/>
+            <text x="110" y="196" text-anchor="middle" font-size="13">usuario1</text>
+            <text x="110" y="216" text-anchor="middle" font-size="12">Ana Silva</text>
+            <rect class="box-soft" x="200" y="170" width="160" height="60" rx="10"/>
+            <text x="280" y="196" text-anchor="middle" font-size="13">usuario2</text>
+            <text x="280" y="216" text-anchor="middle" font-size="12">Carlos Moura</text>
+            <rect class="box-soft" x="370" y="170" width="160" height="60" rx="10"/>
+            <text x="450" y="196" text-anchor="middle" font-size="13">usuario3</text>
+            <text x="450" y="216" text-anchor="middle" font-size="12">Beatriz Lima</text>
+            <text x="280" y="280" text-anchor="middle" class="cap">mesma classe, três endereços de memória, três estados diferentes</text>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6 · CÓDIGO PY/JS -->
+    <section class="slide">
+      <span class="tag">Do conceito ao código</span>
+      <h2>Classes e Objetos em Código</h2>
+      <p>A mesma classe <code>Usuario</code>, definida e instanciada nas duas linguagens
+        do laboratório.</p>
+      <div class="cols">
+        <div class="box">
+          <b>Python</b>
+<pre style="font-size:.88rem;line-height:1.4;margin-top:.5rem"><code>class Usuario:
+    def __init__(self, nome, email):
+        self.nome = nome
+        self.email = email
+    def exibir_perfil(self):
+        print(f"{self.nome} <{self.email}>")
+usuario1 = Usuario("Ana Silva", "ana@email.com")
+usuario2 = Usuario("Carlos Moura", "carlos@email.com")
+usuario1.exibir_perfil()
+usuario2.exibir_perfil()</code></pre>
+        </div>
+        <div class="box">
+          <b>JavaScript</b>
+<pre style="font-size:.88rem;line-height:1.4;margin-top:.5rem"><code>class UsuarioJS {
+  constructor(nome, email) {
+    this.nome = nome;
+    this.email = email;
+  }
+  exibirPerfil() {
+    console.log(`${this.nome} <${this.email}>`);
+  }
+}
+const u1 = new UsuarioJS("Ana Silva", "ana@email.com");
+u1.exibirPerfil();</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7 · SÍNTESE -->
+    <section class="slide">
+      <span class="tag">Recap</span>
+      <h2>Síntese da Aula</h2>
+      <div class="cols">
+        <div class="box"><b>Paradigmas</b><br>Modelos mentais e arquiteturais para
+          resolver problemas de software.</div>
+        <div class="box"><b>Abstração</b><br>Foco no essencial, ocultando a complexidade
+          desnecessária.</div>
+        <div class="box"><b>Classes</b><br>Moldes estruturais contendo atributos (estado)
+          e métodos (comportamento).</div>
+        <div class="box"><b>Objetos</b><br>Instâncias vivas em memória, geradas a partir
+          das classes.</div>
+      </div>
+      <div class="callout">Bibliografia: as mesmas referências da Aula 01 — Fowler,
+        Banin, Larman, Wazlawick, Gamma et al.</div>
+    </section>
+
+    <!-- 8 · PRÓXIMOS PASSOS -->
+    <section class="slide">
+      <span class="tag">Pense nisso</span>
+      <h2>Próximos Passos na POO</h2>
+      <p>Nas próximas sessões do laboratório, expandimos essa arquitetura.</p>
+      <div class="fig">
+        <svg viewBox="0 0 1000 200" role="img" aria-label="Roteiro: Classes e Objetos concluído, seguido de Encapsulamento, Herança e Polimorfismo">
+          <defs>
+            <marker id="a2s8m" markerWidth="11" markerHeight="11" refX="8" refY="3.2" orient="auto"><path d="M0,0 L10,3.2 L0,6.4 Z" fill="#d4a94e"/></marker>
+          </defs>
+          <line class="ln-soft" x1="90" y1="50" x2="910" y2="50"/>
+          <circle cx="90" cy="50" r="24" class="box" style="fill:rgba(212,169,78,.28)"/>
+          <text x="90" y="56" text-anchor="middle" font-size="16" class="hl">✓</text>
+          <text x="90" y="100" text-anchor="middle" font-size="14" class="hl">Classes e Objetos</text>
+          <text x="90" y="118" text-anchor="middle" class="cap">hoje</text>
+
+          <circle cx="363" cy="50" r="24" class="box-soft"/>
+          <text x="363" y="100" text-anchor="middle" font-size="14">Encapsulamento</text>
+          <text x="363" y="118" text-anchor="middle" class="cap">protege o estado interno</text>
+
+          <circle cx="636" cy="50" r="24" class="box-soft"/>
+          <text x="636" y="100" text-anchor="middle" font-size="14">Herança</text>
+          <text x="636" y="118" text-anchor="middle" class="cap">reutiliza estrutura entre classes</text>
+
+          <circle cx="910" cy="50" r="24" class="box-soft"/>
+          <text x="910" y="100" text-anchor="middle" font-size="14">Polimorfismo</text>
+          <text x="910" y="118" text-anchor="middle" class="cap" style="font-size:11px">mesmo método, formas distintas</text>
+        </svg>
+      </div>
+    </section>
+
+    <!-- 9 · EXERCÍCIO INTERATIVO -->
+    <section class="slide">
+      <span class="tag">Pratique</span>
+      <h2>Sua Vez: Produto com Desconto</h2>
+      <p>Uma classe <code>Produto</code> guarda <code>nome</code> e <code>preco</code>, e
+        sabe aplicar um desconto que reduz o próprio preço. Escolha Python ou JavaScript
+        — ou pratique as duas.</p>
+
+      <div class="lang-tabs">
+        <button type="button" class="active" data-lang="py">Python</button>
+        <button type="button" data-lang="js">JavaScript</button>
+      </div>
+
+      <div class="lang-pane" data-pane="py">
+        <div class="codigo-exercicio">class Produto:
+    def __init__(self, nome, preco):
+        self.<input class="blank" data-ans="nome" size="4" autocomplete="off" spellcheck="false"> = nome
+        self.<input class="blank" data-ans="preco" size="5" autocomplete="off" spellcheck="false"> = preco
+
+    def <input class="blank" data-ans="aplicar_desconto" size="15" autocomplete="off" spellcheck="false">(self, percentual):
+        self.preco = self.preco * (1 - percentual / 100)
+
+p = Produto("Teclado", 200)
+p.<input class="blank" data-ans="aplicar_desconto" size="15" autocomplete="off" spellcheck="false">(10)
+print(f"{p.nome}: R$ {p.preco:.2f}")</div>
+      </div>
+
+      <div class="lang-pane" data-pane="js" hidden>
+        <div class="codigo-exercicio">class Produto {
+  constructor(nome, preco) {
+    this.<input class="blank" data-ans="nome" size="4" autocomplete="off" spellcheck="false"> = nome;
+    this.<input class="blank" data-ans="preco" size="5" autocomplete="off" spellcheck="false"> = preco;
+  }
+
+  <input class="blank" data-ans="aplicarDesconto" size="15" autocomplete="off" spellcheck="false">(percentual) {
+    this.preco = this.preco * (1 - percentual / 100);
+  }
+}
+
+const p = new Produto("Teclado", 200);
+p.<input class="blank" data-ans="aplicarDesconto" size="15" autocomplete="off" spellcheck="false">(10);
+console.log(`${p.nome}: R$ ${p.preco.toFixed(2)}`);</div>
+      </div>
+
+      <button class="check" type="button" id="exVerificar">Verificar</button>
+      <button class="check" type="button" id="exAjuda" style="background:transparent;color:var(--dourado);border:1.5px solid var(--dourado)">Ajuda — preencher uma lacuna</button>
+      <div class="quiz-msg" id="exMsg"></div>
+    </section>
+
+    <!-- 10 · ENCERRAMENTO -->
+    <section class="slide cover">
+      <img class="crest" src="assets/img/logo_univassouras.png" alt="Universidade de Vassouras">
+      <h1>Vamos praticar mais.</h1>
+      <div class="meta">
+        diego.inacio@univassouras.edu.br<br><br>
+        Até a próxima aula: Agregação e Composição.
+      </div>
+    </section>
+
+  </div>
+
+  <div class="deck-nav">
+    <button data-prev>‹</button>
+    <button data-next>›</button>
+  </div>
+  <div class="deck-count">1 / 10</div>
+
+  <script src="assets/js/deck.js"></script>
+  <script>
+    (function () {
+      var tabs = document.querySelectorAll('.lang-tabs button');
+      var panes = { py: document.querySelector('.lang-pane[data-pane="py"]'),
+                    js: document.querySelector('.lang-pane[data-pane="js"]') };
+      tabs.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          tabs.forEach(function (b) { b.classList.remove('active'); });
+          btn.classList.add('active');
+          Object.keys(panes).forEach(function (k) { panes[k].hidden = (k !== btn.dataset.lang); });
+          document.getElementById('exMsg').innerHTML = '';
+        });
+      });
+
+      function activeBlanks() {
+        var visivel = panes.py.hidden ? panes.js : panes.py;
+        return Array.prototype.slice.call(visivel.querySelectorAll('.blank'));
+      }
+
+      document.getElementById('exVerificar').addEventListener('click', function () {
+        var blanks = activeBlanks();
+        var certas = 0;
+        blanks.forEach(function (inp) {
+          inp.classList.remove('ajudado');
+          var ok = inp.value.trim() === inp.dataset.ans;
+          inp.classList.toggle('ok', ok);
+          inp.classList.toggle('bad', !ok);
+          if (ok) certas++;
+        });
+        var msg = document.getElementById('exMsg');
+        if (certas === blanks.length) {
+          msg.innerHTML = '<span class="ok">✓ tudo certo — ' + certas + '/' + blanks.length + '</span>';
+        } else {
+          msg.innerHTML = '<span class="bad">✗ ' + certas + '/' + blanks.length + ' certas — revise os campos em vermelho</span>';
+        }
+      });
+
+      document.getElementById('exAjuda').addEventListener('click', function () {
+        var blanks = activeBlanks();
+        var alvo = blanks.find(function (inp) { return inp.value.trim() !== inp.dataset.ans; });
+        if (!alvo) {
+          document.getElementById('exMsg').innerHTML = '<span class="ok">já está tudo preenchido certo ✓</span>';
+          return;
+        }
+        alvo.value = alvo.dataset.ans;
+        alvo.classList.remove('bad'); alvo.classList.remove('ok');
+        alvo.classList.add('ajudado');
+        alvo.focus();
+      });
+    })();
+  </script>
 </body>
 </html>
