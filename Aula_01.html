@@ -1,51 +1,505 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aula 01 — Introdução à POO — em construcao</title>
-<link rel="stylesheet" href="assets/css/site.css">
-<style>
-  body{display:flex;align-items:center;justify-content:center;min-height:100vh}
-  .box{
-    max-width:620px;margin:2rem auto;padding:2.4rem 2.2rem;
-    border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:14px;
-    background:linear-gradient(180deg,var(--bg-2),var(--surface));
-  }
-  .eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-soft)}
-  h1{font-family:var(--mono);font-size:1.5rem;color:var(--ink);margin:.5rem 0 .2rem}
-  .badge{
-    display:inline-block;font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;
-    text-transform:uppercase;color:#241c10;background:var(--gold);
-    padding:.2rem .6rem;border-radius:999px;margin:.6rem 0 1.2rem;
-  }
-  p{color:var(--muted);line-height:1.65;margin:.7rem 0}
-  .ava{
-    margin-top:1.4rem;padding:1rem 1.2rem;border-radius:10px;
-    background:rgba(212,169,78,.10);border:1px solid rgba(212,169,78,.3);
-    color:var(--ink);font-size:.92rem;
-  }
-  .ava b{color:var(--gold)}
-  a.voltar{
-    display:inline-block;margin-top:1.6rem;font-family:var(--mono);font-size:.8rem;
-    color:var(--gold);text-decoration:none;border:1px solid var(--gold-soft);
-    padding:.45rem 1.1rem;border-radius:7px;
-  }
-  a.voltar:hover{background:rgba(212,169,78,.12)}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 01 — Conceitos e Paradigmas</title>
+  <link rel="stylesheet" href="assets/css/deck.css">
 </head>
 <body>
-  <div class="box">
-    <div class="eyebrow">poo // aula 01</div>
-    <h1>Aula 01 — Introdução à POO</h1>
-    <span class="badge">em construcao</span>
-    <p>Desculpe pelo transtorno — estou <b style="color:var(--ink)">construindo esta
-      página</b> para você. Volte em breve.</p>
-    <div class="ava">
-      Enquanto isso, consulte o material no <b>AVA</b>. Esta página vai <b>substituir</b>
-      aquele conteúdo, mas ele <b>ainda está valendo</b>.
-    </div>
-    <a class="voltar" href="index.html">&larr; voltar ao portal</a>
+
+  <div class="deck-top">
+    <span class="t">Programação Orientada a Objetos · Aula 01</span>
+    <a href="index.html">← Portal</a>
   </div>
+  <div class="deck-prog"></div>
+
+  <div class="deck">
+
+    <!-- 1 · CAPA -->
+    <section class="slide cover active">
+      <img class="crest" src="assets/img/logo_univassouras.png" alt="Universidade de Vassouras">
+      <h1>Laboratório de Programação<br>Orientada a Objetos</h1>
+      <div class="meta">
+        Aula 01 · Conceitos e Paradigmas<br>
+        Curso de Engenharia de Software — Universidade de Vassouras<br>
+        Prof. Diego Ramos Inácio
+      </div>
+    </section>
+
+    <!-- 2 · O QUE É UM PARADIGMA -->
+    <section class="slide">
+      <span class="tag">Fundamentos</span>
+      <h2>O Que É um Paradigma?</h2>
+      <div class="split">
+        <div>
+          <p>Um paradigma de programação é <b>um modelo que define como o código deve ser
+            estruturado e executado</b> — não é uma linguagem, é uma forma de pensar o problema.</p>
+          <p>Existem dezenas de paradigmas na Computação, diferenciados muitas vezes por
+            apenas um ou dois conceitos fundamentais.</p>
+          <div class="callout">Um paradigma não é <b>o que</b> você vê — é <b>como</b> você vê.
+            Duas pessoas, o mesmo problema, soluções completamente diferentes.</div>
+        </div>
+        <div class="fig">
+          <svg viewBox="0 0 560 400" role="img" aria-label="Duas pessoas olhando o mesmo símbolo de lados opostos: uma lê 6, a outra lê 9">
+            <defs>
+              <marker id="a1s2m" markerWidth="11" markerHeight="11" refX="8" refY="3.2" orient="auto"><path d="M0,0 L10,3.2 L0,6.4 Z" fill="#d4a94e"/></marker>
+            </defs>
+            <circle class="box-soft" cx="280" cy="230" r="70"/>
+            <text x="280" y="245" text-anchor="middle" font-size="64" class="hl">6</text>
+            <!-- pessoa esquerda -->
+            <circle cx="90" cy="150" r="18" class="box-soft"/>
+            <line class="ln-soft" x1="90" y1="168" x2="90" y2="230"/>
+            <line class="ln-soft" x1="90" y1="185" x2="55" y2="215"/>
+            <line class="ln-soft" x1="90" y1="185" x2="125" y2="215"/>
+            <line class="ln-soft" x1="90" y1="230" x2="65" y2="290"/>
+            <line class="ln-soft" x1="90" y1="230" x2="115" y2="290"/>
+            <text x="90" y="110" text-anchor="middle" font-size="15">você</text>
+            <line class="ln" x1="115" y1="155" x2="205" y2="215" marker-end="url(#a1s2m)"/>
+            <text x="150" y="185" text-anchor="middle" font-size="30" class="hl">6</text>
+            <!-- pessoa direita -->
+            <circle cx="470" cy="150" r="18" class="box-soft"/>
+            <line class="ln-soft" x1="470" y1="168" x2="470" y2="230"/>
+            <line class="ln-soft" x1="470" y1="185" x2="435" y2="215"/>
+            <line class="ln-soft" x1="470" y1="185" x2="505" y2="215"/>
+            <line class="ln-soft" x1="470" y1="230" x2="445" y2="290"/>
+            <line class="ln-soft" x1="470" y1="230" x2="495" y2="290"/>
+            <text x="470" y="110" text-anchor="middle" font-size="15">outro programador</text>
+            <line class="ln" x1="445" y1="155" x2="355" y2="215" marker-end="url(#a1s2m)"/>
+            <text x="410" y="185" text-anchor="middle" font-size="30" class="hl">9</text>
+            <text x="280" y="360" text-anchor="middle" class="cap">o mesmo objeto — duas leituras, dois paradigmas</text>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3 · MAPA DOS PARADIGMAS -->
+    <section class="slide">
+      <span class="tag">Panorama</span>
+      <h2>Navegando os Paradigmas</h2>
+      <div class="fig">
+        <svg viewBox="0 0 980 380" role="img" aria-label="Árvore de paradigmas: raiz Paradigmas de Programação, ramos Imperativo e Declarativo">
+          <defs>
+            <marker id="a1s3m" markerWidth="11" markerHeight="11" refX="8" refY="3.2" orient="auto"><path d="M0,0 L10,3.2 L0,6.4 Z" fill="#d4a94e"/></marker>
+          </defs>
+          <rect class="box" x="400" y="14" width="180" height="54" rx="10"/>
+          <text x="490" y="47" text-anchor="middle" font-size="17">Paradigmas</text>
+
+          <line class="ln" x1="450" y1="68" x2="230" y2="130" marker-end="url(#a1s3m)"/>
+          <line class="ln" x1="530" y1="68" x2="750" y2="130" marker-end="url(#a1s3m)"/>
+
+          <rect class="box-soft" x="120" y="130" width="220" height="50" rx="10"/>
+          <text x="230" y="160" text-anchor="middle" font-size="16">Imperativo — foco no COMO</text>
+          <rect class="box-soft" x="640" y="130" width="220" height="50" rx="10"/>
+          <text x="750" y="160" text-anchor="middle" font-size="16">Declarativo — foco no O QUE</text>
+
+          <line class="ln-soft" x1="190" y1="180" x2="115" y2="240" marker-end="url(#a1s3m)"/>
+          <line class="ln-soft" x1="260" y1="180" x2="280" y2="240" marker-end="url(#a1s3m)"/>
+          <line class="ln" x1="280" y1="180" x2="470" y2="236" marker-end="url(#a1s3m)"/>
+          <line class="ln-soft" x1="720" y1="180" x2="690" y2="240" marker-end="url(#a1s3m)"/>
+          <line class="ln-soft" x1="790" y1="180" x2="850" y2="240" marker-end="url(#a1s3m)"/>
+
+          <rect class="box-soft" x="40" y="240" width="150" height="48" rx="9"/>
+          <text x="115" y="269" text-anchor="middle" font-size="15">Procedural</text>
+          <rect class="box-soft" x="205" y="240" width="150" height="48" rx="9"/>
+          <text x="280" y="269" text-anchor="middle" font-size="15">Estruturado</text>
+          <rect class="box" x="375" y="236" width="210" height="56" rx="10" stroke-width="2.4"/>
+          <text x="480" y="270" text-anchor="middle" font-size="16" class="hl">Orientado a Objetos</text>
+          <rect class="box-soft" x="615" y="240" width="150" height="48" rx="9"/>
+          <text x="690" y="269" text-anchor="middle" font-size="15">Lógico</text>
+          <rect class="box-soft" x="780" y="240" width="150" height="48" rx="9"/>
+          <text x="855" y="269" text-anchor="middle" font-size="15">Funcional</text>
+
+          <text x="490" y="345" text-anchor="middle" class="cap">é aqui que a POO vive — imperativo, focado em estado e fluxo de controle</text>
+        </svg>
+      </div>
+    </section>
+
+    <!-- 4 · POR QUE POO -->
+    <section class="slide">
+      <span class="tag">A escolha</span>
+      <h2>A Escolha: Orientação a Objetos</h2>
+      <div class="split wide-fig">
+        <div>
+          <p>Uma mudança fundamental na organização do código: deixamos de pensar só em
+            <b>funções isoladas</b> e passamos a modelar o software em <b>Classes e Objetos
+            que interagem entre si</b>.</p>
+          <ul>
+            <li>Foco em modelar o mundo real dentro do software</li>
+            <li>Base para sistemas robustos e escaláveis</li>
+            <li>Cada objeto tem <b>estado</b> (o que ele sabe) e <b>comportamento</b> (o que ele faz)</li>
+          </ul>
+        </div>
+        <div class="fig">
+          <svg viewBox="0 0 640 380" role="img" aria-label="Três objetos representados como caixas conectadas por linhas de comunicação">
+            <defs>
+              <marker id="a1s4m" markerWidth="11" markerHeight="11" refX="8" refY="3.2" orient="auto"><path d="M0,0 L10,3.2 L0,6.4 Z" fill="#d4a94e"/></marker>
+            </defs>
+            <rect class="box" x="240" y="30" width="160" height="86" rx="12"/>
+            <text x="320" y="65" text-anchor="middle" font-size="15" class="hl">Pedido</text>
+            <text x="320" y="90" text-anchor="middle" font-size="12">estado + comportamento</text>
+
+            <rect class="box-soft" x="40" y="230" width="160" height="86" rx="12"/>
+            <text x="120" y="265" text-anchor="middle" font-size="15">Cliente</text>
+            <text x="120" y="290" text-anchor="middle" font-size="12">estado + comportamento</text>
+
+            <rect class="box-soft" x="440" y="230" width="160" height="86" rx="12"/>
+            <text x="520" y="265" text-anchor="middle" font-size="15">Produto</text>
+            <text x="520" y="290" text-anchor="middle" font-size="12">estado + comportamento</text>
+
+            <line class="ln" x1="270" y1="116" x2="150" y2="230" marker-end="url(#a1s4m)"/>
+            <line class="ln" x1="370" y1="116" x2="490" y2="230" marker-end="url(#a1s4m)"/>
+            <line class="ln-soft" x1="200" y1="273" x2="440" y2="273"/>
+            <text x="320" y="340" text-anchor="middle" class="cap">objetos que se conhecem e trocam mensagens — não um script único do topo ao fim</text>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5 · CLASSES E OBJETOS + CÓDIGO -->
+    <section class="slide">
+      <span class="tag">O par fundamental</span>
+      <h2>Classes e Objetos</h2>
+      <p>A <b>classe</b> é o molde — o projeto. O <b>objeto</b> é a concretização — a
+        instância. <b>Uma definição, infinitas possibilidades.</b> A partir de hoje, todo
+        exemplo aparece nas duas linguagens do laboratório: <b>Python</b> e <b>JavaScript</b>.</p>
+      <div class="cols">
+        <div class="box">
+          <b>Python</b>
+<pre style="font-size:.9rem;line-height:1.45;margin-top:.5rem"><code>class Pessoa:
+    def __init__(self, nome):
+        self.nome = nome
+    def apresentar(self):
+        print(f"Olá, eu sou {self.nome}")
+
+p = Pessoa("Ana")
+p.apresentar()</code></pre>
+        </div>
+        <div class="box">
+          <b>JavaScript</b>
+<pre style="font-size:.9rem;line-height:1.45;margin-top:.5rem"><code>class Pessoa {
+  constructor(nome) {
+    this.nome = nome;
+  }
+  apresentar() {
+    console.log(`Olá, eu sou ${this.nome}`);
+  }
+}
+const p = new Pessoa("Ana");
+p.apresentar();</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6 · PILAR 1 · ABSTRAÇÃO -->
+    <section class="slide">
+      <span class="tag">Pilar 1</span>
+      <h2>Abstração</h2>
+      <div class="split">
+        <div>
+          <p>Focar no essencial e <b>ignorar o irrelevante</b>. Modelar o mundo real
+            extraindo apenas as características que importam para o problema.</p>
+          <div class="callout"><b>Exemplo:</b> um objeto <code>Usuario</code> precisa de
+            <code>login</code> e <code>senha</code> — não da cor favorita dele.</div>
+        </div>
+        <div class="fig">
+          <svg viewBox="0 0 560 360" role="img" aria-label="Lista de características de uma pessoa reduzida a um objeto Usuario com apenas login e senha">
+            <defs>
+              <marker id="a1s6m" markerWidth="11" markerHeight="11" refX="8" refY="3.2" orient="auto"><path d="M0,0 L10,3.2 L0,6.4 Z" fill="#d4a94e"/></marker>
+            </defs>
+            <circle cx="90" cy="55" r="20" class="box-soft"/>
+            <line class="ln-soft" x1="90" y1="75" x2="90" y2="110"/>
+            <line class="ln-soft" x1="90" y1="88" x2="65" y2="108"/>
+            <line class="ln-soft" x1="90" y1="88" x2="115" y2="108"/>
+            <text x="90" y="130" text-anchor="middle" class="cap">pessoa real</text>
+
+            <rect x="15" y="150" width="150" height="34" rx="7" class="box-soft"/>
+            <text x="90" y="172" text-anchor="middle" font-size="13" style="fill:#c98a7a;text-decoration:line-through">altura</text>
+            <rect x="15" y="192" width="150" height="34" rx="7" class="box-soft"/>
+            <text x="90" y="214" text-anchor="middle" font-size="13" style="fill:#c98a7a;text-decoration:line-through">cor favorita</text>
+            <rect x="15" y="234" width="150" height="34" rx="7" class="box"/>
+            <text x="90" y="256" text-anchor="middle" font-size="13" class="hl">login</text>
+            <rect x="15" y="276" width="150" height="34" rx="7" class="box"/>
+            <text x="90" y="298" text-anchor="middle" font-size="13" class="hl">senha</text>
+
+            <line class="ln" x1="175" y1="234" x2="330" y2="180" marker-end="url(#a1s6m)"/>
+            <rect class="box" x="345" y="120" width="190" height="120" rx="12"/>
+            <text x="440" y="155" text-anchor="middle" font-size="16" class="hl">Usuario</text>
+            <text x="440" y="185" text-anchor="middle" font-size="14">- login</text>
+            <text x="440" y="210" text-anchor="middle" font-size="14">- senha</text>
+            <text x="280" y="340" text-anchor="middle" class="cap">só entra na classe o que o problema precisa — o resto fica de fora</text>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7 · PILAR 2 · ENCAPSULAMENTO -->
+    <section class="slide">
+      <span class="tag">Pilar 2</span>
+      <h2>Encapsulamento</h2>
+      <div class="split">
+        <div>
+          <p>Proteção da complexidade interna. O objeto <b>esconde como funciona</b> e expõe
+            apenas o necessário através de uma <b>interface pública</b>.</p>
+          <div class="callout"><b>Segurança:</b> evita que código externo quebre a lógica
+            interna do objeto ao mexer onde não devia.</div>
+        </div>
+        <div class="fig">
+          <svg viewBox="0 0 560 360" role="img" aria-label="Caixa com lógica protegida por dentro e interface pública por fora">
+            <defs>
+              <marker id="a1s7m" markerWidth="11" markerHeight="11" refX="8" refY="3.2" orient="auto"><path d="M0,0 L10,3.2 L0,6.4 Z" fill="#d4a94e"/></marker>
+            </defs>
+            <rect class="box-soft" x="150" y="80" width="260" height="200" rx="16"/>
+            <rect class="box" x="205" y="130" width="150" height="100" rx="10"/>
+            <text x="280" y="185" text-anchor="middle" font-size="14">lógica protegida</text>
+            <text x="280" y="300" text-anchor="middle" font-size="13" class="cap">estado interno (privado)</text>
+
+            <line class="ln" x1="150" y1="150" x2="70" y2="150" marker-end="url(#a1s7m)"/>
+            <text x="20" y="145" text-anchor="middle" font-size="13">depositar()</text>
+            <line class="ln" x1="150" y1="210" x2="70" y2="210" marker-end="url(#a1s7m)"/>
+            <text x="20" y="205" text-anchor="middle" font-size="13">saldo()</text>
+            <line class="ln" x1="410" y1="180" x2="500" y2="180" marker-end="url(#a1s7m)"/>
+            <text x="530" y="185" text-anchor="middle" font-size="13">interface</text>
+            <text x="530" y="200" text-anchor="middle" font-size="13">pública</text>
+
+            <text x="280" y="330" text-anchor="middle" class="cap">de fora só se vê os métodos — nunca o dado cru</text>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8 · PILAR 3 · HERANÇA -->
+    <section class="slide">
+      <span class="tag">Pilar 3</span>
+      <h2>Herança</h2>
+      <div class="split">
+        <div>
+          <p>Reutilização de código e lógica: construir <b>sobre o que já existe</b>.
+            Hierarquias que organizam o comportamento do sistema.</p>
+          <p>A classe <b>Filha</b> herda os atributos e métodos da <b>Mãe</b> e adiciona
+            especificidades.</p>
+          <div class="callout">Vamos usar herança <b>com moderação</b> mais pra frente no
+            semestre — hoje é só o mapa.</div>
+        </div>
+        <div class="fig">
+          <svg viewBox="0 0 560 340" role="img" aria-label="Classe Mãe com três classes Filha herdando dela">
+            <defs>
+              <marker id="a1s8m" markerWidth="11" markerHeight="11" refX="8" refY="3.2" orient="auto"><path d="M0,0 L10,3.2 L0,6.4 Z" fill="#d4a94e"/></marker>
+            </defs>
+            <rect class="box" x="210" y="20" width="140" height="60" rx="10"/>
+            <text x="280" y="55" text-anchor="middle" font-size="15">Mãe</text>
+            <line class="ln" x1="280" y1="80" x2="100" y2="180" marker-end="url(#a1s8m)"/>
+            <line class="ln" x1="280" y1="80" x2="280" y2="180" marker-end="url(#a1s8m)"/>
+            <line class="ln" x1="280" y1="80" x2="460" y2="180" marker-end="url(#a1s8m)"/>
+            <rect class="box-soft" x="30" y="180" width="140" height="60" rx="10"/>
+            <text x="100" y="215" text-anchor="middle" font-size="14">Filha 1</text>
+            <rect class="box-soft" x="210" y="180" width="140" height="60" rx="10"/>
+            <text x="280" y="215" text-anchor="middle" font-size="14">Filha 2</text>
+            <rect class="box-soft" x="390" y="180" width="140" height="60" rx="10"/>
+            <text x="460" y="215" text-anchor="middle" font-size="14">Filha 3</text>
+            <text x="280" y="290" text-anchor="middle" class="cap">herda tudo da Mãe + acrescenta o que é específico dela</text>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9 · PILAR 4 · POLIMORFISMO -->
+    <section class="slide">
+      <span class="tag">Pilar 4</span>
+      <h2>Polimorfismo</h2>
+      <div class="split">
+        <div>
+          <p>Múltiplas formas, <b>uma única interface</b>. Objetos diferentes respondem à
+            mesma mensagem de maneiras distintas.</p>
+          <p>Flexibilidade para tratar tipos variados de forma uniforme — o código que chama
+            não precisa saber qual forma exata está recebendo.</p>
+        </div>
+        <div class="fig">
+          <svg viewBox="0 0 560 360" role="img" aria-label="Uma interface conectada a três formas diferentes: círculo, quadrado e triângulo">
+            <defs>
+              <marker id="a1s9m" markerWidth="11" markerHeight="11" refX="8" refY="3.2" orient="auto"><path d="M0,0 L10,3.2 L0,6.4 Z" fill="#d4a94e"/></marker>
+            </defs>
+            <rect class="box" x="40" y="150" width="140" height="60" rx="10"/>
+            <text x="110" y="185" text-anchor="middle" font-size="14">interface</text>
+            <line class="ln" x1="180" y1="170" x2="320" y2="80" marker-end="url(#a1s9m)"/>
+            <line class="ln" x1="180" y1="180" x2="320" y2="180" marker-end="url(#a1s9m)"/>
+            <line class="ln" x1="180" y1="190" x2="320" y2="280" marker-end="url(#a1s9m)"/>
+            <circle cx="370" cy="80" r="34" class="box"/>
+            <text x="370" y="86" text-anchor="middle" font-size="13">círculo</text>
+            <rect class="box" x="336" y="150" width="68" height="60" rx="8"/>
+            <text x="370" y="185" text-anchor="middle" font-size="13">quadrado</text>
+            <polygon class="box" points="370,248 405,308 335,308"/>
+            <text x="370" y="298" text-anchor="middle" font-size="12">triângulo</text>
+            <text x="280" y="345" text-anchor="middle" class="cap">a mesma chamada, três comportamentos diferentes</text>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10 · O QUE VEM A SEGUIR -->
+    <section class="slide">
+      <span class="tag">Pense nisso</span>
+      <h2>O Que Vem a Seguir</h2>
+      <p>Conhecer os 4 pilares não basta — o resto do semestre é aprender a <b>usar</b> cada
+        um no momento certo, e a testar se o que construímos realmente funciona.</p>
+      <div class="cols">
+        <div class="box"><b>Estrutura</b><br>Agregação e Composição — como os objetos se
+          unem para formar sistemas maiores.</div>
+        <div class="box"><b>Robustez</b><br>Tratamento de Exceções — lidar com o inesperado
+          sem derrubar o sistema.</div>
+        <div class="box"><b>Confiança</b><br>Testes de Software — não basta codificar, é
+          preciso <b>provar</b> que funciona.</div>
+      </div>
+      <div class="callout">Pergunta pra pensar: se um objeto <code>Pedido</code> contém uma
+        lista de <code>Item</code>, o que deveria acontecer com os itens se o pedido for
+        cancelado? A resposta muda dependendo se é agregação ou composição — aula que vem.</div>
+    </section>
+
+    <!-- 11 · ROTEIRO DA DISCIPLINA -->
+    <section class="slide">
+      <span class="tag">Ementa</span>
+      <h2>O Roteiro da Disciplina</h2>
+      <table>
+        <tr><th>#</th><th>Tópico</th></tr>
+        <tr><td>1</td><td>Conceitos e Paradigmas <span class="cap">(hoje)</span></td></tr>
+        <tr><td>2</td><td>Classes e Objetos</td></tr>
+        <tr><td>3</td><td>Agregação e Composição</td></tr>
+        <tr><td>4</td><td>Os 4 Pilares — Abstração, Encapsulamento, Herança, Polimorfismo</td></tr>
+        <tr><td>5</td><td>Tratamento de Exceções</td></tr>
+        <tr><td>6</td><td>Testes de Software</td></tr>
+        <tr><td>7</td><td>Projeto Final de POO</td></tr>
+      </table>
+    </section>
+
+    <!-- 12 · BIBLIOGRAFIA -->
+    <section class="slide">
+      <span class="tag">Referências</span>
+      <h2>Bibliografia &amp; Referências</h2>
+      <div class="cols">
+        <div class="box"><b>Fowler</b><br>UML Essencial</div>
+        <div class="box"><b>Gamma et al.</b><br>Padrões de Projeto (Design Patterns)</div>
+        <div class="box"><b>Craig Larman</b><br>Utilizando UML e Padrões</div>
+        <div class="box"><b>Sérgio Banin</b><br>Python 3: Conceitos e Aplicações</div>
+        <div class="box"><b>Raul Wazlawick</b><br>Introdução aos Algoritmos e Programação com Python</div>
+      </div>
+    </section>
+
+    <!-- 13 · EXERCÍCIO INTERATIVO -->
+    <section class="slide">
+      <span class="tag">Pratique</span>
+      <h2>Sua Vez: Complete a Classe</h2>
+      <p>Uma <code>Pessoa</code> guarda <code>nome</code> e <code>idade</code>, e sabe se
+        <code>apresentar()</code>. Preencha os espaços em branco — nas duas linguagens, se
+        quiser praticar as duas.</p>
+
+      <div class="lang-tabs">
+        <button type="button" class="active" data-lang="py">Python</button>
+        <button type="button" data-lang="js">JavaScript</button>
+      </div>
+
+      <div class="lang-pane" data-pane="py">
+        <div class="codigo-exercicio">class Pessoa:
+    def __init__(self, nome, idade):
+        self.<input class="blank" data-ans="nome" size="4" autocomplete="off" spellcheck="false"> = nome
+        self.<input class="blank" data-ans="idade" size="4" autocomplete="off" spellcheck="false"> = idade
+
+    def <input class="blank" data-ans="apresentar" size="10" autocomplete="off" spellcheck="false">(self):
+        print(f"Olá, meu nome é {self.nome} e tenho {self.idade} anos.")
+
+p = Pessoa("Ana", 21)
+p.<input class="blank" data-ans="apresentar" size="10" autocomplete="off" spellcheck="false">()</div>
+      </div>
+
+      <div class="lang-pane" data-pane="js" hidden>
+        <div class="codigo-exercicio">class Pessoa {
+  constructor(nome, idade) {
+    this.<input class="blank" data-ans="nome" size="4" autocomplete="off" spellcheck="false"> = nome;
+    this.<input class="blank" data-ans="idade" size="4" autocomplete="off" spellcheck="false"> = idade;
+  }
+
+  <input class="blank" data-ans="apresentar" size="10" autocomplete="off" spellcheck="false">() {
+    console.log(`Olá, meu nome é ${this.nome} e tenho ${this.idade} anos.`);
+  }
+}
+
+const p = new Pessoa("Ana", 21);
+p.<input class="blank" data-ans="apresentar" size="10" autocomplete="off" spellcheck="false">();</div>
+      </div>
+
+      <button class="check" type="button" id="exVerificar">Verificar</button>
+      <button class="check" type="button" id="exAjuda" style="background:transparent;color:var(--dourado);border:1.5px solid var(--dourado)">Ajuda — preencher uma lacuna</button>
+      <div class="quiz-msg" id="exMsg"></div>
+    </section>
+
+    <!-- 14 · ENCERRAMENTO -->
+    <section class="slide cover">
+      <img class="crest" src="assets/img/logo_univassouras.png" alt="Universidade de Vassouras">
+      <h1>Vamos codificar.</h1>
+      <div class="meta">
+        diego.inacio@univassouras.edu.br<br><br>
+        O laboratório começa agora.
+      </div>
+    </section>
+
+  </div>
+
+  <div class="deck-nav">
+    <button data-prev>‹</button>
+    <button data-next>›</button>
+  </div>
+  <div class="deck-count">1 / 14</div>
+
+  <script src="assets/js/deck.js"></script>
+  <script>
+    (function () {
+      var tabs = document.querySelectorAll('.lang-tabs button');
+      var panes = { py: document.querySelector('.lang-pane[data-pane="py"]'),
+                    js: document.querySelector('.lang-pane[data-pane="js"]') };
+      tabs.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          tabs.forEach(function (b) { b.classList.remove('active'); });
+          btn.classList.add('active');
+          Object.keys(panes).forEach(function (k) { panes[k].hidden = (k !== btn.dataset.lang); });
+          document.getElementById('exMsg').innerHTML = '';
+        });
+      });
+
+      function activeBlanks() {
+        var visivel = panes.py.hidden ? panes.js : panes.py;
+        return Array.prototype.slice.call(visivel.querySelectorAll('.blank'));
+      }
+
+      document.getElementById('exVerificar').addEventListener('click', function () {
+        var blanks = activeBlanks();
+        var certas = 0;
+        blanks.forEach(function (inp) {
+          inp.classList.remove('ajudado');
+          var ok = inp.value.trim() === inp.dataset.ans;
+          inp.classList.toggle('ok', ok);
+          inp.classList.toggle('bad', !ok);
+          if (ok) certas++;
+        });
+        var msg = document.getElementById('exMsg');
+        if (certas === blanks.length) {
+          msg.innerHTML = '<span class="ok">✓ tudo certo — ' + certas + '/' + blanks.length + '</span>';
+        } else {
+          msg.innerHTML = '<span class="bad">✗ ' + certas + '/' + blanks.length + ' certas — revise os campos em vermelho</span>';
+        }
+      });
+
+      document.getElementById('exAjuda').addEventListener('click', function () {
+        var blanks = activeBlanks();
+        var alvo = blanks.find(function (inp) { return inp.value.trim() !== inp.dataset.ans; });
+        if (!alvo) {
+          document.getElementById('exMsg').innerHTML = '<span class="ok">já está tudo preenchido certo ✓</span>';
+          return;
+        }
+        alvo.value = alvo.dataset.ans;
+        alvo.classList.remove('bad'); alvo.classList.remove('ok');
+        alvo.classList.add('ajudado');
+        alvo.focus();
+      });
+    })();
+  </script>
 </body>
 </html>

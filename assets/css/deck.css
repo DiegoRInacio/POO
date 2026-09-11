@@ -159,6 +159,29 @@ body{
 .deck-nav button:disabled{opacity:.35;cursor:default;transform:none}
 .deck-count{position:fixed;bottom:1.5rem;left:1.1rem;z-index:30;font-size:.9rem;opacity:.8;font-family:var(--mono)}
 
+/* --- exercício de preencher o código (Python/JS) --- */
+.slide .lang-tabs{display:flex;gap:.4rem;margin-bottom:0;flex:0 0 auto}
+.slide .lang-tabs button{
+  font-family:var(--mono);font-size:.85rem;font-weight:600;padding:.45rem 1.2rem;
+  border-radius:8px 8px 0 0;border:1px solid rgba(255,255,255,.22);border-bottom:none;
+  background:rgba(255,255,255,.05);color:rgba(246,240,228,.75);cursor:pointer;
+}
+.slide .lang-tabs button.active{background:rgba(0,0,0,.36);color:var(--dourado);font-weight:700}
+.slide .codigo-exercicio{
+  background:rgba(0,0,0,.36);border-radius:0 12px 12px 12px;border-left:4px solid var(--dourado);
+  padding:1.1rem 1.4rem;font-family:var(--mono);font-size:clamp(.86rem,1.6vw,1.02rem);
+  line-height:1.75;overflow-x:auto;white-space:pre;flex:0 0 auto;
+}
+.slide .codigo-exercicio .blank{
+  width:9ch;background:rgba(0,0,0,.45);color:#f6f0e4;border:1.5px solid rgba(255,255,255,.32);
+  border-radius:4px;padding:.02rem .3rem;font:inherit;font-family:var(--mono);text-align:center;
+}
+.slide .codigo-exercicio .blank:focus{outline:2px solid var(--dourado);border-color:var(--dourado)}
+.slide .codigo-exercicio .blank.ok{border-color:#6bbf7a;box-shadow:0 0 0 1px #6bbf7a inset;color:#c9f0cd}
+.slide .codigo-exercicio .blank.bad{border-color:#e06a54;box-shadow:0 0 0 1px #e06a54 inset}
+.slide .codigo-exercicio .blank.ajudado{border-color:#6aa3d0;box-shadow:0 0 0 1px #6aa3d0 inset;color:#cfe4f5}
+.slide .lang-pane[hidden]{display:none}
+
 @media print{
   body{background:#fff;color:#000;overflow:visible}
   .deck-top,.deck-nav,.deck-count,.deck-prog{display:none}
