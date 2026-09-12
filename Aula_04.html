@@ -1,51 +1,290 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aula 04 — Herança — em construcao</title>
-<link rel="stylesheet" href="assets/css/site.css">
-<style>
-  body{display:flex;align-items:center;justify-content:center;min-height:100vh}
-  .box{
-    max-width:620px;margin:2rem auto;padding:2.4rem 2.2rem;
-    border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:14px;
-    background:linear-gradient(180deg,var(--bg-2),var(--surface));
-  }
-  .eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-soft)}
-  h1{font-family:var(--mono);font-size:1.5rem;color:var(--ink);margin:.5rem 0 .2rem}
-  .badge{
-    display:inline-block;font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;
-    text-transform:uppercase;color:#241c10;background:var(--gold);
-    padding:.2rem .6rem;border-radius:999px;margin:.6rem 0 1.2rem;
-  }
-  p{color:var(--muted);line-height:1.65;margin:.7rem 0}
-  .ava{
-    margin-top:1.4rem;padding:1rem 1.2rem;border-radius:10px;
-    background:rgba(212,169,78,.10);border:1px solid rgba(212,169,78,.3);
-    color:var(--ink);font-size:.92rem;
-  }
-  .ava b{color:var(--gold)}
-  a.voltar{
-    display:inline-block;margin-top:1.6rem;font-family:var(--mono);font-size:.8rem;
-    color:var(--gold);text-decoration:none;border:1px solid var(--gold-soft);
-    padding:.45rem 1.1rem;border-radius:7px;
-  }
-  a.voltar:hover{background:rgba(212,169,78,.12)}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 04 — Sintaxe: Python × JavaScript</title>
+  <link rel="stylesheet" href="assets/css/deck.css">
 </head>
 <body>
-  <div class="box">
-    <div class="eyebrow">poo // aula 04</div>
-    <h1>Aula 04 — Herança</h1>
-    <span class="badge">em construcao</span>
-    <p>Desculpe pelo transtorno — estou <b style="color:var(--ink)">construindo esta
-      página</b> para você. Volte em breve.</p>
-    <div class="ava">
-      Enquanto isso, consulte o material no <b>AVA</b>. Esta página vai <b>substituir</b>
-      aquele conteúdo, mas ele <b>ainda está valendo</b>.
-    </div>
-    <a class="voltar" href="index.html">&larr; voltar ao portal</a>
+
+  <div class="deck-top">
+    <span class="t">Programação Orientada a Objetos · Aula 04</span>
+    <a href="index.html">← Portal</a>
   </div>
+  <div class="deck-prog"></div>
+
+  <div class="deck">
+
+    <!-- 1 · CAPA -->
+    <section class="slide cover active">
+      <img class="crest" src="assets/img/logo_univassouras.png" alt="Universidade de Vassouras">
+      <h1>Sintaxe da Linguagem<br>Orientada a Objetos</h1>
+      <div class="meta">
+        Aula 04 · Formalizando o Molde — Python × JavaScript<br>
+        Curso de Engenharia de Software — Universidade de Vassouras<br>
+        Prof. Diego Ramos Inácio
+      </div>
+    </section>
+
+    <!-- 2 · RECAP + PARADIGMA x SINTAXE -->
+    <section class="slide">
+      <span class="tag">Recap</span>
+      <h2>O Paradigma É Universal — a Sintaxe é Tradução</h2>
+      <p>Nas aulas 02 e 03 já escrevemos classes, atributos, métodos e objetos
+        conversando entre si — em Python e em JavaScript. Hoje paramos pra formalizar
+        <b>por que</b> o código de cada linguagem tem essa cara.</p>
+      <div class="cols">
+        <div class="box"><b>O Paradigma — o modelo mental</b><br>A forma de pensar e
+          estruturar o problema. É <b>universal</b>: existe independente da linguagem.</div>
+        <div class="box"><b>A Sintaxe — a gramática</b><br>As regras e palavras-chave pra
+          escrever esse modelo numa linguagem específica. É só <b>tradução</b>.</div>
+      </div>
+      <div class="callout">A arquitetura do software é a mesma nas duas colunas de código
+        que você vê desde a Aula 01 — só a gramática muda.</div>
+    </section>
+
+    <!-- 3 · O SEGREDO: SELF x THIS -->
+    <section class="slide">
+      <span class="tag">O detalhe que muda tudo</span>
+      <h2>Referência Interna: <code>self</code> × <code>this</code></h2>
+      <p>Como um objeto acessa os próprios dados de dentro da classe? Ele precisa de um
+        <b>pronome estrutural</b> — e as duas linguagens resolvem isso de formas opostas.</p>
+      <div class="cols">
+        <div class="box">
+          <b>Python — padrão explícito</b>
+<pre style="font-size:.9rem;line-height:1.5;margin-top:.5rem"><code>def __init__(self, marca):
+    self.marca = marca</code></pre>
+          <p style="margin-top:.4rem">A linguagem <b>exige</b> que a classe passe a si
+            mesma como o primeiro parâmetro. Você escreve <code>self</code> em toda
+            assinatura de método.</p>
+        </div>
+        <div class="box">
+          <b>JavaScript — padrão implícito</b>
+<pre style="font-size:.9rem;line-height:1.5;margin-top:.5rem"><code>constructor(marca) {
+  this.marca = marca;
+}</code></pre>
+          <p style="margin-top:.4rem">A linguagem <b>assume</b> a referência sozinha.
+            <code>this</code> já existe dentro de qualquer método, sem você declarar.</p>
+        </div>
+      </div>
+      <div class="callout"><code>self</code> e <code>this</code> apontam pro mesmo lugar
+        na memória: <b>a instância atual</b>. Só muda quem escreve a palavra.</div>
+    </section>
+
+    <!-- 4 · INSTANCIANDO -->
+    <section class="slide">
+      <span class="tag">Sintaxe</span>
+      <h2>Instanciando Objetos na Memória</h2>
+      <div class="cols">
+        <div class="box">
+          <b>Python — chamada direta</b>
+<pre style="font-size:.92rem;line-height:1.5;margin-top:.5rem"><code>meu_carro = Carro("Toyota")
+meu_carro.acelerar()</code></pre>
+          <p style="margin-top:.4rem">A classe é chamada como se fosse uma função.
+            Nenhuma palavra-chave extra.</p>
+        </div>
+        <div class="box">
+          <b>JavaScript — a palavra-chave <code>new</code></b>
+<pre style="font-size:.92rem;line-height:1.5;margin-top:.5rem"><code>const meuCarro = new Carro("Toyota");
+meuCarro.acelerar();</code></pre>
+          <p style="margin-top:.4rem"><code>new</code> é <b>obrigatório</b> — sem ele, o
+            construtor não roda do jeito certo.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5 · SÍNTESE DE TRADUÇÃO -->
+    <section class="slide">
+      <span class="tag">Cola rápida</span>
+      <h2>Síntese de Tradução: Python × JavaScript</h2>
+      <table>
+        <tr><th>Dimensão</th><th>Python</th><th>JavaScript</th></tr>
+        <tr><td>Escopo &amp; blocos</td><td>Indentação (<code>:</code>)</td><td>Chaves (<code>{ }</code>)</td></tr>
+        <tr><td>Método construtor</td><td><code>__init__()</code></td><td><code>constructor()</code></td></tr>
+        <tr><td>Referência interna</td><td><code>self</code> (explícito)</td><td><code>this</code> (implícito)</td></tr>
+        <tr><td>Instanciação</td><td>chamada direta</td><td>palavra-chave <code>new</code></td></tr>
+      </table>
+      <div class="callout">Sintaxe é só um detalhe de implementação. A arquitetura do
+        software continua a mesma.</div>
+    </section>
+
+    <!-- 6 · SÍNTESE DA AULA -->
+    <section class="slide">
+      <span class="tag">Recap</span>
+      <h2>Síntese da Aula</h2>
+      <div class="cols">
+        <div class="box"><b>Paradigma × Sintaxe</b><br>O modelo mental é universal; a
+          gramática é tradução.</div>
+        <div class="box"><b>self × this</b><br>Explícito em Python, implícito em
+          JavaScript — mesma instância.</div>
+        <div class="box"><b>Instanciação</b><br>Chamada direta em Python, <code>new</code>
+          obrigatório em JavaScript.</div>
+      </div>
+      <div class="callout">Próxima aula: <b>expor só o essencial</b> — esconder a
+        complexidade interna do objeto e mostrar apenas a interface pública
+        (Encapsulamento).</div>
+    </section>
+
+    <!-- 7 · EXERCÍCIO: ESCREVA DO ZERO -->
+    <section class="slide">
+      <span class="tag">Pratique</span>
+      <h2>Sua Vez: a Moto</h2>
+      <p>Escreva o código <b>inteiro, do zero</b>, usando a sintaxe formal de hoje:</p>
+      <ul>
+        <li>uma classe <code>Moto</code> com atributo <code>modelo</code> (definido no
+          construtor);</li>
+        <li>um método <code>buzinar()</code> que imprime exatamente
+          <code>&lt;modelo&gt; buzinou!</code> (ex.: <code>CB500 buzinou!</code>);</li>
+        <li>crie uma moto com modelo <code>"CB500"</code> e chame <code>buzinar()</code>.</li>
+      </ul>
+
+      <div class="lang-tabs">
+        <button type="button" class="active" data-lang="py">Python</button>
+        <button type="button" data-lang="js">JavaScript</button>
+      </div>
+
+      <div class="lang-pane" data-pane="py">
+        <textarea class="codigo-livre" id="codePy" spellcheck="false"># escreva aqui a classe Moto e o teste
+</textarea>
+      </div>
+      <div class="lang-pane" data-pane="js" hidden>
+        <textarea class="codigo-livre" id="codeJs" spellcheck="false">// escreva aqui a classe Moto e o teste
+</textarea>
+      </div>
+
+      <div class="btnrow" style="margin-top:.6rem">
+        <button class="check" type="button" id="exRodar">Rodar e verificar</button>
+        <button class="check" type="button" id="exSolucao" disabled style="background:transparent;color:var(--dourado);border:1.5px solid var(--dourado)">Ver solução (após 2 tentativas)</button>
+      </div>
+      <div class="quiz-msg" id="exMsg"></div>
+      <pre class="out-livre" id="exOut" hidden></pre>
+      <pre class="solucao-livre" id="exSol" hidden></pre>
+    </section>
+
+    <!-- 8 · ENCERRAMENTO -->
+    <section class="slide cover">
+      <img class="crest" src="assets/img/logo_univassouras.png" alt="Universidade de Vassouras">
+      <h1>Sintaxe dominada.</h1>
+      <div class="meta">
+        diego.inacio@univassouras.edu.br<br><br>
+        Até a próxima aula: expor só o essencial.
+      </div>
+    </section>
+
+  </div>
+
+  <div class="deck-nav">
+    <button data-prev>‹</button>
+    <button data-next>›</button>
+  </div>
+  <div class="deck-count">1 / 8</div>
+
+  <script src="assets/js/deck.js"></script>
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
+  <script>
+    (function () {
+      var tabs = document.querySelectorAll('.lang-tabs button');
+      var panes = { py: document.querySelector('.lang-pane[data-pane="py"]'),
+                    js: document.querySelector('.lang-pane[data-pane="js"]') };
+      tabs.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          tabs.forEach(function (b) { b.classList.remove('active'); });
+          btn.classList.add('active');
+          Object.keys(panes).forEach(function (k) { panes[k].hidden = (k !== btn.dataset.lang); });
+          document.getElementById('exMsg').innerHTML = '';
+          document.getElementById('exOut').hidden = true;
+        });
+      });
+
+      /* ---------- exercício: escreve do zero, roda e compara a saída ---------- */
+      var EXPECTED = "CB500 buzinou!";
+      var SOLUCAO = {
+        py: 'class Moto:\n    def __init__(self, modelo):\n        self.modelo = modelo\n\n    def buzinar(self):\n        print(f"{self.modelo} buzinou!")\n\nmoto = Moto("CB500")\nmoto.buzinar()',
+        js: 'class Moto {\n  constructor(modelo) {\n    this.modelo = modelo;\n  }\n  buzinar() {\n    console.log(`${this.modelo} buzinou!`);\n  }\n}\nconst moto = new Moto("CB500");\nmoto.buzinar();'
+      };
+
+      var pyodide = null, pyReady = false, pyLoading = false;
+      var tentativas = 0;
+
+      function norm(t) {
+        return t.replace(/\r/g, "").split("\n").map(function (l) { return l.replace(/\s+$/, ""); })
+          .join("\n").replace(/\n+$/, "");
+      }
+
+      async function runPython(code) {
+        if (!pyReady) {
+          if (!pyLoading) {
+            pyLoading = true;
+            document.getElementById('exMsg').innerHTML = 'carregando Python (só na primeira vez)…';
+            pyodide = await loadPyodide();
+            pyReady = true;
+          } else {
+            while (!pyReady) { await new Promise(function (r) { setTimeout(r, 200); }); }
+          }
+        }
+        var got = "";
+        pyodide.setStdout({ batched: function (s) { got += s + "\n"; } });
+        pyodide.setStderr({ batched: function (s) { got += s + "\n"; } });
+        var ns = pyodide.globals.get("dict")();
+        try {
+          pyodide.runPython(code, { globals: ns });
+        } finally { try { ns.destroy(); } catch (e) {} }
+        return got;
+      }
+
+      function runJS(code) {
+        var got = [];
+        var fakeConsole = { log: function () {
+          got.push(Array.prototype.slice.call(arguments).map(String).join(" "));
+        } };
+        var fn = new Function("console", code);
+        fn(fakeConsole);
+        return got.join("\n");
+      }
+
+      function activeLang() { return panes.py.hidden ? "js" : "py"; }
+
+      document.getElementById('exRodar').addEventListener('click', async function () {
+        var lang = activeLang();
+        var code = document.getElementById(lang === "py" ? "codePy" : "codeJs").value;
+        var btn = this, out = document.getElementById('exOut'), msg = document.getElementById('exMsg');
+        btn.disabled = true; msg.textContent = lang === "py" ? "executando…" : "";
+        var got = "", err = null;
+        try {
+          got = lang === "py" ? await runPython(code) : runJS(code);
+        } catch (e) { err = String(e.message || e); }
+        btn.disabled = false;
+        out.hidden = false;
+        if (err) {
+          out.textContent = "erro:\n\n" + err;
+          msg.innerHTML = '<span class="bad">✗ deu erro — veja abaixo</span>';
+        } else {
+          var g = norm(got);
+          var ok = g === EXPECTED;
+          out.textContent = "sua saída:\n\n" + (got.replace(/\n+$/, "") || "(nada impresso)");
+          msg.innerHTML = ok
+            ? '<span class="ok">✓ saída correta</span>'
+            : '<span class="bad">✗ ainda não</span> — esperado:<br>' + EXPECTED.replace(/\n/g, '<br>');
+          if (!ok) {
+            tentativas++;
+            if (tentativas >= 2) {
+              var solBtn = document.getElementById('exSolucao');
+              solBtn.disabled = false;
+              solBtn.textContent = 'Ver solução';
+            }
+          }
+        }
+      });
+
+      document.getElementById('exSolucao').addEventListener('click', function () {
+        if (this.disabled) return;
+        var lang = activeLang();
+        var sol = document.getElementById('exSol');
+        sol.textContent = SOLUCAO[lang];
+        sol.hidden = false;
+      });
+    })();
+  </script>
 </body>
 </html>

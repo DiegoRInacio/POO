@@ -204,7 +204,7 @@ carrinho.adicionarItem(clienteVip, "Teclado");</code></pre>
         <li>uma classe <code>Pedido</code> com atributo <code>quantidade</code> e método
           <code>finalizar(estoque)</code> que recebe um <code>Estoque</code> por
           parâmetro, faz <code>estoque.quantidade -= </code> a quantidade do pedido, e
-          imprime exatamente <code>pedido de N concluido</code> (N = a quantidade);</li>
+          imprime exatamente <code>pedido de N concluído</code> (N = a quantidade);</li>
         <li>uma classe <code>Estoque</code> com atributo <code>quantidade</code>;</li>
         <li>crie <code>Pedido(5)</code> e <code>Estoque(50)</code>, chame
           <code>finalizar</code>, e por fim imprima exatamente
@@ -270,10 +270,10 @@ carrinho.adicionarItem(clienteVip, "Teclado");</code></pre>
       });
 
       /* ---------- exercício: escreve do zero, roda e compara a saída ---------- */
-      var EXPECTED = "pedido de 5 concluido\nrestam 45";
+      var EXPECTED = "pedido de 5 concluído\nrestam 45";
       var SOLUCAO = {
-        py: 'class Pedido:\n    def __init__(self, quantidade):\n        self.quantidade = quantidade\n\n    def finalizar(self, estoque):\n        estoque.quantidade -= self.quantidade\n        print(f"pedido de {self.quantidade} concluido")\n\nclass Estoque:\n    def __init__(self, quantidade):\n        self.quantidade = quantidade\n\npedido = Pedido(5)\nestoque = Estoque(50)\npedido.finalizar(estoque)\nprint(f"restam {estoque.quantidade}")',
-        js: 'class Pedido {\n  constructor(quantidade) {\n    this.quantidade = quantidade;\n  }\n  finalizar(estoque) {\n    estoque.quantidade -= this.quantidade;\n    console.log(`pedido de ${this.quantidade} concluido`);\n  }\n}\nclass Estoque {\n  constructor(quantidade) {\n    this.quantidade = quantidade;\n  }\n}\nconst pedido = new Pedido(5);\nconst estoque = new Estoque(50);\npedido.finalizar(estoque);\nconsole.log(`restam ${estoque.quantidade}`);'
+        py: 'class Pedido:\n    def __init__(self, quantidade):\n        self.quantidade = quantidade\n\n    def finalizar(self, estoque):\n        estoque.quantidade -= self.quantidade\n        print(f"pedido de {self.quantidade} concluído")\n\nclass Estoque:\n    def __init__(self, quantidade):\n        self.quantidade = quantidade\n\npedido = Pedido(5)\nestoque = Estoque(50)\npedido.finalizar(estoque)\nprint(f"restam {estoque.quantidade}")',
+        js: 'class Pedido {\n  constructor(quantidade) {\n    this.quantidade = quantidade;\n  }\n  finalizar(estoque) {\n    estoque.quantidade -= this.quantidade;\n    console.log(`pedido de ${this.quantidade} concluído`);\n  }\n}\nclass Estoque {\n  constructor(quantidade) {\n    this.quantidade = quantidade;\n  }\n}\nconst pedido = new Pedido(5);\nconst estoque = new Estoque(50);\npedido.finalizar(estoque);\nconsole.log(`restam ${estoque.quantidade}`);'
       };
 
       var pyodide = null, pyReady = false, pyLoading = false;

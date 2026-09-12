@@ -25,7 +25,15 @@
   }
   function go(n) { i = Math.max(0, Math.min(slides.length - 1, n)); render(); }
 
+  function estaDigitando(e) {
+    var t = e.target;
+    if (!t) return false;
+    var tag = t.tagName;
+    return tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || t.isContentEditable;
+  }
+
   document.addEventListener('keydown', function (e) {
+    if (estaDigitando(e)) return; // não rouba o foco de campos de exercício
     if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { go(i + 1); e.preventDefault(); }
     else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { go(i - 1); e.preventDefault(); }
     else if (e.key === 'Home') go(0);
