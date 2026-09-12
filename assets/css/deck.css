@@ -182,6 +182,27 @@ body{
 .slide .codigo-exercicio .blank.ajudado{border-color:#6aa3d0;box-shadow:0 0 0 1px #6aa3d0 inset;color:#cfe4f5}
 .slide .lang-pane[hidden]{display:none}
 
+/* --- exercício de escrever o código do zero (Python/JS), a partir da Aula 03 --- */
+.slide textarea.codigo-livre{
+  width:100%;min-height:220px;background:rgba(0,0,0,.4);color:#f6f0e4;
+  border:1.5px solid rgba(255,255,255,.28);border-radius:0 10px 10px 10px;
+  font-family:var(--mono);font-size:clamp(.84rem,1.5vw,.96rem);line-height:1.6;
+  padding:1rem 1.2rem;resize:vertical;tab-size:4;flex:0 0 auto;
+}
+.slide textarea.codigo-livre:focus{outline:2px solid var(--dourado);border-color:var(--dourado)}
+.slide pre.out-livre{
+  background:rgba(0,0,0,.4);border-radius:10px;border-left:4px solid var(--dourado);
+  padding:.9rem 1.2rem;font-family:var(--mono);font-size:.86rem;line-height:1.5;
+  white-space:pre-wrap;max-height:260px;overflow:auto;margin-top:.6rem;flex:0 0 auto;
+}
+.slide pre.solucao-livre{
+  background:rgba(212,169,78,.08);border-radius:10px;border-left:4px solid var(--dourado-forte);
+  padding:.9rem 1.2rem;font-family:var(--mono);font-size:.86rem;line-height:1.55;
+  white-space:pre;overflow-x:auto;margin-top:.6rem;flex:0 0 auto;
+}
+.slide button.check:disabled{opacity:.35;cursor:default}
+.slide .btnrow{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;flex:0 0 auto}
+
 @media print{
   body{background:#fff;color:#000;overflow:visible}
   .deck-top,.deck-nav,.deck-count,.deck-prog{display:none}
