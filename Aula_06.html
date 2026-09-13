@@ -1,51 +1,425 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aula 06 — Abstração e Interfaces — em construcao</title>
-<link rel="stylesheet" href="assets/css/site.css">
-<style>
-  body{display:flex;align-items:center;justify-content:center;min-height:100vh}
-  .box{
-    max-width:620px;margin:2rem auto;padding:2.4rem 2.2rem;
-    border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:14px;
-    background:linear-gradient(180deg,var(--bg-2),var(--surface));
-  }
-  .eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-soft)}
-  h1{font-family:var(--mono);font-size:1.5rem;color:var(--ink);margin:.5rem 0 .2rem}
-  .badge{
-    display:inline-block;font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;
-    text-transform:uppercase;color:#241c10;background:var(--gold);
-    padding:.2rem .6rem;border-radius:999px;margin:.6rem 0 1.2rem;
-  }
-  p{color:var(--muted);line-height:1.65;margin:.7rem 0}
-  .ava{
-    margin-top:1.4rem;padding:1rem 1.2rem;border-radius:10px;
-    background:rgba(212,169,78,.10);border:1px solid rgba(212,169,78,.3);
-    color:var(--ink);font-size:.92rem;
-  }
-  .ava b{color:var(--gold)}
-  a.voltar{
-    display:inline-block;margin-top:1.6rem;font-family:var(--mono);font-size:.8rem;
-    color:var(--gold);text-decoration:none;border:1px solid var(--gold-soft);
-    padding:.45rem 1.1rem;border-radius:7px;
-  }
-  a.voltar:hover{background:rgba(212,169,78,.12)}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 06 — Interfaces</title>
+  <link rel="stylesheet" href="assets/css/deck.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.15.0/mermaid.min.js"></script>
 </head>
 <body>
-  <div class="box">
-    <div class="eyebrow">poo // aula 06</div>
-    <h1>Aula 06 — Abstração e Interfaces</h1>
-    <span class="badge">em construcao</span>
-    <p>Desculpe pelo transtorno — estou <b style="color:var(--ink)">construindo esta
-      página</b> para você. Volte em breve.</p>
-    <div class="ava">
-      Enquanto isso, consulte o material no <b>AVA</b>. Esta página vai <b>substituir</b>
-      aquele conteúdo, mas ele <b>ainda está valendo</b>.
-    </div>
-    <a class="voltar" href="index.html">&larr; voltar ao portal</a>
+
+  <div class="deck-top">
+    <span class="t">Programação Orientada a Objetos · Aula 06</span>
+    <a href="index.html">← Portal</a>
   </div>
+  <div class="deck-prog"></div>
+
+  <div class="deck">
+
+    <!-- 1 · CAPA -->
+    <section class="slide cover active">
+      <img class="crest" src="assets/img/logo_univassouras.png" alt="Universidade de Vassouras">
+      <h1>Interfaces: O Contrato<br>Irrevogável do Software</h1>
+      <div class="meta">
+        Aula 06 · Conceitos e Formas de Utilização<br>
+        Curso de Engenharia de Software — Universidade de Vassouras<br>
+        Prof. Diego Ramos Inácio
+      </div>
+    </section>
+
+    <!-- 2 · RECAP + O PARADIGMA DA COMUNICAÇÃO -->
+    <section class="slide">
+      <span class="tag">Onde estamos</span>
+      <h2>O Paradigma da Comunicação</h2>
+      <p>Já vimos abstração, herança (via classes abstratas) e o vocabulário de
+        composição/agregação. Hoje: <b>Interfaces</b> — o contrato que faz módulos
+        diferentes conversarem sem se conhecer por dentro.</p>
+      <div class="cols">
+        <div class="box"><b>Sem interface (o caos)</b><br>Módulos interpretam dados e
+          ações de forma conflitante — cada um "fala" uma língua diferente. O
+          resultado é a quebra do sistema.</div>
+        <div class="box" style="border-color:var(--dourado);background:rgba(212,169,78,.16)"><b>Com interface (o contrato)</b><br>Uma interface garante o <b>"o quê"</b>
+          deve ser feito, ignorando o <b>"como"</b> funciona por dentro — como um
+          encaixe USB: não importa o que tem dentro do cabo.</div>
+      </div>
+    </section>
+
+    <!-- 3 · ANATOMIA DO CONTRATO (UML) -->
+    <section class="slide">
+      <span class="tag">Conceito 1</span>
+      <h2>Assinaturas de Método e o Contrato Explícito</h2>
+      <p><b>Regra de ouro:</b> a classe que assina o contrato (implementa a interface)
+        é obrigada a fornecer o corpo e a lógica daquele método. A assinatura define
+        só o nome, os parâmetros e o retorno.</p>
+      <div class="mermaid">
+classDiagram
+    class Imprimivel {
+        &lt;&lt;interface&gt;&gt;
+        +imprimir()*
+    }
+    class Relatorio {
+        +imprimir()
+    }
+    class Fatura {
+        +imprimir()
+    }
+    Relatorio ..|> Imprimivel
+    Fatura ..|> Imprimivel
+      </div>
+      <p class="cap" style="text-align:center">Seta tracejada + triângulo vazado = realização (implementa a interface)</p>
+    </section>
+
+    <!-- 4 · PYTHON: O CONTRATO -->
+    <section class="slide">
+      <span class="tag">Python</span>
+      <h2>O Contrato em Python (módulo <code>abc</code>)</h2>
+      <p>A mesma mecânica de <code>ABC</code>/<code>@abstractmethod</code> da Aula 05
+        — só que aqui a classe <b>não tem nenhum método implementado</b>, só
+        contratos. Isso é o que separa uma <b>interface</b> de uma classe abstrata
+        comum.</p>
+<pre style="font-size:.92rem;line-height:1.55"><code>from abc import ABC, abstractmethod
+
+class Imprimivel(ABC):
+    @abstractmethod
+    def imprimir(self):
+        pass
+
+class Relatorio(Imprimivel):
+    def imprimir(self):
+        print("Gerando relatório...")</code></pre>
+    </section>
+
+    <!-- 5 · JAVASCRIPT: SIMULANDO O CONTRATO -->
+    <section class="slide">
+      <span class="tag">JavaScript</span>
+      <h2>Simulando o Contrato em JavaScript</h2>
+      <p>JS não tem a palavra-chave <code>interface</code> em tempo de execução. A
+        solução é estrutural: uma classe "escudo" lança erro se o método não for
+        sobrescrito.</p>
+<pre style="font-size:.92rem;line-height:1.55"><code>class Imprimivel {
+  imprimir() {
+    throw new Error("O método imprimir() deve ser implementado.");
+  }
+}
+
+class Relatorio extends Imprimivel {
+  imprimir() {
+    console.log("Gerando relatório...");
+  }
+}</code></pre>
+    </section>
+
+    <!-- 6 · POLIMORFISMO DIRECIONADO POR INTERFACE -->
+    <section class="slide">
+      <span class="tag">Conceito 2</span>
+      <h2>Polimorfismo Direcionado por Interfaces</h2>
+      <p>O cliente não precisa saber qual é a classe concreta. O polimorfismo real
+        acontece quando o sistema itera com múltiplos objetos diferentes, confiando
+        apenas numa assinatura em comum.</p>
+      <div class="cols">
+        <div class="box">
+          <b>Python</b>
+<pre style="font-size:.86rem;line-height:1.4;margin-top:.5rem"><code>def processar_lote(documentos):
+    for doc in documentos:
+        doc.imprimir()
+
+fila = [Relatorio(), Fatura(), Relatorio()]
+processar_lote(fila)</code></pre>
+        </div>
+        <div class="box">
+          <b>JavaScript</b>
+<pre style="font-size:.86rem;line-height:1.4;margin-top:.5rem"><code>const fila = [
+  new Relatorio(), new Fatura(), new Relatorio()
+];
+fila.forEach(doc => doc.imprimir());</code></pre>
+        </div>
+      </div>
+      <div class="callout"><b>Insight arquitetônico:</b> <code>processar_lote</code>
+        está blindada. Podemos criar 100 novas classes amanhã — desde que assinem o
+        contrato <code>Imprimivel</code>, esse loop jamais precisa ser reescrito.</div>
+    </section>
+
+    <!-- 7 · DUCK TYPING -->
+    <section class="slide">
+      <span class="tag">Conceito 3</span>
+      <h2>Duck Typing: a Interface Implícita</h2>
+      <p>"Se anda como um pato e grasna como um pato…" — linguagens dinâmicas aceitam
+        interfaces baseadas no <b>comportamento real</b>, não em declarações nominais
+        de herança. A verificação do contrato acontece no momento do uso.</p>
+      <div class="cols">
+        <div class="box">
+          <b>Python — confia no comportamento</b>
+<pre style="font-size:.9rem;line-height:1.5;margin-top:.5rem"><code>obj.grasnar()
+# o Python não liga pra árvore
+# genealógica do objeto</code></pre>
+        </div>
+        <div class="box">
+          <b>JavaScript — checagem defensiva</b>
+<pre style="font-size:.84rem;line-height:1.4;margin-top:.5rem"><code>function acionarPato(obj) {
+  if (typeof obj.grasnar === "function") {
+    obj.grasnar();
+  } else {
+    console.warn("Contrato violado.");
+  }
+}</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8 · PRINCÍPIO DA SEGREGAÇÃO DE INTERFACES -->
+    <section class="slide">
+      <span class="tag">Conceito 4 · o "I" do SOLID</span>
+      <h2>Princípio da Segregação de Interfaces</h2>
+      <div class="cols">
+        <div class="box"><b>O problema — interface gorda</b><br>
+          <code>IEquipamento</code> com <code>imprimir()</code>,
+          <code>escanear()</code>, <code>enviarFax()</code> — uma
+          <code>ImpressoraBasica</code> é forçada a depender de métodos que nunca vai
+          usar.</div>
+        <div class="box" style="border-color:var(--dourado);background:rgba(212,169,78,.16)"><b>A solução — segregação</b><br>
+          Três interfaces pequenas: <code>Imprimivel</code>,
+          <code>Escaneavel</code>, <code>Fax</code>. A <code>ImpressoraBasica</code>
+          implementa só <code>Imprimivel</code>.</div>
+      </div>
+      <div class="callout">Nenhum cliente deve ser forçado a depender de métodos que
+        ele não utiliza.</div>
+    </section>
+
+    <!-- 9 · COMPOSIÇÃO DE INTERFACES -->
+    <section class="slide">
+      <span class="tag">Refatorando para coesão</span>
+      <h2>Composição de Interfaces</h2>
+      <p>Interfaces pequenas e coesas agem como blocos de montar — permitem compor
+        comportamentos com precisão cirúrgica.</p>
+      <div class="cols">
+        <div class="box">
+          <b>Python — múltiplas ABCs</b>
+<pre style="font-size:.88rem;line-height:1.5;margin-top:.5rem"><code>class Multifuncional(Imprimivel, Escaneavel):
+    def imprimir(self): ...
+    def escanear(self): ...</code></pre>
+        </div>
+        <div class="box">
+          <b>JavaScript — mixins</b>
+<pre style="font-size:.82rem;line-height:1.4;margin-top:.5rem"><code>const Multifuncional = Object.assign(
+  {}, ComportamentoImprimir, ComportamentoEscanear
+);</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10 · MATRIZ DE SÍNTESE -->
+    <section class="slide">
+      <span class="tag">Cola rápida</span>
+      <h2>Matriz de Síntese: Escolhendo o Contrato Ideal</h2>
+      <table>
+        <tr><th>Abordagem</th><th>Rigidez</th><th>Risco de execução</th><th>Escalabilidade</th></tr>
+        <tr><td>Formal (Python <code>abc</code>)</td><td>Alta</td><td>Baixo</td><td>Excelente</td></tr>
+        <tr><td>Simulação via erros (JS)</td><td>Média</td><td>Médio</td><td>Boa</td></tr>
+        <tr><td>Duck typing defensivo</td><td>Baixa</td><td>Baixo</td><td>Difícil de rastrear</td></tr>
+      </table>
+      <div class="callout">Boas práticas: use substantivos/adjetivos pra nomear
+        interfaces (<code>Autenticavel</code>, <code>LeitorDeDados</code>). Evite
+        <i>over-engineering</i> — não crie interface se a classe vai ter só uma
+        implementação previsível.</div>
+    </section>
+
+    <!-- 11 · SÍNTESE DA AULA -->
+    <section class="slide">
+      <span class="tag">Recap</span>
+      <h2>Síntese da Aula</h2>
+      <div class="cols">
+        <div class="box"><b>Contrato explícito</b><br>Interface = só assinaturas,
+          zero implementação.</div>
+        <div class="box"><b>Polimorfismo</b><br>Uma função, múltiplas classes — desde
+          que assinem o mesmo contrato.</div>
+        <div class="box"><b>Duck typing</b><br>Comportamento real importa mais que a
+          árvore genealógica.</div>
+        <div class="box"><b>ISP</b><br>Interfaces pequenas e coesas — ninguém depende
+          do que não usa.</div>
+      </div>
+      <div class="callout">Próxima aula: <b>Agregação e Composição de Objetos</b> —
+        como montar a estrutura que tudo isso vai unir.</div>
+    </section>
+
+    <!-- 12 · EXERCÍCIO: ESCREVA DO ZERO -->
+    <section class="slide">
+      <span class="tag">Pratique</span>
+      <h2>Sua Vez: a Frota</h2>
+      <p>Escreva o código <b>inteiro, do zero</b>:</p>
+      <ul>
+        <li>uma interface <code>Transporte</code> (classe abstrata só com métodos
+          abstratos) com o método abstrato <code>mover()</code>;</li>
+        <li>uma classe <code>Carro</code> que implementa <code>mover()</code>
+          imprimindo exatamente <code>Carro andando</code>;</li>
+        <li>uma classe <code>Bicicleta</code> que implementa <code>mover()</code>
+          imprimindo exatamente <code>Bicicleta pedalando</code>;</li>
+        <li>crie uma lista/array com um <code>Carro</code> e uma
+          <code>Bicicleta</code>, e para cada item, chame <code>mover()</code> — sem
+          saber qual é a classe concreta (polimorfismo via interface).</li>
+      </ul>
+
+      <div class="lang-tabs">
+        <button type="button" class="active" data-lang="py">Python</button>
+        <button type="button" data-lang="js">JavaScript</button>
+      </div>
+
+      <div class="lang-pane" data-pane="py">
+        <textarea class="codigo-livre" id="codePy" spellcheck="false"># escreva aqui Transporte (interface), Carro, Bicicleta e o teste
+</textarea>
+      </div>
+      <div class="lang-pane" data-pane="js" hidden>
+        <textarea class="codigo-livre" id="codeJs" spellcheck="false">// escreva aqui Transporte (interface), Carro, Bicicleta e o teste
+</textarea>
+      </div>
+
+      <div class="btnrow" style="margin-top:.6rem">
+        <button class="check" type="button" id="exRodar">Rodar e verificar</button>
+        <button class="check" type="button" id="exSolucao" disabled style="background:transparent;color:var(--dourado);border:1.5px solid var(--dourado)">Ver solução (após 2 tentativas)</button>
+      </div>
+      <div class="quiz-msg" id="exMsg"></div>
+      <pre class="out-livre" id="exOut" hidden></pre>
+      <pre class="solucao-livre" id="exSol" hidden></pre>
+    </section>
+
+    <!-- 13 · ENCERRAMENTO -->
+    <section class="slide cover">
+      <img class="crest" src="assets/img/logo_univassouras.png" alt="Universidade de Vassouras">
+      <h1>A estrutura está pronta.</h1>
+      <div class="meta">
+        diego.inacio@univassouras.edu.br<br><br>
+        Até a próxima aula: Agregação e Composição de Objetos.
+      </div>
+    </section>
+
+  </div>
+
+  <div class="deck-nav">
+    <button data-prev>‹</button>
+    <button data-next>›</button>
+  </div>
+  <div class="deck-count">1 / 13</div>
+
+  <script>
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: 'base',
+      themeVariables: {
+        fontFamily: '"Segoe UI", Tahoma, sans-serif',
+        fontSize: '15px',
+        primaryColor: '#f3e0e0',
+        primaryBorderColor: '#7a1f1f',
+        primaryTextColor: '#2c2320',
+        lineColor: '#7a1f1f',
+        textColor: '#2c2320'
+      }
+    });
+  </script>
+  <script src="assets/js/deck.js"></script>
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
+  <script>
+    (function () {
+      var tabs = document.querySelectorAll('.lang-tabs button');
+      var panes = { py: document.querySelector('.lang-pane[data-pane="py"]'),
+                    js: document.querySelector('.lang-pane[data-pane="js"]') };
+      tabs.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          tabs.forEach(function (b) { b.classList.remove('active'); });
+          btn.classList.add('active');
+          Object.keys(panes).forEach(function (k) { panes[k].hidden = (k !== btn.dataset.lang); });
+          document.getElementById('exMsg').innerHTML = '';
+          document.getElementById('exOut').hidden = true;
+        });
+      });
+
+      /* ---------- exercício: escreve do zero, roda e compara a saída ---------- */
+      var EXPECTED = "Carro andando\nBicicleta pedalando";
+      var SOLUCAO = {
+        py: 'from abc import ABC, abstractmethod\n\nclass Transporte(ABC):\n    @abstractmethod\n    def mover(self):\n        pass\n\nclass Carro(Transporte):\n    def mover(self):\n        print("Carro andando")\n\nclass Bicicleta(Transporte):\n    def mover(self):\n        print("Bicicleta pedalando")\n\nfrota = [Carro(), Bicicleta()]\nfor t in frota:\n    t.mover()',
+        js: 'class Transporte {\n  mover() {\n    throw new Error("O método mover() deve ser implementado.");\n  }\n}\nclass Carro extends Transporte {\n  mover() {\n    console.log("Carro andando");\n  }\n}\nclass Bicicleta extends Transporte {\n  mover() {\n    console.log("Bicicleta pedalando");\n  }\n}\nconst frota = [new Carro(), new Bicicleta()];\nfrota.forEach(t => t.mover());'
+      };
+
+      var pyodide = null, pyReady = false, pyLoading = false;
+      var tentativas = 0;
+
+      function norm(t) {
+        return t.replace(/\r/g, "").split("\n").map(function (l) { return l.replace(/\s+$/, ""); })
+          .join("\n").replace(/\n+$/, "");
+      }
+
+      async function runPython(code) {
+        if (!pyReady) {
+          if (!pyLoading) {
+            pyLoading = true;
+            document.getElementById('exMsg').innerHTML = 'carregando Python (só na primeira vez)…';
+            pyodide = await loadPyodide();
+            pyReady = true;
+          } else {
+            while (!pyReady) { await new Promise(function (r) { setTimeout(r, 200); }); }
+          }
+        }
+        var got = "";
+        pyodide.setStdout({ batched: function (s) { got += s + "\n"; } });
+        pyodide.setStderr({ batched: function (s) { got += s + "\n"; } });
+        var ns = pyodide.globals.get("dict")();
+        try {
+          pyodide.runPython(code, { globals: ns });
+        } finally { try { ns.destroy(); } catch (e) {} }
+        return got;
+      }
+
+      function runJS(code) {
+        var got = [];
+        var fakeConsole = { log: function () {
+          got.push(Array.prototype.slice.call(arguments).map(String).join(" "));
+        } };
+        var fn = new Function("console", code);
+        fn(fakeConsole);
+        return got.join("\n");
+      }
+
+      function activeLang() { return panes.py.hidden ? "js" : "py"; }
+
+      document.getElementById('exRodar').addEventListener('click', async function () {
+        var lang = activeLang();
+        var code = document.getElementById(lang === "py" ? "codePy" : "codeJs").value;
+        var btn = this, out = document.getElementById('exOut'), msg = document.getElementById('exMsg');
+        btn.disabled = true; msg.textContent = lang === "py" ? "executando…" : "";
+        var got = "", err = null;
+        try {
+          got = lang === "py" ? await runPython(code) : runJS(code);
+        } catch (e) { err = String(e.message || e); }
+        btn.disabled = false;
+        out.hidden = false;
+        if (err) {
+          out.textContent = "erro:\n\n" + err;
+          msg.innerHTML = '<span class="bad">✗ deu erro — veja abaixo</span>';
+        } else {
+          var g = norm(got);
+          var ok = g === EXPECTED;
+          out.textContent = "sua saída:\n\n" + (got.replace(/\n+$/, "") || "(nada impresso)");
+          msg.innerHTML = ok
+            ? '<span class="ok">✓ saída correta</span>'
+            : '<span class="bad">✗ ainda não</span> — esperado:<br>' + EXPECTED.replace(/\n/g, '<br>');
+          if (!ok) {
+            tentativas++;
+            if (tentativas >= 2) {
+              var solBtn = document.getElementById('exSolucao');
+              solBtn.disabled = false;
+              solBtn.textContent = 'Ver solução';
+            }
+          }
+        }
+      });
+
+      document.getElementById('exSolucao').addEventListener('click', function () {
+        if (this.disabled) return;
+        var lang = activeLang();
+        var sol = document.getElementById('exSol');
+        sol.textContent = SOLUCAO[lang];
+        sol.hidden = false;
+      });
+    })();
+  </script>
 </body>
 </html>

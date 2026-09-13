@@ -21,20 +21,29 @@
     // tentar prever a altura disponivel.
     //
     // Em vez disso: o svg ocupa 100% da LARGURA do card (que tem
-    // max-width:820px, nao estica sem limite em tela larga) e a altura
-    // acompanha a proporcao (height:auto). O card `.mermaid` NAO E MAIS
-    // flex:1 1 auto (nao e forcado a preencher/encolher pra um tamanho
+    // max-width:820px, nao estica sem limite em tela larga). O card
+    // `.mermaid` NAO E MAIS flex:1 1 auto (nao e forcado a um tamanho
     // "disponivel") — ver `.slide .mermaid{flex:0 0 auto}` no deck.css —
     // entao ele cresce pra caber o diagrama inteiro, do tamanho que for. Se
     // isso deixar o slide mais alto que a tela, `.slide.active` ja rola
-    // (overflow-y:auto) — like qualquer pagina web normal, em vez de cortar
-    // ou esticar o diagrama de um jeito estranho.
+    // (overflow-y:auto) — como qualquer pagina web normal.
+    //
+    // A altura NAO usa `height:auto`: pra esse svg (sem width/height XML,
+    // so viewBox) o Chrome as vezes falha em calcular a altura pela
+    // proporcao do viewBox e devolve uma altura pequena/errada, cortando as
+    // caixas de novo. Em vez disso calculamos a altura na mao a partir da
+    // LARGURA JA CONHECIDA (clientWidth do card, apos width:100%) e da
+    // proporcao do viewBox — e so matematica pura (regra de 3), nao
+    // "adivinha" nada sobre o ambiente/janela, dai nao repete o erro das
+    // duas tentativas anteriores (que tentavam prever altura DISPONIVEL).
     nodes.forEach(function (n) {
       var svg = n.querySelector('svg');
-      if (!svg) return;
+      var vb = svg && svg.viewBox && svg.viewBox.baseVal;
+      if (!svg || !vb || !vb.width || !vb.height) return;
       svg.style.width = '100%';
-      svg.style.height = 'auto';
       svg.style.maxWidth = '100%';
+      var largura = svg.getBoundingClientRect().width; // ja dentro do padding do card
+      svg.style.height = (largura * (vb.height / vb.width)) + 'px';
     });
   }
 
