@@ -1,0 +1,70 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="Erros comuns de POO em Python e JavaScript, com diagnóstico e correção."><title>Erros Comuns e Armadilhas — POO</title><link rel="stylesheet" href="../assets/css/apoio.css"><style>.caso{background:#fff;border:1px solid var(--linha);border-radius:10px;padding:1rem;margin:1rem 0}.caso h3{margin-top:0}.rotulo{display:inline-block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.35rem}.ruim{color:#9c3a3a}.bom{color:#3f7a4a}.caso .code pre{font-size:.84rem}</style></head><body>
+<header class="topbar"><div class="inner"><img src="../assets/img/logo_univassouras.png" alt=""><div class="inst">Programação Orientada a Objetos<small>Material de apoio</small></div><a class="back" href="../index.html">← Voltar ao portal</a></div></header>
+<div class="wrap"><aside class="toc" aria-label="Nesta página"><div class="selo">Diagnóstico rápido</div><a href="#python">Python</a><a href="#javascript">JavaScript</a><a href="#design">Design OO</a><a href="#checklist">Checklist</a></aside><main>
+<h1 class="titulo">Erros Comuns e Armadilhas</h1><p class="lead">Sintoma, causa e correção para falhas recorrentes nos exercícios. Os exemplos são pequenos de propósito: encontre o padrão do erro e aplique-o ao seu código.</p>
+
+<section id="python"><h2>Python</h2>
+<article class="caso"><h3>1. Esquecer <code>self</code></h3><p>O método de instância recebe o próprio objeto como primeiro argumento.</p><div class="duas-colunas"><div><span class="rotulo ruim">Errado</span><div class="code"><pre><code>class Conta:
+    def depositar(valor):
+        self.saldo += valor</code></pre></div></div><div><span class="rotulo bom">Corrigido</span><div class="code"><pre><code>class Conta:
+    def depositar(self, valor):
+        self.saldo += valor</code></pre></div></div></div></article>
+<article class="caso"><h3>2. Argumento padrão mutável</h3><p>A lista padrão é criada uma única vez e acaba compartilhada entre chamadas.</p><div class="duas-colunas"><div><span class="rotulo ruim">Errado</span><div class="code"><pre><code>def adicionar(item, itens=[]):
+    itens.append(item)
+    return itens</code></pre></div></div><div><span class="rotulo bom">Corrigido</span><div class="code"><pre><code>def adicionar(item, itens=None):
+    if itens is None:
+        itens = []
+    itens.append(item)
+    return itens</code></pre></div></div></div></article>
+<article class="caso"><h3>3. Chamar <code>__init__</code> diretamente</h3><p>Instancie a classe; o Python chama <code>__new__</code> e depois <code>__init__</code>.</p><div class="duas-colunas"><div><span class="rotulo ruim">Errado</span><div class="code"><pre><code>produto = Produto.__init__("Teclado", 200)</code></pre></div></div><div><span class="rotulo bom">Corrigido</span><div class="code"><pre><code>produto = Produto("Teclado", 200)</code></pre></div></div></div></article>
+<article class="caso"><h3>4. Comparar objetos sem definir igualdade</h3><p>Sem <code>__eq__</code>, duas instâncias com os mesmos dados não possuem igualdade de valor personalizada.</p><div class="duas-colunas"><div><span class="rotulo ruim">Surpresa</span><div class="code"><pre><code>Produto("A", 10) == Produto("A", 10)
+# False, se __eq__ não foi definido</code></pre></div></div><div><span class="rotulo bom">Corrigido</span><div class="code"><pre><code>def __eq__(self, outro):
+    if not isinstance(outro, Produto):
+        return NotImplemented
+    return (self.nome, self.preco) == \
+           (outro.nome, outro.preco)</code></pre></div></div></div></article>
+</section>
+
+<section id="javascript"><h2>JavaScript</h2>
+<article class="caso"><h3>5. Perder o contexto de <code>this</code></h3><p>Ao destacar um método do objeto, uma função comum perde o receptor original.</p><div class="duas-colunas"><div><span class="rotulo ruim">Errado</span><div class="code"><pre><code>const exibir = usuario.exibirNome;
+exibir(); // this não é usuario</code></pre></div></div><div><span class="rotulo bom">Corrigido</span><div class="code"><pre><code>const exibir = usuario.exibirNome.bind(usuario);
+exibir();
+
+// Em callbacks:
+itens.forEach(item =&gt; this.adicionar(item));</code></pre></div></div></div></article>
+<article class="caso"><h3>6. Esquecer <code>new</code></h3><p>Classes JavaScript só podem ser chamadas como construtor.</p><div class="duas-colunas"><div><span class="rotulo ruim">Errado</span><div class="code"><pre><code>const conta = Conta(100);</code></pre></div></div><div><span class="rotulo bom">Corrigido</span><div class="code"><pre><code>const conta = new Conta(100);</code></pre></div></div></div></article>
+<article class="caso"><h3>7. Usar <code>this</code> antes de <code>super()</code></h3><p>O construtor da classe-base deve inicializar a instância primeiro.</p><div class="duas-colunas"><div><span class="rotulo ruim">Errado</span><div class="code"><pre><code>constructor(nome) {
+  this.nome = nome;
+  super();
+}</code></pre></div></div><div><span class="rotulo bom">Corrigido</span><div class="code"><pre><code>constructor(nome) {
+  super();
+  this.nome = nome;
+}</code></pre></div></div></div></article>
+<article class="caso"><h3>8. Usar <code>==</code> quando se quer igualdade estrita</h3><p><code>==</code> pode converter tipos silenciosamente; <code>===</code> compara tipo e valor.</p><div class="duas-colunas"><div><span class="rotulo ruim">Conversão implícita</span><div class="code"><pre><code>0 == false   // true
+"5" == 5    // true</code></pre></div></div><div><span class="rotulo bom">Preferível</span><div class="code"><pre><code>0 === false  // false
+"5" === 5   // false</code></pre></div></div></div></article>
+</section>
+
+<section id="design"><h2>Design orientado a objetos</h2>
+<article class="caso"><h3>9. Confundir agregação com composição</h3><p>Não escolha pela aparência do código; escolha pelo ciclo de vida no domínio.</p><div class="table-wrap"><table class="ref"><thead><tr><th>Pergunta</th><th>Agregação</th><th>Composição</th></tr></thead><tbody><tr><td>A parte é criada fora?</td><td>Normalmente sim</td><td>Normalmente não</td></tr><tr><td>A parte sobrevive?</td><td>Sim</td><td>Não</td></tr><tr><td>Exemplo</td><td>Equipe–Professor</td><td>Pedido–ItemPedido</td></tr></tbody></table></div></article>
+<article class="caso"><h3>10. Capturar erro genérico e escondê-lo</h3><p>Capture o tipo que você sabe resolver. Se não souber, deixe propagar ou relance.</p><div class="duas-colunas"><div><span class="rotulo ruim">Esconde qualquer falha</span><div class="code"><pre><code># Python
+try:
+    processar()
+except Exception:
+    pass
+
+// JavaScript
+try { processar(); } catch (e) {}</code></pre></div></div><div><span class="rotulo bom">Trata com intenção</span><div class="code"><pre><code># Python
+except SaldoInsuficienteError as erro:
+    informar_usuario(erro)
+
+// JavaScript
+if (e instanceof SaldoInsuficienteError) {
+  informarUsuario(e);
+} else { throw e; }</code></pre></div></div></div></article>
+<article class="caso"><h3>11. Criar uma “classe Deus”</h3><p>Se uma classe cadastra usuário, calcula preço, envia e-mail e grava arquivos, ela possui motivos demais para mudar.</p><div class="nota"><b>Sinais:</b> muitos atributos desconexos, métodos que usam apenas parte do estado, dependências demais e testes que exigem preparar o sistema inteiro. Extraia responsabilidades coesas e faça os objetos colaborarem.</div></article>
+</section>
+
+<section id="checklist"><h2>Checklist antes de pedir ajuda</h2><ol><li>Leia a primeira linha útil do erro e localize arquivo e linha.</li><li>Confirme indentação/chaves e a ordem das declarações.</li><li>Confira <code>self</code>/<code>this</code>, <code>new</code> e <code>super()</code>.</li><li>Reduza o caso até o menor exemplo que ainda falha.</li><li>Teste caminho feliz e caminho de erro separadamente.</li><li>Explique o resultado esperado antes de alterar o código.</li></ol></section>
+</main><footer class="rodape">Programação Orientada a Objetos · Universidade de Vassouras · Prof. Diego Ramos Inácio</footer></div>
+<script>(function(){var links=Array.from(document.querySelectorAll('.toc a'));if('IntersectionObserver'in window){var observer=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting)links.forEach(function(a){a.classList.toggle('active',a.hash==='#'+e.target.id);});});},{rootMargin:'-15% 0px -70% 0px'});links.forEach(function(a){observer.observe(document.querySelector(a.hash));});}})();</script></body></html>

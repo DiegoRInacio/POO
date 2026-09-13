@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Referência rápida de sintaxe de Programação Orientada a Objetos em Python e JavaScript.">
+  <title>Referência de Sintaxe — Python × JavaScript</title>
+  <link rel="stylesheet" href="../assets/css/apoio.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="inner">
+      <img src="../assets/img/logo_univassouras.png" alt="">
+      <div class="inst">Programação Orientada a Objetos<small>Material de apoio</small></div>
+      <a class="back" href="../index.html">← Voltar ao portal</a>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <aside class="toc" aria-label="Nesta página">
+      <div class="selo">Consulta rápida</div>
+      <a href="#classe">Classe e objeto</a>
+      <a href="#atributos">Atributos e métodos</a>
+      <a href="#encapsulamento">Encapsulamento</a>
+      <a href="#heranca">Herança</a>
+      <a href="#abstracao">Classes abstratas</a>
+      <a href="#interfaces">Interfaces</a>
+      <a href="#relacionamentos">Agregação e composição</a>
+      <a href="#excecoes">Exceções</a>
+      <a href="#tratamento">Tratamento de erros</a>
+      <a href="#polimorfismo">Polimorfismo</a>
+    </aside>
+
+    <main>
+      <h1 class="titulo">Referência de Sintaxe: Python × JavaScript</h1>
+      <p class="lead">Uma cola lado a lado para consultar durante os exercícios. Os exemplos mostram a mesma intenção orientada a objetos nas duas linguagens; use <kbd>Ctrl</kbd> + <kbd>F</kbd> para localizar um conceito.</p>
+      <div class="nota"><b>Como ler:</b> Python delimita blocos por indentação e recebe <code>self</code> explicitamente. JavaScript usa chaves, <code>this</code> implícito e <code>new</code> para instanciar.</div>
+
+      <section id="classe">
+        <h2>Classe, objeto e construtor</h2>
+        <p>A classe é o molde; o objeto é uma instância concreta. O construtor prepara o estado inicial.</p>
+        <div class="duas-colunas">
+          <div class="painel"><span class="linguagem">Python</span><div class="code"><button class="cp" type="button">Copiar</button><pre><code>class Pessoa:
+    def __init__(self, nome):
+        self.nome = nome
+
+    def apresentar(self):
+        return f"Olá, eu sou {self.nome}"
+
+pessoa = Pessoa("Ana")
+print(pessoa.apresentar())</code></pre></div></div>
+          <div class="painel"><span class="linguagem">JavaScript</span><div class="code"><button class="cp" type="button">Copiar</button><pre><code>class Pessoa {
+  constructor(nome) {
+    this.nome = nome;
+  }
+
+  apresentar() {
+    return `Olá, eu sou ${this.nome}`;
+  }
+}
+
+const pessoa = new Pessoa("Ana");
+console.log(pessoa.apresentar());</code></pre></div></div>
+        </div>
+      </section>
+
+      <section id="atributos">
+        <h2>Atributos de instância e métodos</h2>
+        <p>O atributo guarda o estado particular de cada objeto; o método lê ou modifica esse estado.</p>
+        <div class="duas-colunas">
+          <div class="painel"><span class="linguagem">Python</span><div class="code"><button class="cp" type="button">Copiar</button><pre><code>class Produto:
+    def __init__(self, nome, preco):
+        self.nome = nome
+        self.preco = preco
+
+    def aplicar_desconto(self, percentual):
+        self.preco *= 1 - percentual / 100
+
+produto = Produto("Teclado", 200)
+produto.aplicar_desconto(10)</code></pre></div></div>
+          <div class="painel"><span class="linguagem">JavaScript</span><div class="code"><button class="cp" type="button">Copiar</button><pre><code>class Produto {
+  constructor(nome, preco) {
+    this.nome = nome;
+    this.preco = preco;
+  }
+
+  aplicarDesconto(percentual) {
+    this.preco *= 1 - percentual / 100;
+  }
+}
+
+const produto = new Produto("Teclado", 200);
+produto.aplicarDesconto(10);</code></pre></div></div>
+        </div>
+      </section>
+
+      <section id="encapsulamento">
+        <h2>Encapsulamento</h2>
+        <p>O objeto protege seu estado e oferece operações públicas que preservam suas regras.</p>
+        <div class="duas-colunas">
+          <div class="painel"><span class="linguagem">Python</span><div class="code"><button class="cp" type="button">Copiar</button><pre><code>class Conta:
+    def __init__(self, saldo=0):
+        self.__saldo = saldo
+
+    @property
+    def saldo(self):
+        return self.__saldo
+
+    def depositar(self, valor):
+        if valor &gt; 0:
+            self.__saldo += valor</code></pre></div><p><code>_nome</code> comunica “uso interno” por convenção; <code>__nome</code> ativa <em>name mangling</em>, mas não torna o dado absolutamente inacessível.</p></div>
+          <div class="painel"><span class="linguagem">JavaScript</span><div class="code"><button class="cp" type="button">Copiar</button><pre><code>class Conta {
+  #saldo;
+
+  constructor(saldo = 0) {
+    this.#saldo = saldo;
+  }
+
+  get saldo() {
+    return this.#saldo;
+  }
+
+  depositar(valor) {
+    if (valor &gt; 0) this.#saldo += valor;
+  }
+}</code></pre></div><p>Campos iniciados por <code>#</code> são privados à classe. Uma closure também pode esconder estado fora de uma classe.</p></div>
+        </div>
+      </section>
+
+      <section id="heranca">
+        <h2>Herança e chamada à superclasse</h2>
+        <p>Use herança quando a subclasse realmente “é um” tipo da superclasse. A subclasse pode acrescentar ou sobrescrever comportamento.</p>
+        <div class="duas-colunas">
+          <div class="painel"><span class="linguagem">Python</span><div class="code"><button class="cp" type="button">Copiar</button><pre><code>class Veiculo:
+    def __init__(self, marca):
+        self.marca = marca
+
+    def descrever(self):
+        return self.marca
+
+class Carro(Veiculo):
+    def __init__(self, marca, portas):
+        super().__init__(marca)
+        self.portas = portas</code></pre></div></div>
+          <div class="painel"><span class="linguagem">JavaScript</span><div class="code"><button class="cp" type="button">Copiar</button><pre><code>class Veiculo {
+  constructor(marca) {
+    this.marca = marca;
+  }
+
+  descrever() { return this.marca; }
+}
+
+class Carro extends Veiculo {
+  constructor(marca, portas) {
+    super(marca);
+    this.portas = portas;
+  }
+}</code></pre></div></div>
+        </div>
+        <div class="nota aviso"><b>Atenção:</b> no construtor de uma subclasse JavaScript, chame <code>super()</code> antes de acessar <code>this</code>.</div>
+      </section>
+
+      <section id="abstracao">
+        <h2>Classes e métodos abstratos</h2>
+        <p>Uma classe abstrata define um contrato incompleto para subclasses. Python oferece suporte por <code>abc</code>; JavaScript exige uma convenção.</p>
+        <div class="duas-colunas">
+          <div class="painel"><span class="linguagem">Python</span><div class="code"><button class="cp" type="button">Copiar</button><pre><code>from abc import ABC, abstractmethod
+
+class GatewayPagamento(ABC):
+    @abstractmethod
+    def processar(self, valor):
+        pass
+
+class PagamentoPix(GatewayPagamento):
+    def processar(self, valor):
+        return f"PIX: R$ {valor:.2f}"</code></pre></div></div>
+          <div class="painel"><span class="linguagem">JavaScript</span><div class="code"><button class="cp" type="button">Copiar</button><pre><code>class GatewayPagamento {
+  constructor() {
+    if (this.constructor === GatewayPagamento) {
+      throw new Error("Classe abstrata");
+    }
+  }
+
+  processar(valor) {
+    throw new Error("Implemente processar()");
+  }
+}
+
+class PagamentoPix extends GatewayPagamento {
+  processar(valor) { return `PIX: R$ ${valor}`; }
+}</code></pre></div></div>
+        </div>
+      </section>
+
+      <section id="interfaces">
+        <h2>Interfaces: contrato só de assinaturas</h2>
+        <p>No recorte da disciplina, representamos uma interface em Python com uma ABC sem métodos concretos. Em JavaScript, simulamos a obrigação de sobrescrever.</p>
+        <div class="duas-colunas">
+          <div class="painel"><span class="linguagem">Python</span><div class="code"><button class="cp" type="button">Copiar</button><pre><code>from abc import ABC, abstractmethod
+
+class Imprimivel(ABC):
+    @abstractmethod
+    def imprimir(self):
+        pass
+
+class Relatorio(Imprimivel):
+    def imprimir(self):
+        return "Gerando relatório..."</code></pre></div></div>
+          <div class="painel"><span class="linguagem">JavaScript</span><div class="code"><button class="cp" type="button">Copiar</button><pre><code>class Imprimivel {
+  imprimir() {
+    throw new Error("Implemente imprimir()");
+  }
+}
+
+class Relatorio extends Imprimivel {
+  imprimir() {
+    return "Gerando relatório...";
+  }
+}</code></pre></div></div>
+        </div>
+      </section>
+
+      <section id="relacionamentos">
+        <h2>Agregação × composição</h2>
+        <div class="table-wrap"><table class="ref"><thead><tr><th>Decisão</th><th>Agregação</th><th>Composição</th></tr></thead><tbody><tr><td>A parte sobrevive ao todo?</td><td>Sim</td><td>Não, pertence ao ciclo de vida do todo</td></tr><tr><td>Como obter a parte?</td><td>Receber por parâmetro</td><td>Criar internamente</td></tr></tbody></table></div>
+        <div class="duas-colunas">
+          <div class="painel"><span class="linguagem">Python</span><div class="code"><button class="cp" type="button">Copiar</button><pre><code># Agregação: motorista vem de fora.
+class Carro:
+    def __init__(self, motorista):
+        self.motorista = motorista
+
+# Composição: motor nasce dentro do carro.
+class CarroComMotor:
+    def __init__(self, motorista):
+        self.motorista = motorista
+        self.motor = Motor()</code></pre></div></div>
+          <div class="painel"><span class="linguagem">JavaScript</span><div class="code"><button class="cp" type="button">Copiar</button><pre><code>// Agregação: motorista vem de fora.
+class Carro {
+  constructor(motorista) {
+    this.motorista = motorista;
+  }
+}
+
+// Composição: motor nasce dentro do carro.
+class CarroComMotor {
+  constructor(motorista) {
+    this.motorista = motorista;
+    this.motor = new Motor();
+  }
+}</code></pre></div></div>
+        </div>
+      </section>
+
+      <section id="excecoes">
+        <h2>Exceções customizadas</h2>
+        <p>Dê significado de domínio ao erro criando um tipo específico.</p>
+        <div class="duas-colunas">
+          <div class="painel"><span class="linguagem">Python</span><div class="code"><button class="cp" type="button">Copiar</button><pre><code>class SaldoInsuficienteError(Exception):
+    pass
+
+def sacar(saldo, valor):
+    if valor &gt; saldo:
+        raise SaldoInsuficienteError(
+            "Saldo insuficiente"
+        )
+    return saldo - valor</code></pre></div></div>
+          <div class="painel"><span class="linguagem">JavaScript</span><div class="code"><button class="cp" type="button">Copiar</button><pre><code>class SaldoInsuficienteError extends Error {}
+
+function sacar(saldo, valor) {
+  if (valor &gt; saldo) {
+    throw new SaldoInsuficienteError(
+      "Saldo insuficiente"
+    );
+  }
+  return saldo - valor;
+}</code></pre></div></div>
+        </div>
+      </section>
+
+      <section id="tratamento">
+        <h2>try / catch / finally</h2>
+        <p>Proteja somente a operação que pode falhar e capture o tipo de erro que você sabe resolver.</p>
+        <div class="duas-colunas">
+          <div class="painel"><span class="linguagem">Python</span><div class="code"><button class="cp" type="button">Copiar</button><pre><code>try:
+    saldo = sacar(500, 1000)
+except SaldoInsuficienteError as erro:
+    print(f"Erro: {erro}")
+finally:
+    print("Operação encerrada")</code></pre></div></div>
+          <div class="painel"><span class="linguagem">JavaScript</span><div class="code"><button class="cp" type="button">Copiar</button><pre><code>try {
+  const saldo = sacar(500, 1000);
+} catch (erro) {
+  if (erro instanceof SaldoInsuficienteError) {
+    console.log(`Erro: ${erro.message}`);
+  } else {
+    throw erro;
+  }
+} finally {
+  console.log("Operação encerrada");
+}</code></pre></div></div>
+        </div>
+      </section>
+
+      <section id="polimorfismo">
+        <h2>Polimorfismo: chamada uniforme</h2>
+        <p>Objetos de classes diferentes respondem à mesma mensagem. O código cliente depende do comportamento comum, não do tipo concreto.</p>
+        <div class="duas-colunas">
+          <div class="painel"><span class="linguagem">Python</span><div class="code"><button class="cp" type="button">Copiar</button><pre><code>class Relatorio:
+    def imprimir(self): return "Relatório"
+
+class Fatura:
+    def imprimir(self): return "Fatura"
+
+documentos = [Relatorio(), Fatura()]
+for documento in documentos:
+    print(documento.imprimir())</code></pre></div></div>
+          <div class="painel"><span class="linguagem">JavaScript</span><div class="code"><button class="cp" type="button">Copiar</button><pre><code>class Relatorio {
+  imprimir() { return "Relatório"; }
+}
+
+class Fatura {
+  imprimir() { return "Fatura"; }
+}
+
+const documentos = [new Relatorio(), new Fatura()];
+documentos.forEach(documento =&gt;
+  console.log(documento.imprimir())
+);</code></pre></div></div>
+        </div>
+        <div class="nota"><b>Regra prática:</b> se o laço precisa de uma sequência de <code>if</code> para descobrir o tipo de cada objeto, talvez esteja faltando uma interface comum ou polimorfismo.</div>
+      </section>
+    </main>
+
+    <footer class="rodape">Programação Orientada a Objetos · Universidade de Vassouras · Prof. Diego Ramos Inácio</footer>
+  </div>
+
+  <script>
+    (function () {
+      document.querySelectorAll('.code .cp').forEach(function (button) {
+        button.addEventListener('click', async function () {
+          var code = button.parentElement.querySelector('code').textContent;
+          try {
+            await navigator.clipboard.writeText(code);
+            button.textContent = 'Copiado'; button.classList.add('done');
+            setTimeout(function () { button.textContent = 'Copiar'; button.classList.remove('done'); }, 1500);
+          } catch (error) {
+            button.textContent = 'Selecione o código';
+          }
+        });
+      });
+
+      var links = Array.from(document.querySelectorAll('.toc a'));
+      var sections = links.map(function (link) { return document.querySelector(link.getAttribute('href')); });
+      if ('IntersectionObserver' in window) {
+        var observer = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            links.forEach(function (link) { link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id); });
+          });
+        }, { rootMargin: '-15% 0px -70% 0px' });
+        sections.forEach(function (section) { observer.observe(section); });
+      }
+    })();
+  </script>
+</body>
+</html>

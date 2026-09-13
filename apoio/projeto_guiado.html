@@ -1,0 +1,243 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="Projeto guiado de POO: da análise ao código de um sistema de biblioteca em Python e JavaScript."><title>Projeto Guiado — Sistema de Biblioteca</title><link rel="stylesheet" href="../assets/css/apoio.css"><script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.15.0/mermaid.min.js"></script><style>.etapa{display:inline-flex;width:2rem;height:2rem;border-radius:50%;align-items:center;justify-content:center;background:var(--vinho);color:#fff;margin-right:.45rem;font-family:var(--sans);font-size:1rem}.diagram{background:#fff;border:1px solid var(--linha);border-radius:10px;padding:1rem;overflow:auto;text-align:center}.diagram .mermaid{display:inline-block;min-width:620px}.code.grande pre{max-height:34rem}.resultado{background:#18221a;color:#c9f2cf;border-left-color:#3f7a4a!important}</style></head><body>
+<header class="topbar"><div class="inner"><img src="../assets/img/logo_univassouras.png" alt=""><div class="inst">Programação Orientada a Objetos<small>Material de apoio</small></div><a class="back" href="../index.html">← Voltar ao portal</a></div></header>
+<div class="wrap"><aside class="toc" aria-label="Nesta página"><div class="selo">Projeto guiado</div><a href="#problema">1. Problema</a><a href="#analise">2. Análise</a><a href="#decisoes">3. Decisões</a><a href="#uml">4. UML</a><a href="#python">5. Python</a><a href="#javascript">6. JavaScript</a><a href="#testes">7. Testes</a><a href="#resultado">8. Resultado</a></aside><main>
+<h1 class="titulo">Projeto Guiado: da Análise ao Código</h1><p class="lead">Sistema de Biblioteca construído passo a passo. O objetivo não é apenas chegar ao código, mas tornar explícitas as decisões que ligam o problema, o diagrama e os testes.</p>
+
+<section id="problema"><h2><span class="etapa">1</span>Entender o problema</h2><p>Uma biblioteca possui livros catalogados. Cada livro pode ter exemplares físicos. Usuários realizam empréstimos de exemplares disponíveis e depois os devolvem.</p><div class="nota"><b>Regras mínimas:</b> um exemplar pertence a um livro; exemplar emprestado não pode ser emprestado novamente; um usuário mantém seu histórico de empréstimos; devolver encerra o empréstimo e libera o exemplar.</div></section>
+
+<section id="analise"><h2><span class="etapa">2</span>Identificar objetos do domínio</h2><div class="table-wrap"><table class="ref"><thead><tr><th>Objeto</th><th>Responsabilidade</th><th>Estado essencial</th></tr></thead><tbody><tr><td><code>Livro</code></td><td>Representar a obra catalogada</td><td>título, ISBN, exemplares</td></tr><tr><td><code>Exemplar</code></td><td>Representar uma cópia física</td><td>código, disponibilidade</td></tr><tr><td><code>Usuario</code></td><td>Representar quem toma emprestado</td><td>nome, empréstimos</td></tr><tr><td><code>Emprestimo</code></td><td>Registrar a operação e seu estado</td><td>exemplar, usuário, ativo</td></tr><tr><td><code>Biblioteca</code></td><td>Coordenar catálogo e empréstimos</td><td>livros, empréstimos</td></tr></tbody></table></div><div class="nota aviso"><b>Evite transformar verbos em classes sem necessidade:</b> “emprestar” é uma operação coordenada pela biblioteca; o registro resultante é o objeto <code>Emprestimo</code>.</div></section>
+
+<section id="decisoes"><h2><span class="etapa">3</span>Decidir os relacionamentos</h2><div class="table-wrap"><table class="ref"><thead><tr><th>Relação</th><th>Decisão</th><th>Justificativa</th></tr></thead><tbody><tr><td>Livro–Exemplar</td><td>Composição</td><td>Neste modelo didático, o exemplar é criado pelo livro e pertence ao seu catálogo.</td></tr><tr><td>Biblioteca–Livro</td><td>Agregação</td><td>Livros são criados fora e cadastrados na biblioteca.</td></tr><tr><td>Usuário–Empréstimo</td><td>Agregação</td><td>O usuário referencia registros coordenados pela biblioteca.</td></tr><tr><td>Empréstimo–Exemplar</td><td>Associação</td><td>O empréstimo conhece o exemplar, mas não controla sua existência.</td></tr></tbody></table></div><p>Essas escolhas pertencem a este recorte do domínio. Em outro sistema, persistência e regras institucionais poderiam levar a decisões diferentes.</p></section>
+
+<section id="uml"><h2><span class="etapa">4</span>Desenhar antes de implementar</h2><div class="diagram"><div class="mermaid">
+classDiagram
+  class Livro {
+    +titulo: str
+    +isbn: str
+    +adicionarExemplar(codigo) Exemplar
+  }
+  class Exemplar {
+    +codigo: str
+    +disponivel: bool
+  }
+  class Usuario {
+    +nome: str
+    +emprestimos: list
+  }
+  class Emprestimo {
+    +exemplar: Exemplar
+    +usuario: Usuario
+    +ativo: bool
+    +devolver()
+  }
+  class Biblioteca {
+    +livros: list
+    +cadastrarLivro(livro)
+    +emprestar(exemplar, usuario) Emprestimo
+  }
+  Livro "1" *-- "0..*" Exemplar : possui
+  Biblioteca "1" o-- "0..*" Livro : cataloga
+  Biblioteca "1" o-- "0..*" Emprestimo : registra
+  Usuario "1" o-- "0..*" Emprestimo : histórico
+  Emprestimo --> Exemplar : utiliza
+      </div></div><div class="nota"><b>Cheque o desenho:</b> cada atributo e método deve ter motivo no problema. O diagrama não precisa antecipar funcionalidades que ainda não foram solicitadas.</div></section>
+
+<section id="python"><h2><span class="etapa">5</span>Implementação completa em Python</h2><div class="code grande"><button class="cp" type="button">Copiar</button><pre><code>class ExemplarIndisponivelError(Exception):
+    pass
+
+
+class Exemplar:
+    def __init__(self, codigo):
+        self.codigo = codigo
+        self.disponivel = True
+
+
+class Livro:
+    def __init__(self, titulo, isbn):
+        self.titulo = titulo
+        self.isbn = isbn
+        self.exemplares = []
+
+    def adicionar_exemplar(self, codigo):
+        exemplar = Exemplar(codigo)
+        self.exemplares.append(exemplar)
+        return exemplar
+
+
+class Usuario:
+    def __init__(self, nome):
+        self.nome = nome
+        self.emprestimos = []
+
+
+class Emprestimo:
+    def __init__(self, exemplar, usuario):
+        self.exemplar = exemplar
+        self.usuario = usuario
+        self.ativo = True
+
+    def devolver(self):
+        if self.ativo:
+            self.ativo = False
+            self.exemplar.disponivel = True
+
+
+class Biblioteca:
+    def __init__(self):
+        self.livros = []
+        self.emprestimos = []
+
+    def cadastrar_livro(self, livro):
+        self.livros.append(livro)
+
+    def emprestar(self, exemplar, usuario):
+        if not exemplar.disponivel:
+            raise ExemplarIndisponivelError(
+                "Exemplar indisponível"
+            )
+        exemplar.disponivel = False
+        emprestimo = Emprestimo(exemplar, usuario)
+        self.emprestimos.append(emprestimo)
+        usuario.emprestimos.append(emprestimo)
+        return emprestimo</code></pre></div></section>
+
+<section id="javascript"><h2><span class="etapa">6</span>Implementação completa em JavaScript</h2><div class="code grande"><button class="cp" type="button">Copiar</button><pre><code>class ExemplarIndisponivelError extends Error {}
+
+class Exemplar {
+  constructor(codigo) {
+    this.codigo = codigo;
+    this.disponivel = true;
+  }
+}
+
+class Livro {
+  constructor(titulo, isbn) {
+    this.titulo = titulo;
+    this.isbn = isbn;
+    this.exemplares = [];
+  }
+
+  adicionarExemplar(codigo) {
+    const exemplar = new Exemplar(codigo);
+    this.exemplares.push(exemplar);
+    return exemplar;
+  }
+}
+
+class Usuario {
+  constructor(nome) {
+    this.nome = nome;
+    this.emprestimos = [];
+  }
+}
+
+class Emprestimo {
+  constructor(exemplar, usuario) {
+    this.exemplar = exemplar;
+    this.usuario = usuario;
+    this.ativo = true;
+  }
+
+  devolver() {
+    if (this.ativo) {
+      this.ativo = false;
+      this.exemplar.disponivel = true;
+    }
+  }
+}
+
+class Biblioteca {
+  constructor() {
+    this.livros = [];
+    this.emprestimos = [];
+  }
+
+  cadastrarLivro(livro) {
+    this.livros.push(livro);
+  }
+
+  emprestar(exemplar, usuario) {
+    if (!exemplar.disponivel) {
+      throw new ExemplarIndisponivelError(
+        "Exemplar indisponível"
+      );
+    }
+    exemplar.disponivel = false;
+    const emprestimo = new Emprestimo(exemplar, usuario);
+    this.emprestimos.push(emprestimo);
+    usuario.emprestimos.push(emprestimo);
+    return emprestimo;
+  }
+}</code></pre></div></section>
+
+<section id="testes"><h2><span class="etapa">7</span>Provar as regras com testes</h2><div class="duas-colunas"><div class="painel"><span class="linguagem">Python · unittest</span><div class="code"><button class="cp" type="button">Copiar</button><pre><code>import unittest
+
+class TestBiblioteca(unittest.TestCase):
+    def setUp(self):
+        self.biblioteca = Biblioteca()
+        self.livro = Livro("1984", "9780451524935")
+        self.exemplar = self.livro.adicionar_exemplar("EX-01")
+        self.usuario = Usuario("Ana")
+
+    def test_emprestar_e_devolver(self):
+        emprestimo = self.biblioteca.emprestar(
+            self.exemplar, self.usuario
+        )
+        self.assertFalse(self.exemplar.disponivel)
+        emprestimo.devolver()
+        self.assertTrue(self.exemplar.disponivel)
+
+    def test_impedir_emprestimo_duplicado(self):
+        self.biblioteca.emprestar(self.exemplar, self.usuario)
+        with self.assertRaises(ExemplarIndisponivelError):
+            self.biblioteca.emprestar(self.exemplar, self.usuario)</code></pre></div></div>
+<div class="painel"><span class="linguagem">JavaScript · Jest</span><div class="code"><button class="cp" type="button">Copiar</button><pre><code>describe("Biblioteca", () =&gt; {
+  let biblioteca, exemplar, usuario;
+
+  beforeEach(() =&gt; {
+    biblioteca = new Biblioteca();
+    const livro = new Livro("1984", "9780451524935");
+    exemplar = livro.adicionarExemplar("EX-01");
+    usuario = new Usuario("Ana");
+  });
+
+  test("empresta e devolve", () =&gt; {
+    const emprestimo = biblioteca.emprestar(
+      exemplar, usuario
+    );
+    expect(exemplar.disponivel).toBe(false);
+    emprestimo.devolver();
+    expect(exemplar.disponivel).toBe(true);
+  });
+
+  test("impede empréstimo duplicado", () =&gt; {
+    biblioteca.emprestar(exemplar, usuario);
+    expect(() =&gt;
+      biblioteca.emprestar(exemplar, usuario)
+    ).toThrow(ExemplarIndisponivelError);
+  });
+});</code></pre></div></div></div></section>
+
+<section id="resultado"><h2><span class="etapa">8</span>Executar o cenário completo</h2><div class="duas-colunas"><div class="painel"><span class="linguagem">Python</span><div class="code"><pre><code>biblioteca = Biblioteca()
+livro = Livro("1984", "9780451524935")
+exemplar = livro.adicionar_exemplar("EX-01")
+biblioteca.cadastrar_livro(livro)
+usuario = Usuario("Ana")
+
+emprestimo = biblioteca.emprestar(exemplar, usuario)
+print(exemplar.disponivel)
+emprestimo.devolver()
+print(exemplar.disponivel)</code></pre></div></div><div class="painel"><span class="linguagem">JavaScript</span><div class="code"><pre><code>const biblioteca = new Biblioteca();
+const livro = new Livro("1984", "9780451524935");
+const exemplar = livro.adicionarExemplar("EX-01");
+biblioteca.cadastrarLivro(livro);
+const usuario = new Usuario("Ana");
+
+const emprestimo = biblioteca.emprestar(exemplar, usuario);
+console.log(exemplar.disponivel);
+emprestimo.devolver();
+console.log(exemplar.disponivel);</code></pre></div></div></div><div class="duas-colunas"><div><p><b>Saída Python</b></p><div class="code"><pre class="resultado"><code>False
+True</code></pre></div></div><div><p><b>Saída JavaScript</b></p><div class="code"><pre class="resultado"><code>false
+true</code></pre></div></div></div><div class="nota"><b>Rastreabilidade:</b> o resultado confirma duas regras definidas na Etapa 1, modeladas na Etapa 4 e protegidas pelos testes da Etapa 7.</div></section>
+</main><footer class="rodape">Programação Orientada a Objetos · Universidade de Vassouras · Prof. Diego Ramos Inácio</footer></div>
+<script>mermaid.initialize({startOnLoad:true,theme:'base',themeVariables:{fontFamily:'Segoe UI, sans-serif',primaryColor:'#f4e8df',primaryBorderColor:'#7a1f1f',primaryTextColor:'#221d1a',lineColor:'#7a1f1f'}});(function(){document.querySelectorAll('.code .cp').forEach(function(b){b.addEventListener('click',async function(){try{await navigator.clipboard.writeText(b.parentElement.querySelector('code').textContent);b.textContent='Copiado';b.classList.add('done');setTimeout(function(){b.textContent='Copiar';b.classList.remove('done');},1500);}catch(e){b.textContent='Selecione o código';}});});var links=Array.from(document.querySelectorAll('.toc a'));if('IntersectionObserver'in window){var o=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)links.forEach(function(a){a.classList.toggle('active',a.hash==='#'+e.target.id);});});},{rootMargin:'-15% 0px -70% 0px'});links.forEach(function(a){o.observe(document.querySelector(a.hash));});}})();</script></body></html>

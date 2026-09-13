@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Guia visual para leitura de diagramas de classes UML em Programação Orientada a Objetos.">
+  <title>Como Ler Diagramas de Classe UML</title>
+  <link rel="stylesheet" href="../assets/css/apoio.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.15.0/mermaid.min.js"></script>
+  <style>
+    .diagram{background:#fff;border:1px solid var(--linha);border-radius:10px;padding:1rem;margin:.8rem 0;overflow:auto;text-align:center}.diagram .mermaid{display:inline-block;min-width:280px}.decision{display:grid;gap:.65rem;margin:1rem 0}.decision div{background:#fff;border:1px solid var(--linha);border-left:4px solid var(--dourado);border-radius:8px;padding:.75rem 1rem}.trace{font-size:.88rem;color:var(--cinza)}
+  </style>
+</head>
+<body>
+  <header class="topbar"><div class="inner"><img src="../assets/img/logo_univassouras.png" alt=""><div class="inst">Programação Orientada a Objetos<small>Material de apoio</small></div><a class="back" href="../index.html">← Voltar ao portal</a></div></header>
+  <div class="wrap">
+    <aside class="toc" aria-label="Nesta página"><div class="selo">Guia visual</div><a href="#anatomia">Anatomia da classe</a><a href="#visibilidade">Visibilidade</a><a href="#associacao">Associação</a><a href="#agregacao">Agregação</a><a href="#composicao">Composição</a><a href="#heranca">Herança</a><a href="#realizacao">Realização</a><a href="#multiplicidade">Multiplicidade</a><a href="#decisao">Como decidir</a></aside>
+    <main>
+      <h1 class="titulo">Como Ler Diagramas de Classe UML</h1>
+      <p class="lead">Um mapa de símbolos para transformar caixas e setas em decisões de projeto. Cada relação inclui leitura em linguagem natural e rastreabilidade para a aula de origem.</p>
+
+      <section id="anatomia"><h2>Anatomia de uma classe</h2><p>A caixa UML normalmente possui três compartimentos: nome, atributos e métodos.</p><div class="diagram"><div class="mermaid">
+classDiagram
+  class Conta {
+    -saldo: float
+    +depositar(valor)
+    +consultarSaldo() float
+  }
+      </div></div><div class="nota"><b>Leia:</b> <code>Conta</code> possui um saldo privado e oferece duas operações públicas.</div></section>
+
+      <section id="visibilidade"><h2>Visibilidade dos membros</h2><div class="table-wrap"><table class="ref"><thead><tr><th>Símbolo</th><th>Nome</th><th>Leitura prática</th></tr></thead><tbody><tr><td><code>+</code></td><td>Público</td><td>Pode ser usado por código externo.</td></tr><tr><td><code>-</code></td><td>Privado</td><td>Detalhe interno da própria classe.</td></tr><tr><td><code>#</code></td><td>Protegido</td><td>Destinado à classe e às subclasses.</td></tr><tr><td><code>~</code></td><td>Pacote</td><td>Visível no mesmo pacote; pouco usado neste curso.</td></tr></tbody></table></div><p class="trace">Revisão: Aulas 04 e 05.</p></section>
+
+      <section id="associacao"><h2>Associação simples — conhece ou usa</h2><p>Uma linha simples indica vínculo estrutural sem afirmar posse do ciclo de vida.</p><div class="diagram"><div class="mermaid">
+classDiagram
+  Professor --> Turma : leciona
+      </div></div><div class="nota"><b>Leia:</b> um professor leciona para uma turma. A turma não é parte interna do professor.</div><p class="trace">Vocabulário introduzido nas Aulas 03 e 04.</p></section>
+
+      <section id="agregacao"><h2>Agregação — “tem um”, mas a parte sobrevive</h2><p>O losango vazio fica do lado do todo. A parte é recebida de fora e pode existir independentemente.</p><div class="diagram"><div class="mermaid">
+classDiagram
+  Carrinho "1" o-- "0..*" Produto : agrega
+      </div></div><div class="nota"><b>Leia:</b> um carrinho agrega zero ou muitos produtos; os produtos continuam no catálogo se o carrinho deixar de existir.</div><p class="trace">Revisão: Aulas 04 e 07.</p></section>
+
+      <section id="composicao"><h2>Composição — “tem um” com posse forte</h2><p>O losango cheio fica do lado do todo. A parte nasce dentro dele e compartilha seu ciclo de vida.</p><div class="diagram"><div class="mermaid">
+classDiagram
+  Pedido "1" *-- "1..*" ItemPedido : compõe
+      </div></div><div class="nota"><b>Leia:</b> um pedido é composto por um ou mais itens; o item de pedido não faz sentido separado daquele pedido.</div><p class="trace">Revisão: Aulas 04 e 07.</p></section>
+
+      <section id="heranca"><h2>Herança — relação “é um”</h2><p>A linha contínua termina em triângulo vazio apontando para a superclasse.</p><div class="diagram"><div class="mermaid">
+classDiagram
+  Veiculo &lt;|-- Carro
+  Veiculo &lt;|-- Moto
+      </div></div><div class="nota"><b>Leia:</b> carro é um veículo; moto também é um veículo. Ambos podem herdar e sobrescrever comportamentos.</div><p class="trace">Revisão: Aulas 05 e 08.</p></section>
+
+      <section id="realizacao"><h2>Realização — implementa uma interface</h2><p>A linha tracejada com triângulo vazio aponta para o contrato implementado.</p><div class="diagram"><div class="mermaid">
+classDiagram
+  class Imprimivel {
+    &lt;&lt;interface&gt;&gt;
+    +imprimir()
+  }
+  Imprimivel &lt;|.. Relatorio
+  Imprimivel &lt;|.. Fatura
+      </div></div><div class="nota"><b>Leia:</b> relatório e fatura realizam o contrato <code>Imprimivel</code>.</div><p class="trace">Revisão: Aula 06.</p></section>
+
+      <section id="multiplicidade"><h2>Multiplicidade</h2><div class="table-wrap"><table class="ref"><thead><tr><th>Notação</th><th>Quantidade</th><th>Exemplo</th></tr></thead><tbody><tr><td><code>1</code></td><td>Exatamente um</td><td>Um pedido pertence a um cliente.</td></tr><tr><td><code>0..1</code></td><td>Zero ou um</td><td>Perfil pode ter uma foto.</td></tr><tr><td><code>*</code> ou <code>0..*</code></td><td>Zero ou muitos</td><td>Um carrinho pode estar vazio.</td></tr><tr><td><code>1..*</code></td><td>Um ou muitos</td><td>Pedido confirmado possui itens.</td></tr></tbody></table></div></section>
+
+      <section id="decisao"><h2>Fluxo de decisão</h2><div class="decision"><div><b>1. É uma relação “é um”?</b><br>Sim → herança. Ex.: Carro é um Veículo.</div><div><b>2. É uma relação “tem um”?</b><br>Sim → investigue o ciclo de vida da parte.</div><div><b>3. A parte sobrevive ao todo?</b><br>Sim → agregação. Não → composição.</div><div><b>4. Uma classe apenas promete cumprir assinaturas?</b><br>Use realização de interface.</div><div><b>5. Apenas conhece ou usa outro objeto?</b><br>Use associação simples; não invente posse.</div></div><div class="nota aviso"><b>Armadilha:</b> a seta não é decoração. Primeiro decida a relação no domínio; depois escolha o símbolo que comunica essa decisão.</div></section>
+    </main>
+    <footer class="rodape">Programação Orientada a Objetos · Universidade de Vassouras · Prof. Diego Ramos Inácio</footer>
+  </div>
+  <script>
+    mermaid.initialize({startOnLoad:true,theme:'base',themeVariables:{fontFamily:'Segoe UI, sans-serif',primaryColor:'#f4e8df',primaryBorderColor:'#7a1f1f',primaryTextColor:'#221d1a',lineColor:'#7a1f1f'}});
+    (function(){var links=Array.from(document.querySelectorAll('.toc a'));var sections=links.map(function(a){return document.querySelector(a.getAttribute('href'));});if('IntersectionObserver'in window){var observer=new IntersectionObserver(function(entries){entries.forEach(function(entry){if(entry.isIntersecting)links.forEach(function(a){a.classList.toggle('active',a.hash==='#'+entry.target.id);});});},{rootMargin:'-15% 0px -70% 0px'});sections.forEach(function(section){observer.observe(section);});}})();
+  </script>
+</body>
+</html>
