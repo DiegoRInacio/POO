@@ -1,51 +1,429 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aula 07 — Agregação e Composição — em construcao</title>
-<link rel="stylesheet" href="assets/css/site.css">
-<style>
-  body{display:flex;align-items:center;justify-content:center;min-height:100vh}
-  .box{
-    max-width:620px;margin:2rem auto;padding:2.4rem 2.2rem;
-    border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:14px;
-    background:linear-gradient(180deg,var(--bg-2),var(--surface));
-  }
-  .eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-soft)}
-  h1{font-family:var(--mono);font-size:1.5rem;color:var(--ink);margin:.5rem 0 .2rem}
-  .badge{
-    display:inline-block;font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;
-    text-transform:uppercase;color:#241c10;background:var(--gold);
-    padding:.2rem .6rem;border-radius:999px;margin:.6rem 0 1.2rem;
-  }
-  p{color:var(--muted);line-height:1.65;margin:.7rem 0}
-  .ava{
-    margin-top:1.4rem;padding:1rem 1.2rem;border-radius:10px;
-    background:rgba(212,169,78,.10);border:1px solid rgba(212,169,78,.3);
-    color:var(--ink);font-size:.92rem;
-  }
-  .ava b{color:var(--gold)}
-  a.voltar{
-    display:inline-block;margin-top:1.6rem;font-family:var(--mono);font-size:.8rem;
-    color:var(--gold);text-decoration:none;border:1px solid var(--gold-soft);
-    padding:.45rem 1.1rem;border-radius:7px;
-  }
-  a.voltar:hover{background:rgba(212,169,78,.12)}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 07 — Agregação e Composição</title>
+  <link rel="stylesheet" href="assets/css/deck.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.15.0/mermaid.min.js"></script>
 </head>
 <body>
-  <div class="box">
-    <div class="eyebrow">poo // aula 07</div>
-    <h1>Aula 07 — Agregação e Composição</h1>
-    <span class="badge">em construcao</span>
-    <p>Desculpe pelo transtorno — estou <b style="color:var(--ink)">construindo esta
-      página</b> para você. Volte em breve.</p>
-    <div class="ava">
-      Enquanto isso, consulte o material no <b>AVA</b>. Esta página vai <b>substituir</b>
-      aquele conteúdo, mas ele <b>ainda está valendo</b>.
-    </div>
-    <a class="voltar" href="index.html">&larr; voltar ao portal</a>
+
+  <div class="deck-top">
+    <span class="t">Programação Orientada a Objetos · Aula 07</span>
+    <a href="index.html">← Portal</a>
   </div>
+  <div class="deck-prog"></div>
+
+  <div class="deck">
+
+    <!-- 1 · CAPA -->
+    <section class="slide cover active">
+      <img class="crest" src="assets/img/logo_univassouras.png" alt="Universidade de Vassouras">
+      <h1>Agregação e Composição</h1>
+      <div class="meta">
+        Aula 07 · Arquitetura de Relacionamentos em Software<br>
+        Curso de Engenharia de Software — Universidade de Vassouras<br>
+        Prof. Diego Ramos Inácio
+      </div>
+    </section>
+
+    <!-- 2 · RECAP + O MAPA DA OO -->
+    <section class="slide">
+      <span class="tag">Onde estamos</span>
+      <h2>O Mapa da Orientação a Objetos</h2>
+      <p>Já vimos <b>Interfaces</b> — o contrato que faz módulos conversarem. Hoje
+        saímos da criação de classes individuais para projetar <b>como elas se
+        relacionam</b> dentro da arquitetura.</p>
+      <div class="callout">O software raramente é construído por um objeto isolado.
+        Sistemas complexos são ecossistemas de objetos colaborando entre si. Esse
+        vocabulário — <code>Pedido *-- Item</code>, <code>Carrinho o-- Cliente</code>
+        — você já usa desde a Aula 04. Hoje ele ganha profundidade.</div>
+    </section>
+
+    <!-- 3 · O ESPECTRO "TEM-UM" -->
+    <section class="slide">
+      <span class="tag">Fundamento</span>
+      <h2>O Espectro dos Relacionamentos "Tem-um"</h2>
+      <p>Tanto a Agregação quanto a Composição descrevem uma relação onde um objeto
+        <b>Todo</b> possui instâncias de objetos <b>Parte</b>. A diferença
+        arquitetural mora em duas perguntas:</p>
+      <div class="cols">
+        <div class="box"><b>01 · Ciclo de vida</b><br>Quem decide quando a Parte
+          nasce e morre dentro da memória do sistema?</div>
+        <div class="box"><b>02 · Acoplamento</b><br>A Parte faz sentido existindo de
+          forma isolada, sem o objeto pai?</div>
+      </div>
+    </section>
+
+    <!-- 4 · AGREGAÇÃO: A RELAÇÃO FRACA -->
+    <section class="slide">
+      <span class="tag">Agregação</span>
+      <h2>A Relação Fraca</h2>
+      <div class="split">
+        <div>
+          <p><b>Independência estrutural:</b> a parte sobrevive ao todo.</p>
+          <ul>
+            <li>O objeto Todo contém o objeto Parte, mas a Parte existe de forma
+              independente no ecossistema</li>
+            <li>Se o objeto pai for destruído, os filhos continuam operando
+              normalmente</li>
+          </ul>
+        </div>
+        <div class="callout">Exemplo: um <code>Carrinho de Compras</code> (sessão web)
+          guarda <code>Produtos</code> (linhas do banco de dados). Se a sessão
+          expirar, os produtos continuam existindo no catálogo.</div>
+      </div>
+    </section>
+
+    <!-- 5 · AGREGAÇÃO NA PRÁTICA -->
+    <section class="slide">
+      <span class="tag">Do conceito ao código</span>
+      <h2>Agregação na Prática</h2>
+      <p><b>Injeção de dependência:</b> o objeto Parte é instanciado <b>fora</b> e
+        passado como parâmetro. A ligação é fraca.</p>
+      <div class="cols">
+        <div class="box">
+          <b>Python</b>
+<pre style="font-size:.84rem;line-height:1.4;margin-top:.5rem"><code>class Produto:
+    def __init__(self, nome):
+        self.nome = nome
+
+class Carrinho:
+    def __init__(self):
+        self.itens = []
+    def adicionar_produto(self, produto):
+        self.itens.append(produto)
+
+celular = Produto("Smartphone")
+meu_carrinho = Carrinho()
+meu_carrinho.adicionar_produto(celular)</code></pre>
+        </div>
+        <div class="box">
+          <b>JavaScript</b>
+<pre style="font-size:.8rem;line-height:1.35;margin-top:.5rem"><code>class Produto {
+  constructor(nome) { this.nome = nome; }
+}
+class Carrinho {
+  constructor() { this.itens = []; }
+  addProduto(produto) { this.itens.push(produto); }
+}
+const celular = new Produto("Smartphone");
+const meuCarrinho = new Carrinho();
+meuCarrinho.addProduto(celular);</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6 · COMPOSIÇÃO: A RELAÇÃO FORTE -->
+    <section class="slide">
+      <span class="tag">Composição</span>
+      <h2>A Relação Forte</h2>
+      <div class="split">
+        <div>
+          <p><b>Dependência estrita:</b> uma relação de vida ou morte.</p>
+          <ul>
+            <li>O objeto Todo é o responsável exclusivo e absoluto pela criação e
+              destruição da Parte</li>
+            <li>Se o contêiner pai for destruído, todas as partes internas são
+              eliminadas da memória junto</li>
+          </ul>
+        </div>
+        <div class="callout">Exemplo: uma <code>AplicacaoWeb</code> cria seu próprio
+          <code>BancoDeDadosLocal</code> internamente. Destruir a aplicação destrói o
+          banco junto — não faz sentido um sem o outro.</div>
+      </div>
+    </section>
+
+    <!-- 7 · COMPOSIÇÃO NA PRÁTICA -->
+    <section class="slide">
+      <span class="tag">Do conceito ao código</span>
+      <h2>Composição na Prática</h2>
+      <p><b>Instanciação interna:</b> o objeto filho nasce <b>dentro</b> do construtor
+        da classe pai. A aplicação controla totalmente o ciclo de vida.</p>
+      <div class="cols">
+        <div class="box">
+          <b>Python</b>
+<pre style="font-size:.82rem;line-height:1.35;margin-top:.5rem"><code>class BancoDeDadosLocal:
+    def conectar(self):
+        return "Conectado ao DB interno."
+
+class AplicacaoWeb:
+    def __init__(self):
+        self.db = BancoDeDadosLocal()
+    def iniciar(self):
+        print(self.db.conectar())
+
+app = AplicacaoWeb()</code></pre>
+        </div>
+        <div class="box">
+          <b>JavaScript</b>
+<pre style="font-size:.8rem;line-height:1.3;margin-top:.5rem"><code>class BancoDeDadosLocal {
+  conectar() { return "Conectado ao DB interno."; }
+}
+class AplicacaoWeb {
+  constructor() { this.db = new BancoDeDadosLocal(); }
+  iniciar() { console.log(this.db.conectar()); }
+}
+const app = new AplicacaoWeb();</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8 · MATRIZ DE DIAGNÓSTICO -->
+    <section class="slide">
+      <span class="tag">Cola rápida</span>
+      <h2>Matriz de Diagnóstico de Relacionamentos</h2>
+      <table>
+        <tr><th>Pergunta arquitetural</th><th>Agregação</th><th>Composição</th></tr>
+        <tr><td>As partes podem existir separadamente?</td><td>Sim</td><td>Não</td></tr>
+        <tr><td>Se o pai for destruído, o filho morre?</td><td>Não, sobrevive</td><td>Sim, é destruído junto</td></tr>
+        <tr><td>Como a instância da parte é obtida?</td><td>Recebida por parâmetro (injetada)</td><td>Criada internamente (construtor)</td></tr>
+        <tr><td>Grau de acoplamento</td><td>Baixo (modular)</td><td>Alto (monolítico)</td></tr>
+      </table>
+    </section>
+
+    <!-- 9 · DIAGRAMA DE CLASSES UML -->
+    <section class="slide">
+      <span class="tag">Representação visual</span>
+      <h2>Agregação e Composição em UML</h2>
+      <div class="mermaid">
+classDiagram
+    class Carrinho {
+        +itens
+        +adicionarProduto(produto)
+    }
+    class Produto {
+        +nome
+        +preco
+    }
+    Carrinho o-- Produto : agregação
+
+    class AplicacaoWeb {
+        +iniciar()
+    }
+    class BancoDeDados {
+        +conectar()
+    }
+    AplicacaoWeb *-- BancoDeDados : composição
+      </div>
+      <p class="cap" style="text-align:center">Losango vazio = agregação (leve) &nbsp;·&nbsp; losango cheio = composição (peso estrutural, posse total da memória)</p>
+    </section>
+
+    <!-- 10 · IMPACTO NA ENGENHARIA REAL -->
+    <section class="slide">
+      <span class="tag">Por que isso importa</span>
+      <h2>Impacto na Engenharia de Software Real</h2>
+      <div class="cols">
+        <div class="box"><b>Gerenciamento de memória</b><br>Errar na composição pode
+          manter objetos vivos desnecessariamente — memory leaks em aplicações
+          críticas.</div>
+        <div class="box"><b>Design de APIs</b><br>A agregação favorece sistemas
+          modulares: peças trocáveis em tempo de execução sem quebrar o
+          ecossistema.</div>
+        <div class="box"><b>Testes unitários</b><br>O acoplamento fraco da agregação
+          facilita injetar <i>mocks</i>. Composição forte cria barreiras para testar
+          componentes isoladamente.</div>
+      </div>
+    </section>
+
+    <!-- 11 · RESUMO DO LABORATÓRIO -->
+    <section class="slide">
+      <span class="tag">Recap</span>
+      <h2>Resumo do Laboratório</h2>
+      <div class="cols">
+        <div class="box"><b>Agregação é colaboração</b><br>Relação fraca, objetos
+          injetados, peças sobrevivem isoladas no sistema.</div>
+        <div class="box"><b>Composição é pertencimento</b><br>Relação forte,
+          instanciados internamente, ciclo de vida unificado.</div>
+        <div class="box"><b>Prática universal</b><br>As regras conceituais moldam a
+          arquitetura do mesmo jeito, em Python ou em JavaScript.</div>
+      </div>
+      <div class="callout">Próxima aula: <b>Tratamento de Exceções</b> — o que fazer
+        quando um contrato é quebrado em tempo de execução.</div>
+    </section>
+
+    <!-- 12 · EXERCÍCIO: ESCREVA DO ZERO -->
+    <section class="slide">
+      <span class="tag">Pratique</span>
+      <h2>Sua Vez: o Carro</h2>
+      <p>Combine as duas relações de hoje. Escreva o código <b>inteiro, do zero</b>:</p>
+      <ul>
+        <li>uma classe <code>Motor</code> com atributo <code>ligado = False</code> e
+          método <code>ligar()</code> que muda para <code>True</code> e imprime
+          exatamente <code>Motor ligado</code>;</li>
+        <li>uma classe <code>Motorista</code> com atributo <code>nome</code>
+          (definido no construtor);</li>
+        <li>uma classe <code>Carro</code> que, no construtor, recebe um
+          <code>Motorista</code> por parâmetro (<b>agregação</b>) e cria seu próprio
+          <code>Motor</code> internamente (<b>composição</b>);</li>
+        <li>um método <code>Carro.partir()</code> que chama <code>ligar()</code> no
+          motor e depois imprime exatamente <code>&lt;nome&gt; está dirigindo</code>;</li>
+        <li>crie um <code>Motorista("Ana")</code>, um <code>Carro</code> com ele, e
+          chame <code>partir()</code>.</li>
+      </ul>
+
+      <div class="lang-tabs">
+        <button type="button" class="active" data-lang="py">Python</button>
+        <button type="button" data-lang="js">JavaScript</button>
+      </div>
+
+      <div class="lang-pane" data-pane="py">
+        <textarea class="codigo-livre" id="codePy" spellcheck="false"># escreva aqui Motor, Motorista, Carro e o teste
+</textarea>
+      </div>
+      <div class="lang-pane" data-pane="js" hidden>
+        <textarea class="codigo-livre" id="codeJs" spellcheck="false">// escreva aqui Motor, Motorista, Carro e o teste
+</textarea>
+      </div>
+
+      <div class="btnrow" style="margin-top:.6rem">
+        <button class="check" type="button" id="exRodar">Rodar e verificar</button>
+        <button class="check" type="button" id="exSolucao" disabled style="background:transparent;color:var(--dourado);border:1.5px solid var(--dourado)">Ver solução (após 2 tentativas)</button>
+      </div>
+      <div class="quiz-msg" id="exMsg"></div>
+      <pre class="out-livre" id="exOut" hidden></pre>
+      <pre class="solucao-livre" id="exSol" hidden></pre>
+    </section>
+
+    <!-- 13 · ENCERRAMENTO -->
+    <section class="slide cover">
+      <img class="crest" src="assets/img/logo_univassouras.png" alt="Universidade de Vassouras">
+      <h1>O ecossistema está montado.</h1>
+      <div class="meta">
+        diego.inacio@univassouras.edu.br<br><br>
+        Até a próxima aula: Tratamento de Exceções.
+      </div>
+    </section>
+
+  </div>
+
+  <div class="deck-nav">
+    <button data-prev>‹</button>
+    <button data-next>›</button>
+  </div>
+  <div class="deck-count">1 / 13</div>
+
+  <script>
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: 'base',
+      themeVariables: {
+        fontFamily: '"Segoe UI", Tahoma, sans-serif',
+        fontSize: '15px',
+        primaryColor: '#f3e0e0',
+        primaryBorderColor: '#7a1f1f',
+        primaryTextColor: '#2c2320',
+        lineColor: '#7a1f1f',
+        textColor: '#2c2320'
+      }
+    });
+  </script>
+  <script src="assets/js/deck.js"></script>
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
+  <script>
+    (function () {
+      var tabs = document.querySelectorAll('.lang-tabs button');
+      var panes = { py: document.querySelector('.lang-pane[data-pane="py"]'),
+                    js: document.querySelector('.lang-pane[data-pane="js"]') };
+      tabs.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          tabs.forEach(function (b) { b.classList.remove('active'); });
+          btn.classList.add('active');
+          Object.keys(panes).forEach(function (k) { panes[k].hidden = (k !== btn.dataset.lang); });
+          document.getElementById('exMsg').innerHTML = '';
+          document.getElementById('exOut').hidden = true;
+        });
+      });
+
+      /* ---------- exercício: escreve do zero, roda e compara a saída ---------- */
+      var EXPECTED = "Motor ligado\nAna está dirigindo";
+      var SOLUCAO = {
+        py: 'class Motor:\n    def __init__(self):\n        self.ligado = False\n\n    def ligar(self):\n        self.ligado = True\n        print("Motor ligado")\n\nclass Motorista:\n    def __init__(self, nome):\n        self.nome = nome\n\nclass Carro:\n    def __init__(self, motorista):\n        self.motor = Motor()\n        self.motorista = motorista\n\n    def partir(self):\n        self.motor.ligar()\n        print(f"{self.motorista.nome} está dirigindo")\n\npiloto = Motorista("Ana")\ncarro = Carro(piloto)\ncarro.partir()',
+        js: 'class Motor {\n  constructor() {\n    this.ligado = false;\n  }\n  ligar() {\n    this.ligado = true;\n    console.log("Motor ligado");\n  }\n}\nclass Motorista {\n  constructor(nome) {\n    this.nome = nome;\n  }\n}\nclass Carro {\n  constructor(motorista) {\n    this.motor = new Motor();\n    this.motorista = motorista;\n  }\n  partir() {\n    this.motor.ligar();\n    console.log(`${this.motorista.nome} está dirigindo`);\n  }\n}\nconst piloto = new Motorista("Ana");\nconst carro = new Carro(piloto);\ncarro.partir();'
+      };
+
+      var pyodide = null, pyReady = false, pyLoading = false;
+      var tentativas = 0;
+
+      function norm(t) {
+        return t.replace(/\r/g, "").split("\n").map(function (l) { return l.replace(/\s+$/, ""); })
+          .join("\n").replace(/\n+$/, "");
+      }
+
+      async function runPython(code) {
+        if (!pyReady) {
+          if (!pyLoading) {
+            pyLoading = true;
+            document.getElementById('exMsg').innerHTML = 'carregando Python (só na primeira vez)…';
+            pyodide = await loadPyodide();
+            pyReady = true;
+          } else {
+            while (!pyReady) { await new Promise(function (r) { setTimeout(r, 200); }); }
+          }
+        }
+        var got = "";
+        pyodide.setStdout({ batched: function (s) { got += s + "\n"; } });
+        pyodide.setStderr({ batched: function (s) { got += s + "\n"; } });
+        var ns = pyodide.globals.get("dict")();
+        try {
+          pyodide.runPython(code, { globals: ns });
+        } finally { try { ns.destroy(); } catch (e) {} }
+        return got;
+      }
+
+      function runJS(code) {
+        var got = [];
+        var fakeConsole = { log: function () {
+          got.push(Array.prototype.slice.call(arguments).map(String).join(" "));
+        } };
+        var fn = new Function("console", code);
+        fn(fakeConsole);
+        return got.join("\n");
+      }
+
+      function activeLang() { return panes.py.hidden ? "js" : "py"; }
+
+      document.getElementById('exRodar').addEventListener('click', async function () {
+        var lang = activeLang();
+        var code = document.getElementById(lang === "py" ? "codePy" : "codeJs").value;
+        var btn = this, out = document.getElementById('exOut'), msg = document.getElementById('exMsg');
+        btn.disabled = true; msg.textContent = lang === "py" ? "executando…" : "";
+        var got = "", err = null;
+        try {
+          got = lang === "py" ? await runPython(code) : runJS(code);
+        } catch (e) { err = String(e.message || e); }
+        btn.disabled = false;
+        out.hidden = false;
+        if (err) {
+          out.textContent = "erro:\n\n" + err;
+          msg.innerHTML = '<span class="bad">✗ deu erro — veja abaixo</span>';
+        } else {
+          var g = norm(got);
+          var ok = g === EXPECTED;
+          out.textContent = "sua saída:\n\n" + (got.replace(/\n+$/, "") || "(nada impresso)");
+          msg.innerHTML = ok
+            ? '<span class="ok">✓ saída correta</span>'
+            : '<span class="bad">✗ ainda não</span> — esperado:<br>' + EXPECTED.replace(/\n/g, '<br>');
+          if (!ok) {
+            tentativas++;
+            if (tentativas >= 2) {
+              var solBtn = document.getElementById('exSolucao');
+              solBtn.disabled = false;
+              solBtn.textContent = 'Ver solução';
+            }
+          }
+        }
+      });
+
+      document.getElementById('exSolucao').addEventListener('click', function () {
+        if (this.disabled) return;
+        var lang = activeLang();
+        var sol = document.getElementById('exSol');
+        sol.textContent = SOLUCAO[lang];
+        sol.hidden = false;
+      });
+    })();
+  </script>
 </body>
 </html>
