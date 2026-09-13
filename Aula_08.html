@@ -1,51 +1,513 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aula 08 — Tratamento de Exceções — em construcao</title>
-<link rel="stylesheet" href="assets/css/site.css">
-<style>
-  body{display:flex;align-items:center;justify-content:center;min-height:100vh}
-  .box{
-    max-width:620px;margin:2rem auto;padding:2.4rem 2.2rem;
-    border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:14px;
-    background:linear-gradient(180deg,var(--bg-2),var(--surface));
-  }
-  .eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-soft)}
-  h1{font-family:var(--mono);font-size:1.5rem;color:var(--ink);margin:.5rem 0 .2rem}
-  .badge{
-    display:inline-block;font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;
-    text-transform:uppercase;color:#241c10;background:var(--gold);
-    padding:.2rem .6rem;border-radius:999px;margin:.6rem 0 1.2rem;
-  }
-  p{color:var(--muted);line-height:1.65;margin:.7rem 0}
-  .ava{
-    margin-top:1.4rem;padding:1rem 1.2rem;border-radius:10px;
-    background:rgba(212,169,78,.10);border:1px solid rgba(212,169,78,.3);
-    color:var(--ink);font-size:.92rem;
-  }
-  .ava b{color:var(--gold)}
-  a.voltar{
-    display:inline-block;margin-top:1.6rem;font-family:var(--mono);font-size:.8rem;
-    color:var(--gold);text-decoration:none;border:1px solid var(--gold-soft);
-    padding:.45rem 1.1rem;border-radius:7px;
-  }
-  a.voltar:hover{background:rgba(212,169,78,.12)}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 08 — Herança e Tratamento de Exceções</title>
+  <link rel="stylesheet" href="assets/css/deck.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.15.0/mermaid.min.js"></script>
 </head>
 <body>
-  <div class="box">
-    <div class="eyebrow">poo // aula 08</div>
-    <h1>Aula 08 — Tratamento de Exceções</h1>
-    <span class="badge">em construcao</span>
-    <p>Desculpe pelo transtorno — estou <b style="color:var(--ink)">construindo esta
-      página</b> para você. Volte em breve.</p>
-    <div class="ava">
-      Enquanto isso, consulte o material no <b>AVA</b>. Esta página vai <b>substituir</b>
-      aquele conteúdo, mas ele <b>ainda está valendo</b>.
-    </div>
-    <a class="voltar" href="index.html">&larr; voltar ao portal</a>
+
+  <div class="deck-top">
+    <span class="t">Programação Orientada a Objetos · Aula 08</span>
+    <a href="index.html">← Portal</a>
   </div>
+  <div class="deck-prog"></div>
+
+  <div class="deck">
+
+    <!-- 1 · CAPA -->
+    <section class="slide cover active">
+      <img class="crest" src="assets/img/logo_univassouras.png" alt="Universidade de Vassouras">
+      <h1>Herança e Tratamento de Exceções</h1>
+      <div class="meta">
+        Aula 08 · Hierarquias, Reuso e a Rede de Segurança do Sistema<br>
+        Curso de Engenharia de Software — Universidade de Vassouras<br>
+        Prof. Diego Ramos Inácio
+      </div>
+    </section>
+
+    <!-- 2 · RECAP + ONDE ESTAMOS -->
+    <section class="slide">
+      <span class="tag">Onde estamos</span>
+      <h2>Da Arquitetura ao Código Resiliente</h2>
+      <p>Já vimos <b>Agregação e Composição</b> — como objetos independentes
+        colaboram dentro de um ecossistema. Hoje mudamos de eixo: como uma classe
+        <b>herda</b> comportamento de outra, e o que o sistema faz quando algo
+        <b>dá errado</b> em tempo de execução.</p>
+      <div class="callout">No fluxo real de engenharia de software, a <b>Análise</b>
+        mapeia o domínio do problema (o quê), e o <b>Projeto</b> traduz isso em
+        arquitetura de classes (como). Herança e Tratamento de Exceções são as
+        duas ferramentas que dão a essa arquitetura reuso e robustez — a etapa de
+        <b>Implementação</b> propriamente dita.</div>
+    </section>
+
+    <!-- 3 · MATRIZ ANÁLISE VS PROJETO -->
+    <section class="slide">
+      <span class="tag">Cola rápida</span>
+      <h2>Matriz Diagnóstica: Análise vs. Projeto</h2>
+      <table>
+        <tr><th>Pergunta arquitetural</th><th>Análise</th><th>Projeto</th></tr>
+        <tr><td>O foco</td><td>O domínio do problema (mundo real)</td><td>O domínio da solução (software)</td></tr>
+        <tr><td>A pergunta-chave</td><td>O que o sistema deve fazer?</td><td>Como o sistema será construído?</td></tr>
+        <tr><td>O artefato principal</td><td>Modelos conceituais e casos de uso</td><td>Diagramas de classe (UML) e arquitetura</td></tr>
+        <tr><td>O mindset</td><td>Investigativo e agnóstico de tecnologia</td><td>Estrutural e voltado à engenharia</td></tr>
+      </table>
+    </section>
+
+    <!-- 4 · HERANÇA: CONCEITO -->
+    <section class="slide">
+      <span class="tag">Herança</span>
+      <h2>Reuso e Hierarquia</h2>
+      <p>A Herança é a manifestação direta do Projeto no código. Ela permite que
+        uma classe (<b>Subclasse</b>) herde atributos e métodos de outra
+        (<b>Superclasse</b>), promovendo reuso e estabelecendo relações do tipo
+        <b>"é um"</b>.</p>
+      <div class="cols">
+        <div class="box"><b>Superclasse · Generalização</b><br>Concentra os
+          atributos e métodos comuns a todas as subclasses.</div>
+        <div class="box"><b>Subclasse · Especialização</b><br>Herda o que é comum
+          e adiciona (ou reescreve) o que é específico.</div>
+      </div>
+      <div class="callout"><b>Overriding:</b> a capacidade de uma subclasse
+        reescrever o comportamento herdado da superclasse quando precisa de uma
+        versão diferente do mesmo método.</div>
+    </section>
+
+    <!-- 5 · HERANÇA EM UML -->
+    <section class="slide">
+      <span class="tag">Representação visual</span>
+      <h2>Herança em UML</h2>
+      <div class="mermaid">
+classDiagram
+    class EntidadeDoSistema {
+        +atributosComuns
+        +metodosComuns()
+    }
+    class Usuario {
+        +permissoes
+    }
+    class Administrador {
+        +nivelDeAcesso
+    }
+    EntidadeDoSistema <|-- Usuario
+    EntidadeDoSistema <|-- Administrador
+      </div>
+      <p class="cap" style="text-align:center">Triângulo vazado apontando para a superclasse = herança ("é um"). <code>Usuario</code> e <code>Administrador</code> são <code>EntidadeDoSistema</code>.</p>
+    </section>
+
+    <!-- 6 · HERANÇA NA PRÁTICA -->
+    <section class="slide">
+      <span class="tag">Do conceito ao código</span>
+      <h2>Dissecando a Sintaxe: Herança</h2>
+      <div class="cols">
+        <div class="box">
+          <b>Python</b>
+<pre style="font-size:.84rem;line-height:1.4;margin-top:.5rem"><code>class Veiculo:
+    def __init__(self):
+        pass
+
+class Carro(Veiculo):
+    def __init__(self):
+        super().__init__()</code></pre>
+          <p class="cap">A herança é declarada entre parênteses.</p>
+        </div>
+        <div class="box">
+          <b>JavaScript</b>
+<pre style="font-size:.82rem;line-height:1.4;margin-top:.5rem"><code>class Veiculo {
+  constructor() {}
+}
+class Carro extends Veiculo {
+  constructor() {
+    super();
+  }
+}</code></pre>
+          <p class="cap">Uso explícito da palavra-chave <code>extends</code>.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7 · TRATAMENTO DE EXCEÇÕES: CONCEITO -->
+    <section class="slide">
+      <span class="tag">Tratamento de Exceções</span>
+      <h2>A Rede de Segurança do Sistema</h2>
+      <p>Software falha. Redes caem, usuários inserem dados inválidos. O
+        Tratamento de Exceções é a prática de programação defensiva que impede
+        que falhas locais causem o colapso global da aplicação.</p>
+      <div class="cols">
+        <div class="box"><b>Lançamento (throw/raise)</b><br>O sistema sinaliza
+          que ocorreu um estado anômalo.</div>
+        <div class="box"><b>Propagação (bubbling)</b><br>O erro sobe pela pilha
+          de chamadas se não for tratado.</div>
+        <div class="box"><b>Captura (catch/except)</b><br>O bloco de código que
+          intercepta e resolve a falha.</div>
+      </div>
+    </section>
+
+    <!-- 8 · EXCEÇÕES NA PRÁTICA -->
+    <section class="slide">
+      <span class="tag">Do conceito ao código</span>
+      <h2>Dissecando a Sintaxe: Exceções</h2>
+      <div class="cols">
+        <div class="box">
+          <b>Python</b>
+<pre style="font-size:.82rem;line-height:1.35;margin-top:.5rem"><code>try:
+    processar_dados()
+except ValueError as e:
+    log_erro(e)
+finally:
+    fechar_conexao()</code></pre>
+          <p class="cap">Tipagem explícita do erro direto na cláusula de captura.</p>
+        </div>
+        <div class="box">
+          <b>JavaScript</b>
+<pre style="font-size:.78rem;line-height:1.3;margin-top:.5rem"><code>try {
+  processarDados();
+} catch (error) {
+  if (error instanceof TypeError) {
+    logErro(error);
+  }
+} finally {
+  fecharConexao();
+}</code></pre>
+          <p class="cap">Captura genérica seguida de verificação de tipo.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9 · SÍNTESE: EXCEÇÕES CUSTOMIZADAS EM HIERARQUIAS -->
+    <section class="slide">
+      <span class="tag">Síntese técnica</span>
+      <h2>Exceções Customizadas em Hierarquias</h2>
+      <p>O verdadeiro poder da Orientação a Objetos surge ao combinar os dois
+        conceitos de hoje: usar <b>Herança</b> para criar suas próprias
+        <b>Exceções</b>, construindo uma hierarquia de erros semânticos
+        específicos para o seu negócio.</p>
+      <div class="split">
+        <div class="mermaid" style="max-width:360px">
+classDiagram
+    class ErroBase {
+        &lt;&lt;Exception / Error&gt;&gt;
+    }
+    class SaldoInsuficienteError {
+        +mensagem
+    }
+    ErroBase &lt;|-- SaldoInsuficienteError
+        </div>
+        <div class="box">
+<pre style="font-size:.78rem;line-height:1.35;margin-top:0"><code># Python
+class SaldoInsuficienteError(Exception):
+    pass
+
+raise SaldoInsuficienteError()
+
+// JavaScript
+class SaldoInsuficienteError extends Error {}
+
+throw new SaldoInsuficienteError();</code></pre>
+        </div>
+      </div>
+      <p class="cap" style="text-align:center">Exceções customizadas transformam erros técnicos genéricos em regras de negócio compreensíveis.</p>
+    </section>
+
+    <!-- 10 · RESUMO + GANCHO -->
+    <section class="slide">
+      <span class="tag">Recap</span>
+      <h2>Resumo do Laboratório</h2>
+      <div class="cols">
+        <div class="box"><b>Herança é reuso hierárquico</b><br>Superclasse
+          generaliza, subclasse especializa e pode sobrescrever.</div>
+        <div class="box"><b>Exceções são rede de segurança</b><br>Lançar,
+          propagar e capturar — sem colapsar o sistema inteiro.</div>
+        <div class="box"><b>Combinados</b><br>Hierarquias de exceções
+          customizadas viram vocabulário de negócio no código.</div>
+      </div>
+      <div class="callout">Próxima aula: <b>Introdução ao Teste de Software</b> —
+        como garantir, de forma automatizada, que tudo isso continua funcionando.</div>
+    </section>
+
+    <!-- 11 · LABORATÓRIO PRÁTICO: O CENÁRIO -->
+    <section class="slide">
+      <span class="tag">Laboratório prático</span>
+      <h2>O Desafio do Sistema Bancário</h2>
+      <p>Você é o Engenheiro de Software responsável pelo módulo de saques de um
+        novo banco digital. O sistema atual <b>quebra</b> sempre que um usuário
+        tenta sacar mais do que tem na conta.</p>
+      <div class="callout" style="font-family:'Courier New',monospace">
+        &gt; Conta Corrente<br>
+        &gt; Saldo Atual: R$ 500,00<br>
+        &gt; Saque Solicitado: R$ 1000,00<br><br>
+        &gt; <span style="color:#c0392b;font-weight:bold">FATAL ERROR: CRASH</span>
+      </div>
+      <p><b>A missão:</b> usar Herança para diferenciar tipos de conta e
+        implementar Exceções Customizadas para impedir saques inválidos com
+        graciosidade — sem derrubar o sistema.</p>
+    </section>
+
+    <!-- 12 · SOLUÇÃO GUIADA: DIAGRAMA E SISTEMA COMPLETOS -->
+    <section class="slide">
+      <span class="tag">Solução guiada</span>
+      <h2>Do Diagrama ao Sistema Completo</h2>
+      <p>Antes do exercício, o percurso inteiro: o diagrama de classes da
+        solução e a implementação <b>completa</b>, do primeiro <code>class</code>
+        ao resultado impresso no terminal.</p>
+      <div class="mermaid">
+classDiagram
+    class ContaBase {
+        +saldo
+    }
+    class ContaCorrente {
+        +sacar(valor)
+    }
+    class ErroBase {
+        &lt;&lt;Exception / Error&gt;&gt;
+    }
+    class SaldoInsuficienteError {
+        +mensagem
+    }
+    ContaBase &lt;|-- ContaCorrente
+    ErroBase &lt;|-- SaldoInsuficienteError
+    ContaCorrente ..&gt; SaldoInsuficienteError : lança
+      </div>
+      <div class="cols" style="margin-top:1rem">
+        <div class="box">
+          <b>Python — completo</b>
+<pre style="font-size:.74rem;line-height:1.3;margin-top:.5rem"><code>class ContaBase:
+    def __init__(self, saldo):
+        self.saldo = saldo
+
+class SaldoInsuficienteError(Exception):
+    pass
+
+class ContaCorrente(ContaBase):
+    def sacar(self, valor):
+        if valor > self.saldo:
+            raise SaldoInsuficienteError("Saldo insuficiente")
+        self.saldo -= valor
+
+conta = ContaCorrente(500)
+try:
+    conta.sacar(1000)
+except SaldoInsuficienteError:
+    print("Erro: saldo insuficiente")
+finally:
+    print("Operação encerrada")</code></pre>
+        </div>
+        <div class="box">
+          <b>JavaScript — completo</b>
+<pre style="font-size:.72rem;line-height:1.28;margin-top:.5rem"><code>class ContaBase {
+  constructor(saldo) {
+    this.saldo = saldo;
+  }
+}
+class SaldoInsuficienteError extends Error {}
+class ContaCorrente extends ContaBase {
+  sacar(valor) {
+    if (valor > this.saldo) {
+      throw new SaldoInsuficienteError("Saldo insuficiente");
+    }
+    this.saldo -= valor;
+  }
+}
+const conta = new ContaCorrente(500);
+try {
+  conta.sacar(1000);
+} catch (e) {
+  console.log("Erro: saldo insuficiente");
+} finally {
+  console.log("Operação encerrada");
+}</code></pre>
+        </div>
+      </div>
+      <p class="cap" style="text-align:center">Saída em ambas: <code>Erro: saldo insuficiente</code> seguido de <code>Operação encerrada</code>.</p>
+    </section>
+
+    <!-- 13 · EXERCÍCIO: ESCREVA DO ZERO -->
+    <section class="slide">
+      <span class="tag">Pratique</span>
+      <h2>Sua Vez: o Saque Seguro</h2>
+      <p>Escreva o código <b>inteiro, do zero</b>:</p>
+      <ul>
+        <li>uma classe <code>ContaBase</code> com atributo <code>saldo</code>
+          (definido no construtor);</li>
+        <li>uma exceção customizada <code>SaldoInsuficienteError</code>, herdando
+          de <code>Exception</code> (Python) ou <code>Error</code> (JavaScript);</li>
+        <li>uma classe <code>ContaCorrente</code> que <b>herda</b> de
+          <code>ContaBase</code> e implementa o método <code>sacar(valor)</code>:
+          se <code>valor</code> for maior que <code>saldo</code>, lança
+          (<code>raise</code>/<code>throw</code>) <code>SaldoInsuficienteError</code>;
+          caso contrário, subtrai <code>valor</code> de <code>saldo</code>;</li>
+        <li>crie <code>conta = ContaCorrente(500)</code> (saldo inicial 500);</li>
+        <li>em um bloco <code>try</code>/<code>except</code>
+          (<code>try</code>/<code>catch</code>), tente
+          <code>conta.sacar(1000)</code>; no <code>except</code>/<code>catch</code>,
+          imprima exatamente <code>Erro: saldo insuficiente</code>; no
+          <code>finally</code>, imprima exatamente
+          <code>Operação encerrada</code>.</li>
+      </ul>
+
+      <div class="lang-tabs">
+        <button type="button" class="active" data-lang="py">Python</button>
+        <button type="button" data-lang="js">JavaScript</button>
+      </div>
+
+      <div class="lang-pane" data-pane="py">
+        <textarea class="codigo-livre" id="codePy" spellcheck="false"># escreva aqui ContaBase, SaldoInsuficienteError, ContaCorrente e o teste
+</textarea>
+      </div>
+      <div class="lang-pane" data-pane="js" hidden>
+        <textarea class="codigo-livre" id="codeJs" spellcheck="false">// escreva aqui ContaBase, SaldoInsuficienteError, ContaCorrente e o teste
+</textarea>
+      </div>
+
+      <div class="btnrow" style="margin-top:.6rem">
+        <button class="check" type="button" id="exRodar">Rodar e verificar</button>
+        <button class="check" type="button" id="exSolucao" disabled style="background:transparent;color:var(--dourado);border:1.5px solid var(--dourado)">Ver solução (após 2 tentativas)</button>
+      </div>
+      <div class="quiz-msg" id="exMsg"></div>
+      <pre class="out-livre" id="exOut" hidden></pre>
+      <pre class="solucao-livre" id="exSol" hidden></pre>
+    </section>
+
+    <!-- 14 · ENCERRAMENTO -->
+    <section class="slide cover">
+      <img class="crest" src="assets/img/logo_univassouras.png" alt="Universidade de Vassouras">
+      <h1>O sistema está blindado.</h1>
+      <div class="meta">
+        diego.inacio@univassouras.edu.br<br><br>
+        Até a próxima aula: Introdução ao Teste de Software.
+      </div>
+    </section>
+
+  </div>
+
+  <div class="deck-nav">
+    <button data-prev>‹</button>
+    <button data-next>›</button>
+  </div>
+  <div class="deck-count">1 / 14</div>
+
+  <script>
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: 'base',
+      themeVariables: {
+        fontFamily: '"Segoe UI", Tahoma, sans-serif',
+        fontSize: '15px',
+        primaryColor: '#f3e0e0',
+        primaryBorderColor: '#7a1f1f',
+        primaryTextColor: '#2c2320',
+        lineColor: '#7a1f1f',
+        textColor: '#2c2320'
+      }
+    });
+  </script>
+  <script src="assets/js/deck.js"></script>
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
+  <script>
+    (function () {
+      var tabs = document.querySelectorAll('.lang-tabs button');
+      var panes = { py: document.querySelector('.lang-pane[data-pane="py"]'),
+                    js: document.querySelector('.lang-pane[data-pane="js"]') };
+      tabs.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          tabs.forEach(function (b) { b.classList.remove('active'); });
+          btn.classList.add('active');
+          Object.keys(panes).forEach(function (k) { panes[k].hidden = (k !== btn.dataset.lang); });
+          document.getElementById('exMsg').innerHTML = '';
+          document.getElementById('exOut').hidden = true;
+        });
+      });
+
+      /* ---------- exercício: escreve do zero, roda e compara a saída ---------- */
+      var EXPECTED = "Erro: saldo insuficiente\nOperação encerrada";
+      var SOLUCAO = {
+        py: 'class ContaBase:\n    def __init__(self, saldo):\n        self.saldo = saldo\n\nclass SaldoInsuficienteError(Exception):\n    pass\n\nclass ContaCorrente(ContaBase):\n    def sacar(self, valor):\n        if valor > self.saldo:\n            raise SaldoInsuficienteError("Saldo insuficiente")\n        self.saldo -= valor\n\nconta = ContaCorrente(500)\ntry:\n    conta.sacar(1000)\nexcept SaldoInsuficienteError:\n    print("Erro: saldo insuficiente")\nfinally:\n    print("Operação encerrada")',
+        js: 'class ContaBase {\n  constructor(saldo) {\n    this.saldo = saldo;\n  }\n}\nclass SaldoInsuficienteError extends Error {}\nclass ContaCorrente extends ContaBase {\n  sacar(valor) {\n    if (valor > this.saldo) {\n      throw new SaldoInsuficienteError("Saldo insuficiente");\n    }\n    this.saldo -= valor;\n  }\n}\nconst conta = new ContaCorrente(500);\ntry {\n  conta.sacar(1000);\n} catch (e) {\n  console.log("Erro: saldo insuficiente");\n} finally {\n  console.log("Operação encerrada");\n}'
+      };
+
+      var pyodide = null, pyReady = false, pyLoading = false;
+      var tentativas = 0;
+
+      function norm(t) {
+        return t.replace(/\r/g, "").split("\n").map(function (l) { return l.replace(/\s+$/, ""); })
+          .join("\n").replace(/\n+$/, "");
+      }
+
+      async function runPython(code) {
+        if (!pyReady) {
+          if (!pyLoading) {
+            pyLoading = true;
+            document.getElementById('exMsg').innerHTML = 'carregando Python (só na primeira vez)…';
+            pyodide = await loadPyodide();
+            pyReady = true;
+          } else {
+            while (!pyReady) { await new Promise(function (r) { setTimeout(r, 200); }); }
+          }
+        }
+        var got = "";
+        pyodide.setStdout({ batched: function (s) { got += s + "\n"; } });
+        pyodide.setStderr({ batched: function (s) { got += s + "\n"; } });
+        var ns = pyodide.globals.get("dict")();
+        try {
+          pyodide.runPython(code, { globals: ns });
+        } finally { try { ns.destroy(); } catch (e) {} }
+        return got;
+      }
+
+      function runJS(code) {
+        var got = [];
+        var fakeConsole = { log: function () {
+          got.push(Array.prototype.slice.call(arguments).map(String).join(" "));
+        } };
+        var fn = new Function("console", code);
+        fn(fakeConsole);
+        return got.join("\n");
+      }
+
+      function activeLang() { return panes.py.hidden ? "js" : "py"; }
+
+      document.getElementById('exRodar').addEventListener('click', async function () {
+        var lang = activeLang();
+        var code = document.getElementById(lang === "py" ? "codePy" : "codeJs").value;
+        var btn = this, out = document.getElementById('exOut'), msg = document.getElementById('exMsg');
+        btn.disabled = true; msg.textContent = lang === "py" ? "executando…" : "";
+        var got = "", err = null;
+        try {
+          got = lang === "py" ? await runPython(code) : runJS(code);
+        } catch (e) { err = String(e.message || e); }
+        btn.disabled = false;
+        out.hidden = false;
+        if (err) {
+          out.textContent = "erro:\n\n" + err;
+          msg.innerHTML = '<span class="bad">✗ deu erro — veja abaixo</span>';
+        } else {
+          var g = norm(got);
+          var ok = g === EXPECTED;
+          out.textContent = "sua saída:\n\n" + (got.replace(/\n+$/, "") || "(nada impresso)");
+          msg.innerHTML = ok
+            ? '<span class="ok">✓ saída correta</span>'
+            : '<span class="bad">✗ ainda não</span> — esperado:<br>' + EXPECTED.replace(/\n/g, '<br>');
+          if (!ok) {
+            tentativas++;
+            if (tentativas >= 2) {
+              var solBtn = document.getElementById('exSolucao');
+              solBtn.disabled = false;
+              solBtn.textContent = 'Ver solução';
+            }
+          }
+        }
+      });
+
+      document.getElementById('exSolucao').addEventListener('click', function () {
+        if (this.disabled) return;
+        var lang = activeLang();
+        var sol = document.getElementById('exSol');
+        sol.textContent = SOLUCAO[lang];
+        sol.hidden = false;
+      });
+    })();
+  </script>
 </body>
 </html>
