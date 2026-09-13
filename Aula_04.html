@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Aula 04 — Sintaxe: Python × JavaScript</title>
   <link rel="stylesheet" href="assets/css/deck.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.15.0/mermaid.min.js"></script>
 </head>
 <body>
 
@@ -109,7 +110,54 @@ meuCarro.acelerar();</code></pre>
         software continua a mesma.</div>
     </section>
 
-    <!-- 6 · SÍNTESE DA AULA -->
+    <!-- 6 · COMPOSIÇÃO, AGREGAÇÃO E CONSUMO -->
+    <section class="slide">
+      <span class="tag">Do vocabulário ao projeto</span>
+      <h2>Composição, Agregação e Consumo</h2>
+      <p>Três formas de um objeto se relacionar com outro. Esse vocabulário volta em
+        toda prova e todo projeto daqui pra frente — vale a pena gravar bem.</p>
+      <div class="cols">
+        <div class="box"><b>Composição</b><br>A parte <b>nasce dentro</b> do todo e
+          <b>morre com ele</b>. Ex.: um <code>Pedido</code> cria sua própria lista de
+          <code>ItemPedido</code> no construtor.</div>
+        <div class="box"><b>Agregação</b><br>A parte existe de forma
+          <b>independente</b> do todo. Ex.: um <code>Carrinho</code> guarda um
+          <code>Cliente</code> que já existia antes dele.</div>
+        <div class="box"><b>Consumo (dependência)</b><br>Um objeto recebe outro <b>por
+          parâmetro</b> e altera o estado dele, <b>sem guardar</b> referência
+          permanente. Ex.: <code>Caixa.finalizar(pedido)</code> muda
+          <code>pedido.status</code>.</div>
+      </div>
+      <div class="mermaid">
+classDiagram
+    class Pedido {
+        +itens
+        +finalizar()
+    }
+    class Item {
+        +nome
+        +preco
+    }
+    class Carrinho {
+        +adicionarItem()
+    }
+    class Cliente {
+        +nome
+    }
+    class TabelaPreco {
+        +aplicar(produto)
+    }
+    class Produto {
+        +preco
+    }
+    Pedido "1" *-- "muitos" Item : composição
+    Carrinho "1" o-- "1" Cliente : agregação
+    TabelaPreco ..> Produto : consumo
+      </div>
+      <p class="cap" style="text-align:center">Losango cheio = composição &nbsp;·&nbsp; losango vazio = agregação &nbsp;·&nbsp; seta tracejada = consumo</p>
+    </section>
+
+    <!-- 7 · SÍNTESE DA AULA -->
     <section class="slide">
       <span class="tag">Recap</span>
       <h2>Síntese da Aula</h2>
@@ -126,7 +174,7 @@ meuCarro.acelerar();</code></pre>
         (Encapsulamento).</div>
     </section>
 
-    <!-- 7 · EXERCÍCIO: ESCREVA DO ZERO -->
+    <!-- 8 · EXERCÍCIO: ESCREVA DO ZERO -->
     <section class="slide">
       <span class="tag">Pratique</span>
       <h2>Sua Vez: a Moto</h2>
@@ -162,7 +210,7 @@ meuCarro.acelerar();</code></pre>
       <pre class="solucao-livre" id="exSol" hidden></pre>
     </section>
 
-    <!-- 8 · ENCERRAMENTO -->
+    <!-- 9 · ENCERRAMENTO -->
     <section class="slide cover">
       <img class="crest" src="assets/img/logo_univassouras.png" alt="Universidade de Vassouras">
       <h1>Sintaxe dominada.</h1>
@@ -178,8 +226,23 @@ meuCarro.acelerar();</code></pre>
     <button data-prev>‹</button>
     <button data-next>›</button>
   </div>
-  <div class="deck-count">1 / 8</div>
+  <div class="deck-count">1 / 9</div>
 
+  <script>
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: 'base',
+      themeVariables: {
+        fontFamily: '"Segoe UI", Tahoma, sans-serif',
+        fontSize: '15px',
+        primaryColor: '#f3e0e0',
+        primaryBorderColor: '#7a1f1f',
+        primaryTextColor: '#2c2320',
+        lineColor: '#7a1f1f',
+        textColor: '#2c2320'
+      }
+    });
+  </script>
   <script src="assets/js/deck.js"></script>
   <script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
   <script>

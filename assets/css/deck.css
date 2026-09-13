@@ -130,11 +130,19 @@ body{
 
 /* diagramas Mermaid (ER, fluxos) — cartão claro sobre o slide vinho */
 .slide .mermaid{
-  display:flex;justify-content:center;align-items:center;flex:1 1 auto;min-height:0;
+  display:flex;justify-content:center;align-items:center;flex:0 0 auto;
   margin:.5rem auto;background:#fbf7f0;border:2px solid var(--dourado);
-  border-radius:14px;padding:1.1rem;width:100%;
+  border-radius:14px;padding:1.1rem;width:100%;max-width:820px;
 }
-.slide .mermaid svg{width:100% !important;max-width:100% !important;max-height:50vh;height:auto;overflow:visible}
+/* flex:0 0 auto (nao flex:1 1 auto) de proposito: o card cresce pra caber o
+   diagrama inteiro, do tamanho que for — nao e forcado a um "espaco disponivel"
+   pre-calculado (isso deu tamanho errado em telas diferentes, 2 vezes). Se o
+   slide ficar mais alto que a tela, .slide.active{overflow-y:auto} ja rola. */
+/* largura/altura do svg do mermaid NAO sao forcadas aqui de proposito — forcar via
+   CSS interfere na medicao interna de texto do mermaid (caixas ficam estreitas
+   demais e o texto corta). O tamanho final e aplicado via JS, DEPOIS do render
+   (ver corrigirProporcaoMermaid em deck.js). */
+.slide .mermaid svg{max-height:50vh;overflow:visible}
 .fig text{font-family:'Segoe UI',Tahoma,sans-serif;fill:#f3e6c8}
 .fig .cap{font-size:13px;fill:#e6d3a8}
 .fig .box{fill:rgba(255,255,255,.10);stroke:#d4a94e;stroke-width:1.6}

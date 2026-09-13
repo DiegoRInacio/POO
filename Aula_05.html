@@ -1,51 +1,406 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aula 05 — Polimorfismo — em construcao</title>
-<link rel="stylesheet" href="assets/css/site.css">
-<style>
-  body{display:flex;align-items:center;justify-content:center;min-height:100vh}
-  .box{
-    max-width:620px;margin:2rem auto;padding:2.4rem 2.2rem;
-    border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:14px;
-    background:linear-gradient(180deg,var(--bg-2),var(--surface));
-  }
-  .eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-soft)}
-  h1{font-family:var(--mono);font-size:1.5rem;color:var(--ink);margin:.5rem 0 .2rem}
-  .badge{
-    display:inline-block;font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;
-    text-transform:uppercase;color:#241c10;background:var(--gold);
-    padding:.2rem .6rem;border-radius:999px;margin:.6rem 0 1.2rem;
-  }
-  p{color:var(--muted);line-height:1.65;margin:.7rem 0}
-  .ava{
-    margin-top:1.4rem;padding:1rem 1.2rem;border-radius:10px;
-    background:rgba(212,169,78,.10);border:1px solid rgba(212,169,78,.3);
-    color:var(--ink);font-size:.92rem;
-  }
-  .ava b{color:var(--gold)}
-  a.voltar{
-    display:inline-block;margin-top:1.6rem;font-family:var(--mono);font-size:.8rem;
-    color:var(--gold);text-decoration:none;border:1px solid var(--gold-soft);
-    padding:.45rem 1.1rem;border-radius:7px;
-  }
-  a.voltar:hover{background:rgba(212,169,78,.12)}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 05 — A Lente da Abstração</title>
+  <link rel="stylesheet" href="assets/css/deck.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.15.0/mermaid.min.js"></script>
 </head>
 <body>
-  <div class="box">
-    <div class="eyebrow">poo // aula 05</div>
-    <h1>Aula 05 — Polimorfismo</h1>
-    <span class="badge">em construcao</span>
-    <p>Desculpe pelo transtorno — estou <b style="color:var(--ink)">construindo esta
-      página</b> para você. Volte em breve.</p>
-    <div class="ava">
-      Enquanto isso, consulte o material no <b>AVA</b>. Esta página vai <b>substituir</b>
-      aquele conteúdo, mas ele <b>ainda está valendo</b>.
-    </div>
-    <a class="voltar" href="index.html">&larr; voltar ao portal</a>
+
+  <div class="deck-top">
+    <span class="t">Programação Orientada a Objetos · Aula 05</span>
+    <a href="index.html">← Portal</a>
   </div>
+  <div class="deck-prog"></div>
+
+  <div class="deck">
+
+    <!-- 1 · CAPA -->
+    <section class="slide cover active">
+      <img class="crest" src="assets/img/logo_univassouras.png" alt="Universidade de Vassouras">
+      <h1>A Lente da Abstração</h1>
+      <div class="meta">
+        Aula 05 · Projetando Sistemas Escaláveis Através de Contratos Estruturais<br>
+        Curso de Engenharia de Software — Universidade de Vassouras<br>
+        Prof. Diego Ramos Inácio
+      </div>
+    </section>
+
+    <!-- 2 · RECAP + MAPA -->
+    <section class="slide">
+      <span class="tag">Onde estamos</span>
+      <h2>O Mapa da Disciplina</h2>
+      <p>Já cobrimos classes, objetos, interação, sintaxe formal e o vocabulário de
+        composição/agregação/consumo. Hoje entra o primeiro dos <b>4 pilares</b> de
+        verdade: <b>Abstração</b> — a base de tudo que vem a seguir.</p>
+      <div class="cols">
+        <div class="box"><b>Já vimos</b><br>Classes e Objetos · Interação · Sintaxe ·
+          Composição/Agregação/Consumo</div>
+        <div class="box" style="border-color:var(--dourado);background:rgba(212,169,78,.16)"><b>Hoje</b><br>Abstração — o filtro que decide o que entra numa classe</div>
+        <div class="box"><b>Vem por aí</b><br>Encapsulamento · Herança · Polimorfismo ·
+          Tratamento de Exceções</div>
+      </div>
+      <div class="callout">A abstração é o filtro inicial: antes de herdar ou
+        encapsular, é preciso definir a essência do objeto.</div>
+    </section>
+
+    <!-- 3 · O FILTRO DA ABSTRAÇÃO -->
+    <section class="slide">
+      <span class="tag">O conceito</span>
+      <h2>O Filtro da Abstração</h2>
+      <div class="split">
+        <div>
+          <p><b>Definição:</b> o processo de ocultar os detalhes de implementação
+            complexos e exibir apenas as características e comportamentos essenciais
+            para o contexto do software.</p>
+          <div class="callout"><b>Ação-chave:</b> ignorar o ruído corporificado no mundo
+            físico pra focar estritamente na responsabilidade do sistema.</div>
+        </div>
+        <div class="fig">
+          <svg viewBox="0 0 560 360" role="img" aria-label="Características irrelevantes de um carro real são filtradas, restando só chassi, modelo, acelerar e frear">
+            <defs>
+              <marker id="a5s3m" markerWidth="11" markerHeight="11" refX="8" refY="3.2" orient="auto"><path d="M0,0 L10,3.2 L0,6.4 Z" fill="#d4a94e"/></marker>
+            </defs>
+            <rect x="15" y="30" width="150" height="34" rx="7" class="box-soft"/>
+            <text x="90" y="52" text-anchor="middle" font-size="12" style="fill:#c98a7a;text-decoration:line-through">cheiro do estofado</text>
+            <rect x="15" y="72" width="150" height="34" rx="7" class="box-soft"/>
+            <text x="90" y="94" text-anchor="middle" font-size="12" style="fill:#c98a7a;text-decoration:line-through">arranhão na porta</text>
+            <rect x="15" y="114" width="150" height="34" rx="7" class="box-soft"/>
+            <text x="90" y="136" text-anchor="middle" font-size="12" style="fill:#c98a7a;text-decoration:line-through">cor da poeira</text>
+            <rect x="15" y="156" width="150" height="34" rx="7" class="box-soft"/>
+            <text x="90" y="178" text-anchor="middle" font-size="12" style="fill:#c98a7a;text-decoration:line-through">placa suja</text>
+            <rect x="15" y="206" width="150" height="34" rx="7" class="box"/>
+            <text x="90" y="228" text-anchor="middle" font-size="13" class="hl">chassi / modelo</text>
+            <rect x="15" y="248" width="150" height="34" rx="7" class="box"/>
+            <text x="90" y="270" text-anchor="middle" font-size="13" class="hl">acelerar / frear</text>
+
+            <line class="ln" x1="175" y1="220" x2="330" y2="180" marker-end="url(#a5s3m)"/>
+            <rect class="box" x="345" y="110" width="190" height="140" rx="12"/>
+            <text x="440" y="140" text-anchor="middle" font-size="16" class="hl">Carro</text>
+            <text x="440" y="168" text-anchor="middle" font-size="13">- chassi</text>
+            <text x="440" y="190" text-anchor="middle" font-size="13">- modelo</text>
+            <text x="440" y="212" text-anchor="middle" font-size="13">+ acelerar()</text>
+            <text x="440" y="234" text-anchor="middle" font-size="13">+ frear()</text>
+            <text x="280" y="330" text-anchor="middle" class="cap">o mundo real é bagunçado — a classe é o filtro</text>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 · POR QUE ABSTRAÇÃO IMPORTA -->
+    <section class="slide">
+      <span class="tag">Engenharia</span>
+      <h2>Por Que Abstração Importa</h2>
+      <div class="cols">
+        <div class="box"><b>01 · Redução de complexidade cognitiva</b><br>Engenheiros
+          não precisam entender como um motor funciona por dentro pra chamar
+          <code>motor.ligar()</code>.</div>
+        <div class="box"><b>02 · Padronização de contratos</b><br>Garante que equipes
+          diferentes sigam a mesma estrutura fundamental ao criar novas subclasses.</div>
+        <div class="box"><b>03 · Prevenção de instanciação indevida</b><br>Impede criar
+          objetos genéricos que não deveriam existir sozinhos (ex.: um
+          <code>Animal</code> genérico em vez de um <code>Cachorro</code>).</div>
+      </div>
+    </section>
+
+    <!-- 5 · ANATOMIA: CLASSE ABSTRATA x MÉTODO ABSTRATO -->
+    <section class="slide">
+      <span class="tag">Anatomia</span>
+      <h2>Classe Abstrata × Método Abstrato</h2>
+      <div class="cols">
+        <div class="box">
+          <b>A Classe Abstrata — o molde definitivo</b>
+          <ul style="margin-top:.5rem">
+            <li>Não pode ser instanciada diretamente</li>
+            <li>Serve exclusivamente como base para outras classes</li>
+            <li>Pode conter métodos implementados <b>e</b> métodos abstratos</li>
+          </ul>
+        </div>
+        <div class="box">
+          <b>O Método Abstrato — o contrato</b>
+          <ul style="margin-top:.5rem">
+            <li>Tem assinatura, mas nenhuma implementação</li>
+            <li>Obriga as subclasses a fornecerem a lógica real</li>
+          </ul>
+        </div>
+      </div>
+      <table>
+        <tr><th>Característica</th><th>Classe Concreta</th><th>Classe Abstrata</th></tr>
+        <tr><td>Permite instanciação</td><td>Sim</td><td>Não</td></tr>
+        <tr><td>Pode ter métodos abstratos</td><td>Não</td><td>Sim</td></tr>
+        <tr><td>Obriga subclasses a implementar</td><td>Não</td><td>Sim</td></tr>
+      </table>
+    </section>
+
+    <!-- 6 · O CONTRATO EM UML -->
+    <section class="slide">
+      <span class="tag">Diagrama de classes</span>
+      <h2>O Contrato em UML</h2>
+      <p>A classe abstrata <code>GatewayPagamento</code> define o contrato; cada forma
+        de pagamento é uma subclasse concreta que implementa <code>processar()</code>
+        do seu próprio jeito.</p>
+      <div class="mermaid">
+classDiagram
+    class GatewayPagamento {
+        &lt;&lt;abstract&gt;&gt;
+        +processar(valor)*
+    }
+    class PagamentoCartao {
+        +processar(valor)
+    }
+    class PagamentoPix {
+        +processar(valor)
+    }
+    GatewayPagamento &lt;|-- PagamentoCartao
+    GatewayPagamento &lt;|-- PagamentoPix
+      </div>
+      <p class="cap" style="text-align:center">Seta de triângulo vazado = herança &nbsp;·&nbsp; método em <i>itálico</i> = abstrato (sem corpo)</p>
+    </section>
+
+    <!-- 7 · PYTHON: ABC -->
+    <section class="slide">
+      <span class="tag">Python</span>
+      <h2>A Mecânica do Python: <code>ABC</code></h2>
+      <p>Python não tem a palavra-chave <code>abstract</code> nativa. A solução é a
+        biblioteca padrão <code>abc</code> (Abstract Base Classes).</p>
+<pre style="font-size:.9rem;line-height:1.55"><code>from abc import ABC, abstractmethod
+
+class GatewayPagamento(ABC):        # herda de ABC
+    @abstractmethod                 # o contrato
+    def processar(self, valor):
+        pass                        # nenhuma implementação aqui
+
+class PagamentoCartao(GatewayPagamento):
+    def processar(self, valor):
+        print(f"Processando R$ {valor} via Cartão de Crédito.")</code></pre>
+      <div class="callout">Tentar <code>GatewayPagamento()</code> gera
+        <code>TypeError</code> na hora. Só <code>PagamentoCartao()</code> é válido —
+        o gatilho dispara na instanciação.</div>
+    </section>
+
+    <!-- 8 · JAVASCRIPT: SIMULANDO O CONTRATO -->
+    <section class="slide">
+      <span class="tag">JavaScript</span>
+      <h2>Simulando o Contrato em JavaScript</h2>
+      <p>JS moderno tem <code>class</code>, mas não tem classes ou métodos abstratos
+        nativos. A engenharia simula o contrato lançando exceções.</p>
+<pre style="font-size:.86rem;line-height:1.5"><code>class GatewayPagamento {
+  constructor() {
+    if (this.constructor === GatewayPagamento) {
+      throw new Error("Classe abstrata não pode ser instanciada.");
+    }
+  }
+  processar(valor) {
+    throw new Error("Método abstrato 'processar' deve ser implementado.");
+  }
+}
+class PagamentoPix extends GatewayPagamento {
+  processar(valor) {
+    console.log(`Processando R$ ${valor} via PIX.`);
+  }
+}</code></pre>
+    </section>
+
+    <!-- 9 · SÍNTESE: A ARQUITETURA INVISÍVEL -->
+    <section class="slide">
+      <span class="tag">Recap</span>
+      <h2>Síntese: a Arquitetura Invisível</h2>
+      <div class="cols">
+        <div class="box"><b>Abstração</b><br>O filtro: só entra na classe o que o
+          problema precisa.</div>
+        <div class="box"><b>Classe abstrata</b><br>O molde que ninguém instancia
+          sozinho — só serve de base.</div>
+        <div class="box"><b>Método abstrato</b><br>O contrato: obriga a subclasse a
+          implementar.</div>
+      </div>
+      <div class="callout">"Programe para uma interface (superclasse abstrata), não
+        para uma implementação." — A Regra de Ouro (GoF, Erich Gamma). Se o sistema
+        principal depende da classe abstrata, e não das concretas, ele não precisa ser
+        reescrito quando uma forma de pagamento nova chegar.</div>
+    </section>
+
+    <!-- 10 · EXERCÍCIO: ESCREVA DO ZERO -->
+    <section class="slide">
+      <span class="tag">Pratique</span>
+      <h2>Sua Vez: Sistema de Alertas</h2>
+      <p>Combine o que vimos hoje (abstração) com o que já sabia (agregação).
+        Escreva o código <b>inteiro, do zero</b>:</p>
+      <ul>
+        <li>uma classe abstrata <code>Notificador</code> com método abstrato
+          <code>enviar(mensagem)</code> (sem implementação);</li>
+        <li>uma classe concreta <code>NotificadorEmail</code>, que herda de
+          <code>Notificador</code> e implementa <code>enviar(mensagem)</code> imprimindo
+          exatamente <code>Email enviado: &lt;mensagem&gt;</code>;</li>
+        <li>uma classe <code>SistemaDeAlertas</code> que <b>agrega</b> um
+          <code>Notificador</code> recebido no construtor, com um método
+          <code>alertar(mensagem)</code> que chama <code>enviar</code> nele;</li>
+        <li>crie um <code>NotificadorEmail()</code>, passe pra um
+          <code>SistemaDeAlertas</code>, e chame <code>alertar("Pedido confirmado")</code>.</li>
+      </ul>
+
+      <div class="lang-tabs">
+        <button type="button" class="active" data-lang="py">Python</button>
+        <button type="button" data-lang="js">JavaScript</button>
+      </div>
+
+      <div class="lang-pane" data-pane="py">
+        <textarea class="codigo-livre" id="codePy" spellcheck="false"># escreva aqui Notificador (abstrata), NotificadorEmail, SistemaDeAlertas e o teste
+</textarea>
+      </div>
+      <div class="lang-pane" data-pane="js" hidden>
+        <textarea class="codigo-livre" id="codeJs" spellcheck="false">// escreva aqui Notificador (abstrata), NotificadorEmail, SistemaDeAlertas e o teste
+</textarea>
+      </div>
+
+      <div class="btnrow" style="margin-top:.6rem">
+        <button class="check" type="button" id="exRodar">Rodar e verificar</button>
+        <button class="check" type="button" id="exSolucao" disabled style="background:transparent;color:var(--dourado);border:1.5px solid var(--dourado)">Ver solução (após 2 tentativas)</button>
+      </div>
+      <div class="quiz-msg" id="exMsg"></div>
+      <pre class="out-livre" id="exOut" hidden></pre>
+      <pre class="solucao-livre" id="exSol" hidden></pre>
+    </section>
+
+    <!-- 11 · ENCERRAMENTO -->
+    <section class="slide cover">
+      <img class="crest" src="assets/img/logo_univassouras.png" alt="Universidade de Vassouras">
+      <h1>O contrato está definido.</h1>
+      <div class="meta">
+        diego.inacio@univassouras.edu.br<br><br>
+        Até a próxima aula: Interfaces — conceitos e formas de utilização.
+      </div>
+    </section>
+
+  </div>
+
+  <div class="deck-nav">
+    <button data-prev>‹</button>
+    <button data-next>›</button>
+  </div>
+  <div class="deck-count">1 / 11</div>
+
+  <script>
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: 'base',
+      themeVariables: {
+        fontFamily: '"Segoe UI", Tahoma, sans-serif',
+        fontSize: '15px',
+        primaryColor: '#f3e0e0',
+        primaryBorderColor: '#7a1f1f',
+        primaryTextColor: '#2c2320',
+        lineColor: '#7a1f1f',
+        textColor: '#2c2320'
+      }
+    });
+  </script>
+  <script src="assets/js/deck.js"></script>
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
+  <script>
+    (function () {
+      var tabs = document.querySelectorAll('.lang-tabs button');
+      var panes = { py: document.querySelector('.lang-pane[data-pane="py"]'),
+                    js: document.querySelector('.lang-pane[data-pane="js"]') };
+      tabs.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          tabs.forEach(function (b) { b.classList.remove('active'); });
+          btn.classList.add('active');
+          Object.keys(panes).forEach(function (k) { panes[k].hidden = (k !== btn.dataset.lang); });
+          document.getElementById('exMsg').innerHTML = '';
+          document.getElementById('exOut').hidden = true;
+        });
+      });
+
+      /* ---------- exercício: escreve do zero, roda e compara a saída ---------- */
+      var EXPECTED = "Email enviado: Pedido confirmado";
+      var SOLUCAO = {
+        py: 'from abc import ABC, abstractmethod\n\nclass Notificador(ABC):\n    @abstractmethod\n    def enviar(self, mensagem):\n        pass\n\nclass NotificadorEmail(Notificador):\n    def enviar(self, mensagem):\n        print(f"Email enviado: {mensagem}")\n\nclass SistemaDeAlertas:\n    def __init__(self, notificador):\n        self.notificador = notificador\n    def alertar(self, mensagem):\n        self.notificador.enviar(mensagem)\n\nnotificador = NotificadorEmail()\nsistema = SistemaDeAlertas(notificador)\nsistema.alertar("Pedido confirmado")',
+        js: 'class Notificador {\n  constructor() {\n    if (this.constructor === Notificador) {\n      throw new Error("Classe abstrata não pode ser instanciada.");\n    }\n  }\n  enviar(mensagem) {\n    throw new Error("Método abstrato enviar deve ser implementado.");\n  }\n}\nclass NotificadorEmail extends Notificador {\n  enviar(mensagem) {\n    console.log(`Email enviado: ${mensagem}`);\n  }\n}\nclass SistemaDeAlertas {\n  constructor(notificador) {\n    this.notificador = notificador;\n  }\n  alertar(mensagem) {\n    this.notificador.enviar(mensagem);\n  }\n}\nconst notificador = new NotificadorEmail();\nconst sistema = new SistemaDeAlertas(notificador);\nsistema.alertar("Pedido confirmado");'
+      };
+
+      var pyodide = null, pyReady = false, pyLoading = false;
+      var tentativas = 0;
+
+      function norm(t) {
+        return t.replace(/\r/g, "").split("\n").map(function (l) { return l.replace(/\s+$/, ""); })
+          .join("\n").replace(/\n+$/, "");
+      }
+
+      async function runPython(code) {
+        if (!pyReady) {
+          if (!pyLoading) {
+            pyLoading = true;
+            document.getElementById('exMsg').innerHTML = 'carregando Python (só na primeira vez)…';
+            pyodide = await loadPyodide();
+            pyReady = true;
+          } else {
+            while (!pyReady) { await new Promise(function (r) { setTimeout(r, 200); }); }
+          }
+        }
+        var got = "";
+        pyodide.setStdout({ batched: function (s) { got += s + "\n"; } });
+        pyodide.setStderr({ batched: function (s) { got += s + "\n"; } });
+        var ns = pyodide.globals.get("dict")();
+        try {
+          pyodide.runPython(code, { globals: ns });
+        } finally { try { ns.destroy(); } catch (e) {} }
+        return got;
+      }
+
+      function runJS(code) {
+        var got = [];
+        var fakeConsole = { log: function () {
+          got.push(Array.prototype.slice.call(arguments).map(String).join(" "));
+        } };
+        var fn = new Function("console", code);
+        fn(fakeConsole);
+        return got.join("\n");
+      }
+
+      function activeLang() { return panes.py.hidden ? "js" : "py"; }
+
+      document.getElementById('exRodar').addEventListener('click', async function () {
+        var lang = activeLang();
+        var code = document.getElementById(lang === "py" ? "codePy" : "codeJs").value;
+        var btn = this, out = document.getElementById('exOut'), msg = document.getElementById('exMsg');
+        btn.disabled = true; msg.textContent = lang === "py" ? "executando…" : "";
+        var got = "", err = null;
+        try {
+          got = lang === "py" ? await runPython(code) : runJS(code);
+        } catch (e) { err = String(e.message || e); }
+        btn.disabled = false;
+        out.hidden = false;
+        if (err) {
+          out.textContent = "erro:\n\n" + err;
+          msg.innerHTML = '<span class="bad">✗ deu erro — veja abaixo</span>';
+        } else {
+          var g = norm(got);
+          var ok = g === EXPECTED;
+          out.textContent = "sua saída:\n\n" + (got.replace(/\n+$/, "") || "(nada impresso)");
+          msg.innerHTML = ok
+            ? '<span class="ok">✓ saída correta</span>'
+            : '<span class="bad">✗ ainda não</span> — esperado:<br>' + EXPECTED.replace(/\n/g, '<br>');
+          if (!ok) {
+            tentativas++;
+            if (tentativas >= 2) {
+              var solBtn = document.getElementById('exSolucao');
+              solBtn.disabled = false;
+              solBtn.textContent = 'Ver solução';
+            }
+          }
+        }
+      });
+
+      document.getElementById('exSolucao').addEventListener('click', function () {
+        if (this.disabled) return;
+        var lang = activeLang();
+        var sol = document.getElementById('exSol');
+        sol.textContent = SOLUCAO[lang];
+        sol.hidden = false;
+      });
+    })();
+  </script>
 </body>
 </html>
