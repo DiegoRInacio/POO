@@ -1,51 +1,211 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aula 09 — Testes de Software — em construcao</title>
-<link rel="stylesheet" href="assets/css/site.css">
-<style>
-  body{display:flex;align-items:center;justify-content:center;min-height:100vh}
-  .box{
-    max-width:620px;margin:2rem auto;padding:2.4rem 2.2rem;
-    border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:14px;
-    background:linear-gradient(180deg,var(--bg-2),var(--surface));
-  }
-  .eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-soft)}
-  h1{font-family:var(--mono);font-size:1.5rem;color:var(--ink);margin:.5rem 0 .2rem}
-  .badge{
-    display:inline-block;font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;
-    text-transform:uppercase;color:#241c10;background:var(--gold);
-    padding:.2rem .6rem;border-radius:999px;margin:.6rem 0 1.2rem;
-  }
-  p{color:var(--muted);line-height:1.65;margin:.7rem 0}
-  .ava{
-    margin-top:1.4rem;padding:1rem 1.2rem;border-radius:10px;
-    background:rgba(212,169,78,.10);border:1px solid rgba(212,169,78,.3);
-    color:var(--ink);font-size:.92rem;
-  }
-  .ava b{color:var(--gold)}
-  a.voltar{
-    display:inline-block;margin-top:1.6rem;font-family:var(--mono);font-size:.8rem;
-    color:var(--gold);text-decoration:none;border:1px solid var(--gold-soft);
-    padding:.45rem 1.1rem;border-radius:7px;
-  }
-  a.voltar:hover{background:rgba(212,169,78,.12)}
-</style>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 09 — Introdução ao Teste de Software</title>
+  <link rel="stylesheet" href="assets/css/deck.css">
+  <style>
+    .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;width:100%;margin:1rem 0}.step{position:relative;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.16);border-radius:14px;padding:1.25rem;line-height:1.55}.step strong{display:block;color:var(--dourado);font-size:1.25rem;margin-bottom:.45rem}.step:not(:last-child)::after{content:'→';position:absolute;right:-.8rem;top:42%;color:var(--dourado);font-size:1.7rem;z-index:2}
+    .pyramid{display:flex;flex-direction:column;align-items:center;gap:.55rem;margin:1rem auto;width:min(780px,100%)}.level{padding:.8rem 1rem;text-align:center;border-radius:8px;font-size:1.08rem;line-height:1.4}.level.e2e{width:38%;background:rgba(255,255,255,.13)}.level.int{width:66%;background:rgba(255,255,255,.19)}.level.unit{width:94%;background:rgba(212,169,78,.28);border:1px solid var(--dourado)}
+    .cycle{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin:1.1rem 0}.cycle .box{text-align:center}.cycle .red{border-color:#ef6b62}.cycle .green{border-color:#69c37d}.cycle .refactor{border-color:var(--dourado)}.compare{max-width:100%!important}.compare pre{font-size:clamp(.72rem,1.3vw,.9rem);line-height:1.45}
+    .answer-row{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;margin:.8rem 0}.answer-row button{padding:.8rem;border-radius:8px;border:1px solid var(--dourado);background:rgba(0,0,0,.25);color:#fff;cursor:pointer;font:inherit}.answer-row button:hover,.answer-row button.selected{background:rgba(212,169,78,.2)}.answer-row button.correct{border-color:#89df98}.answer-row button.wrong{border-color:#ff9b87}.quiz-msg{min-height:1.7rem;margin-top:.5rem}.ok{color:#89df98}.bad{color:#ff9b87}.lab-intro{font-size:1rem!important;margin-bottom:.5rem!important}.lab-slide textarea.codigo-livre{min-height:27vh;font-size:.82rem}.lab-slide h2{margin-bottom:.55rem}
+    @media(max-width:820px){.steps,.cycle,.answer-row{grid-template-columns:1fr}.step:not(:last-child)::after{display:none}}
+  </style>
 </head>
 <body>
-  <div class="box">
-    <div class="eyebrow">poo // aula 09</div>
-    <h1>Aula 09 — Testes de Software</h1>
-    <span class="badge">em construcao</span>
-    <p>Desculpe pelo transtorno — estou <b style="color:var(--ink)">construindo esta
-      página</b> para você. Volte em breve.</p>
-    <div class="ava">
-      Enquanto isso, consulte o material no <b>AVA</b>. Esta página vai <b>substituir</b>
-      aquele conteúdo, mas ele <b>ainda está valendo</b>.
-    </div>
-    <a class="voltar" href="index.html">&larr; voltar ao portal</a>
+  <div class="deck-top"><span class="t">Programação Orientada a Objetos · Aula 09</span><a href="index.html">← Portal</a></div><div class="deck-prog"></div>
+  <div class="deck">
+    <section class="slide cover active">
+      <img class="crest" src="assets/img/logo_univassouras.png" alt="Universidade de Vassouras">
+      <h1>Introdução ao Teste de Software</h1><div class="meta">Aula 09 · Qualidade e rigor na construção de sistemas orientados a objetos<br>Curso de Engenharia de Software — Universidade de Vassouras<br>Prof. Diego Ramos Inácio</div>
+    </section>
+    <section class="slide">
+      <span class="tag">Onde estamos</span><h2>O Teste Fecha o Ciclo da Disciplina</h2>
+      <div class="steps"><div class="step"><strong>Nó 1 · Fundação</strong>Abstração, classes e objetos.</div><div class="step"><strong>Nó 2 · Estrutura</strong>Agregação, composição e encapsulamento.</div><div class="step"><strong>Nó 3 · Avançado</strong>Herança, polimorfismo e exceções.</div></div>
+      <div class="callout"><b>Nó 4 · Validação:</b> o teste não é uma etapa isolada. Ele verifica se todos os pilares da POO continuam funcionando conforme o projetado.</div>
+    </section>
+    <section class="slide">
+      <span class="tag">Mudança de mentalidade</span><h2>O Mito do “Funciona na Minha Máquina”</h2>
+      <div class="cols"><div class="box"><b>A ambiguidade humana</b><br>Sem testes automatizados, o comportamento depende da perspectiva de quem executa. O que parece correto para o desenvolvedor pode falhar para o usuário.</div><div class="box"><b>A certeza executável</b><br>Testes substituem confiança cega por evidências lógicas, repetíveis e executáveis.</div></div>
+      <div class="callout">Um teste útil responde automaticamente: <b>dada esta situação, quando esta ação ocorre, o resultado esperado aparece?</b></div>
+    </section>
+    <section class="slide">
+      <span class="tag">Conceito</span><h2>Verificação × Validação</h2>
+      <div class="cols"><div class="box"><b>Verificação</b><br><i>Estamos construindo o produto corretamente?</i><br><br>Confere se o código respeita projeto, sintaxe, contratos e lógica da POO.</div><div class="box"><b>Validação</b><br><i>Estamos construindo o produto certo?</i><br><br>Confere se o software atende aos requisitos do usuário e resolve o problema real.</div></div>
+      <p style="margin-top:1rem">Qualidade exige as duas perguntas: código impecável para o requisito errado também é falha.</p>
+    </section>
+    <section class="slide">
+      <span class="tag">Estratégia</span><h2>A Pirâmide de Testes</h2>
+      <div class="pyramid"><div class="level e2e"><b>E2E / UI</b><br>Lentos e caros; simulam o usuário de ponta a ponta.</div><div class="level int"><b>Integração</b><br>Verificam a comunicação entre componentes e serviços.</div><div class="level unit"><b>Unitários · foco do laboratório</b><br>Rápidos, baratos e isolados; testam métodos e classes.</div></div>
+      <div class="callout">Em POO, garantir a integridade de um objeto isolado é o primeiro passo para um sistema robusto.</div>
+    </section>
+    <section class="slide">
+      <span class="tag">Anatomia de um teste</span><h2>O Padrão AAA</h2>
+      <div class="steps"><div class="step"><strong>1. Arrange · Preparar</strong>Instanciar objetos e configurar o estado inicial. Ex.: criar uma conta com saldo de R$ 100.</div><div class="step"><strong>2. Act · Agir</strong>Executar apenas o comportamento testado. Ex.: chamar <code>depositar(50)</code>.</div><div class="step"><strong>3. Assert · Verificar</strong>Comparar o resultado real com o esperado. Ex.: saldo igual a R$ 150.</div></div>
+      <p>Separar as três fases deixa o teste legível e torna a causa de uma falha mais fácil de localizar.</p>
+    </section>
+    <section class="slide">
+      <span class="tag">Test-Driven Development</span><h2>TDD: o Teste como Guia</h2>
+      <div class="cycle"><div class="box red"><b>1. Red · Falhar</b><br>Escreva um teste para um comportamento que ainda não existe. Ele deve falhar.</div><div class="box green"><b>2. Green · Passar</b><br>Implemente o código mais simples que faça o teste passar.</div><div class="box refactor"><b>3. Refactor · Refatorar</b><br>Melhore a estrutura sem alterar o comportamento protegido pelo teste.</div></div>
+      <div class="callout">O ciclo é curto e se repete: <b>falha → passa → melhora</b>. O teste orienta o design e protege a refatoração.</div>
+    </section>
+    <section class="slide">
+      <span class="tag">Lógica universal</span><h2>Sintaxes Diferentes, Mesma Arquitetura</h2>
+      <p>POO e testes unitários transcendem a linguagem. O engenheiro adapta a ferramenta, mantendo intenção, isolamento e padrão AAA.</p>
+      <div class="cols"><div class="box"><b>Python</b><br>Biblioteca padrão <code>unittest</code>; classes de teste herdam de <code>unittest.TestCase</code>.</div><div class="box"><b>JavaScript</b><br>Framework <code>Jest</code>; suítes usam blocos <code>describe</code> e casos usam <code>test</code>.</div></div>
+    </section>
+    <section class="slide">
+      <span class="tag">Cenário prático</span><h2>A Classe que Será Testada</h2>
+      <div class="split"><div><p>Vamos testar um objeto simples: uma <b>Calculadora</b>.</p><p>O objetivo é garantir que o método <code>somar</code> processe corretamente dois parâmetros.</p></div><div class="box" style="text-align:center"><b style="font-size:1.35rem">Calculadora</b><br><br><code>+ somar(a: float, b: float): float</code></div></div>
+      <div class="callout">Caso esperado: <code>somar(2, 3)</code> deve produzir <code>5</code>.</div>
+    </section>
+    <section class="slide">
+      <span class="tag">Matriz comparativa</span><h2>Configurando o Ambiente de Teste</h2>
+      <div class="cols compare"><div class="box"><b>Python · unittest</b><pre><code>import unittest
+from calculadora import Calculadora
+
+class TestCalculadora(unittest.TestCase):
+    # herda as asserções do framework
+    pass</code></pre></div><div class="box"><b>JavaScript · Jest</b><pre><code>const Calculadora = require('./calculadora');
+
+describe('Calculadora', () => {
+  // a suíte agrupa os casos de teste
+});</code></pre></div></div>
+      <p class="cap" style="text-align:center">Python usa herança; Jest organiza o ambiente com funções e closures.</p>
+    </section>
+    <section class="slide">
+      <span class="tag">Matriz comparativa</span><h2>Executando o Padrão AAA</h2>
+      <div class="cols compare"><div class="box"><b>Python · unittest</b><pre><code>def test_somar_dois_numeros(self):
+    calc = Calculadora()           # Arrange
+    resultado = calc.somar(2, 3)  # Act
+    self.assertEqual(resultado, 5) # Assert</code></pre></div><div class="box"><b>JavaScript · Jest</b><pre><code>test('deve somar dois números', () => {
+  const calc = new Calculadora();     // Arrange
+  const resultado = calc.somar(2, 3); // Act
+  expect(resultado).toBe(5);          // Assert
+});</code></pre></div></div>
+      <div class="callout">A asserção muda — <code>assertEqual</code> × <code>expect().toBe()</code> —, mas a arquitetura lógica é a mesma.</div>
+    </section>
+    <section class="slide">
+      <span class="tag">Valor de engenharia</span><h2>O Teste como Documentação Viva</h2>
+      <div class="cols"><div class="box"><b>Segurança na refatoração</b><br>Alterações futuras não devem quebrar funcionalidades existentes: testes detectam regressões.</div><div class="box"><b>Design superior</b><br>Código difícil de testar costuma revelar alto acoplamento. Testabilidade favorece encapsulamento e responsabilidades claras.</div><div class="box"><b>Verdade executável</b><br>Comentários envelhecem; um teste prova continuamente o comportamento atual da classe.</div></div>
+    </section>
+    <section class="slide">
+      <span class="tag">Checkpoint</span><h2>Você Reconhece o Padrão AAA?</h2><p>No teste abaixo, qual linha representa a etapa <b>Act</b>?</p>
+      <pre><code>calc = Calculadora()
+resultado = calc.somar(8, 4)
+self.assertEqual(resultado, 12)</code></pre>
+      <div class="answer-row" id="aaaQuiz"><button type="button" data-answer="arrange">A criação da Calculadora</button><button type="button" data-answer="act">A chamada a somar(8, 4)</button><button type="button" data-answer="assert">A comparação com 12</button></div>
+      <div class="quiz-msg" id="aaaMsg" aria-live="polite">Escolha uma alternativa para receber a correção comentada.</div>
+    </section>
+    <section class="slide lab-slide">
+      <span class="tag">Laboratório prático</span><h2>Agora é com Você</h2>
+      <p class="lab-intro">Complete <code>dividir(a, b)</code>. A validação pertence à <b>classe</b>; o teste apenas comprova a regra. Confirme <code>10 ÷ 2 = 5</code> e a exceção para divisor zero.</p>
+      <div class="lang-tabs"><button type="button" class="active" data-lang="py">Python</button><button type="button" data-lang="js">JavaScript</button></div>
+      <div class="lang-pane" data-pane="py"><textarea class="codigo-livre" id="codePy" spellcheck="false">import unittest
+
+class Calculadora:
+    def dividir(self, a, b):
+        # TODO: implemente a divisão e trate o divisor zero
+        pass
+
+class TestCalculadora(unittest.TestCase):
+    def test_divisao(self):
+        calc = Calculadora()                 # Arrange
+        resultado = calc.dividir(10, 2)      # Act
+        self.assertEqual(resultado, 5)       # Assert
+
+    def test_divisor_zero(self):
+        calc = Calculadora()                 # Arrange
+        with self.assertRaises(ZeroDivisionError):
+            calc.dividir(10, 0)              # Act + Assert
+
+suite = unittest.defaultTestLoader.loadTestsFromTestCase(TestCalculadora)
+unittest.TextTestRunner().run(suite)</textarea></div>
+      <div class="lang-pane" data-pane="js" hidden><textarea class="codigo-livre" id="codeJs" spellcheck="false">class Calculadora {
+  dividir(a, b) {
+    // TODO: implemente a divisão e trate o divisor zero
+  }
+}
+
+function testar(nome, teste) {
+  try { teste(); console.log('PASS: ' + nome); }
+  catch (erro) { console.log('FAIL: ' + nome + ' — ' + erro.message); }
+}
+
+testar('divide 10 por 2', () => {
+  const calc = new Calculadora();
+  const resultado = calc.dividir(10, 2);
+  if (resultado !== 5) throw new Error('esperado 5');
+});
+
+testar('rejeita divisor zero', () => {
+  const calc = new Calculadora();
+  let lancou = false;
+  try { calc.dividir(10, 0); } catch (e) { lancou = true; }
+  if (!lancou) throw new Error('deveria lançar Error');
+});</textarea></div>
+      <div class="btnrow" style="margin-top:.55rem"><button class="check" type="button" id="exRodar">Rodar e verificar</button><button class="check" type="button" id="exSolucao" disabled style="background:transparent;color:var(--dourado);border:1.5px solid var(--dourado)">Ver solução (após 2 tentativas)</button></div>
+      <div class="quiz-msg" id="exMsg" aria-live="polite"></div><pre class="out-livre" id="exOut" hidden></pre><pre class="solucao-livre" id="exSol" hidden></pre>
+    </section>
+    <section class="slide cover">
+      <img class="crest" src="assets/img/logo_univassouras.png" alt="Universidade de Vassouras"><h1>Teste é evidência, não esperança.</h1><div class="meta">Verificar · Validar · Refatorar com segurança<br><br>diego.inacio@univassouras.edu.br</div>
+    </section>
   </div>
+  <div class="deck-nav"><button data-prev aria-label="Slide anterior">‹</button><button data-next aria-label="Próximo slide">›</button></div><div class="deck-count">1 / 15</div>
+  <script src="assets/js/deck.js"></script>
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.26.2/full/pyodide.js"></script>
+  <script>
+    (function () {
+      var quiz = document.getElementById('aaaQuiz'), msg = document.getElementById('aaaMsg');
+      quiz.addEventListener('click', function (event) {
+        var button = event.target.closest('button'); if (!button) return;
+        quiz.querySelectorAll('button').forEach(function (b) { b.classList.remove('selected', 'correct', 'wrong'); });
+        button.classList.add('selected');
+        if (button.dataset.answer === 'act') {
+          button.classList.add('correct');
+          msg.innerHTML = '<span class="ok">✓ Correto.</span> <code>calc.somar(8, 4)</code> executa o método observado: essa é a etapa <b>Act</b>.';
+        } else {
+          button.classList.add('wrong');
+          msg.innerHTML = '<span class="bad">✗ Ainda não.</span> Criar <code>calc</code> é <b>Arrange</b>; comparar com <code>12</code> é <b>Assert</b>. A resposta é a chamada a <code>somar(8, 4)</code>.';
+        }
+      });
+
+      var tabs = document.querySelectorAll('.lang-tabs button');
+      var panes = { py: document.querySelector('[data-pane="py"]'), js: document.querySelector('[data-pane="js"]') };
+      tabs.forEach(function (btn) { btn.addEventListener('click', function () {
+        tabs.forEach(function (b) { b.classList.remove('active'); }); btn.classList.add('active');
+        Object.keys(panes).forEach(function (key) { panes[key].hidden = key !== btn.dataset.lang; });
+        document.getElementById('exMsg').textContent = ''; document.getElementById('exOut').hidden = true; document.getElementById('exSol').hidden = true;
+      }); });
+
+      var solutions = {
+        py: 'import unittest\n\nclass Calculadora:\n    def dividir(self, a, b):\n        if b == 0:\n            raise ZeroDivisionError("divisão por zero")\n        return a / b\n\nclass TestCalculadora(unittest.TestCase):\n    def test_divisao(self):\n        calc = Calculadora()\n        resultado = calc.dividir(10, 2)\n        self.assertEqual(resultado, 5)\n\n    def test_divisor_zero(self):\n        calc = Calculadora()\n        with self.assertRaises(ZeroDivisionError):\n            calc.dividir(10, 0)\n\nsuite = unittest.defaultTestLoader.loadTestsFromTestCase(TestCalculadora)\nunittest.TextTestRunner().run(suite)',
+        js: 'class Calculadora {\n  dividir(a, b) {\n    if (b === 0) throw new Error("divisão por zero");\n    return a / b;\n  }\n}\n\nfunction testar(nome, teste) {\n  try { teste(); console.log("PASS: " + nome); }\n  catch (erro) { console.log("FAIL: " + nome + " — " + erro.message); }\n}\n\ntestar("divide 10 por 2", () => {\n  const calc = new Calculadora();\n  const resultado = calc.dividir(10, 2);\n  if (resultado !== 5) throw new Error("esperado 5");\n});\n\ntestar("rejeita divisor zero", () => {\n  const calc = new Calculadora(); let lancou = false;\n  try { calc.dividir(10, 0); } catch (e) { lancou = true; }\n  if (!lancou) throw new Error("deveria lançar Error");\n});'
+      };
+      var pyodide = null, attempts = 0;
+      function activeLang() { return panes.py.hidden ? 'js' : 'py'; }
+      async function runPython(code) {
+        if (!pyodide) pyodide = await loadPyodide();
+        var wrapper = "import sys, io\n_buf = io.StringIO()\n_old_out, _old_err = sys.stdout, sys.stderr\nsys.stdout = sys.stderr = _buf\ntry:\n    exec(" + JSON.stringify(code) + ", {'__name__': '__main__'})\nexcept SystemExit:\n    pass\nfinally:\n    sys.stdout, sys.stderr = _old_out, _old_err\n_buf.getvalue()";
+        return pyodide.runPythonAsync(wrapper);
+      }
+      function runJS(code) { var lines = []; new Function('console', code)({ log: function () { lines.push([].slice.call(arguments).join(' ')); } }); return lines.join('\n'); }
+
+      document.getElementById('exRodar').addEventListener('click', async function () {
+        var current = activeLang(), editor = document.getElementById(current === 'py' ? 'codePy' : 'codeJs');
+        var out = document.getElementById('exOut'), feedback = document.getElementById('exMsg');
+        this.disabled = true; feedback.textContent = current === 'py' ? 'Carregando/executando Python…' : 'Executando…';
+        var result = '', error = '';
+        try { result = current === 'py' ? await runPython(editor.value) : runJS(editor.value); } catch (e) { error = String(e.message || e); }
+        this.disabled = false; out.hidden = false; out.textContent = error ? 'erro:\n\n' + error : (result || '(nenhuma saída)');
+        var ok = !error && (current === 'py' ? /Ran 2 tests/.test(result) && /\bOK\b/.test(result) : (result.match(/PASS:/g) || []).length === 2 && !/FAIL:/.test(result));
+        feedback.innerHTML = ok ? '<span class="ok">✓ Os dois testes passaram.</span>' : '<span class="bad">✗ Os testes ainda não passaram.</span> Confira a saída abaixo.';
+        if (!ok && ++attempts >= 2) { var solution = document.getElementById('exSolucao'); solution.disabled = false; solution.textContent = 'Ver solução'; }
+      });
+      document.getElementById('exSolucao').addEventListener('click', function () {
+        if (this.disabled) return; var sol = document.getElementById('exSol'); sol.textContent = solutions[activeLang()]; sol.hidden = false;
+      });
+    })();
+  </script>
 </body>
 </html>
